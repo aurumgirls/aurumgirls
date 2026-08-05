@@ -128,7 +128,7 @@ export default function LoginForm() {
 
       <p className="text-center text-[13.5px] text-stone mt-8">
         New to By Aurum Girls?{" "}
-        <Link href="/signup" className="font-semibold text-nar hover:text-nar-deep transition-colors">
+        <Link href="/signup/buyer" className="font-semibold text-nar hover:text-nar-deep transition-colors">
           Create an account
         </Link>
       </p>
