@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { makers } from "@/lib/data";
+import { makerProfiles, getMakerProducts } from "@/lib/makers-data";
+
+const FEATURED_SLUGS = ["basti-huseynova", "zeyneb-eliyeva", "nergiz-quliyeva", "aygun-memmedova"];
 
 export default function MakersPreview() {
+  const featured = FEATURED_SLUGS.map((slug) =>
+    makerProfiles.find((m) => m.slug === slug)
+  ).filter((m): m is NonNullable<typeof m> => Boolean(m));
+
   return (
     <section className="bg-cream border-y border-black/10">
       <div className="mx-auto max-w-[1160px] px-5 sm:px-7 py-12 sm:py-16">
@@ -18,10 +24,10 @@ export default function MakersPreview() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {makers.map((m) => (
+          {featured.map((m) => (
             <Link
-              key={m.name}
-              href="/makers"
+              key={m.slug}
+              href={`/makers/${m.slug}`}
               className="rounded-lg overflow-hidden bg-linen border border-black/10 shadow-sm hover:shadow-md transition-shadow"
             >
               <div
@@ -29,10 +35,10 @@ export default function MakersPreview() {
                 style={{ background: `linear-gradient(135deg, ${m.swatch[0]}, ${m.swatch[1]})` }}
               />
               <div className="p-4">
-                <h3 className="text-[15px] font-medium leading-snug">{m.name}</h3>
+                <h3 className="text-[15px] font-medium leading-snug">{m.personName}</h3>
                 <p className="text-[12px] text-stone mt-0.5">{m.craft}</p>
                 <p className="text-[11.5px] text-aurum font-semibold mt-2 tracking-wide uppercase">
-                  {m.region} · {m.products} products
+                  {m.village} · {getMakerProducts(m.shopName).length} products
                 </p>
               </div>
             </Link>

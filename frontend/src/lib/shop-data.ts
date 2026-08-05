@@ -123,7 +123,7 @@ const rows: Row[] = [
   ["Mini Sweets Sampler", "gift-sets", 19, "By Aurum Girls", "Multi-region", 4.6, 10, "out-of-stock", "#C0892E", "#EFE4D0"],
 ];
 
-function slugify(name: string): string {
+export function slugify(name: string): string {
   return name
     .toLowerCase()
     .normalize("NFD")

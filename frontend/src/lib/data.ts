@@ -35,81 +35,9 @@ export const categories: Category[] = [
   },
 ];
 
-export type Product = {
-  name: string;
-  slug: string;
-  price: number;
-  currency: string;
-  maker: string;
-  region: string;
-  rating: number;
-  reviews: number;
-  swatch: [string, string];
-  image?: string;
-};
-
-export const featuredProducts: Product[] = [
-  {
-    name: "Rose Petal Jam (Gakh)",
-    slug: "rose-petal-jam",
-    price: 30,
-    currency: "₼",
-    maker: "Zeynəb's Kitchen",
-    region: "Gakh",
-    rating: 5,
-    reviews: 24,
-    swatch: ["#A83A2B", "#EBD3CB"],
-  },
-  {
-    name: "Sumac Spice Pouch",
-    slug: "sumac-spice-pouch",
-    price: 20,
-    currency: "₼",
-    maker: "Lahıc Herb House",
-    region: "Lahıc",
-    rating: 5,
-    reviews: 18,
-    swatch: ["#7E2A20", "#C0892E"],
-  },
-  {
-    name: 'Hand-dyed "Kəlağayı" Scarf',
-    slug: "kelagayi-scarf",
-    price: 35,
-    currency: "₼",
-    maker: "Basti's Loom",
-    region: "Sheki",
-    rating: 5,
-    reviews: 41,
-    swatch: ["#33432A", "#A83A2B"],
-  },
-  {
-    name: "Village Gift Hamper",
-    slug: "village-gift-hamper",
-    price: 45,
-    currency: "₼",
-    maker: "By Aurum Girls",
-    region: "Multi-region",
-    rating: 5,
-    reviews: 12,
-    swatch: ["#C9A87C", "#EFE4D0"],
-    image: "/images/product-gift-hamper.jpg",
-  },
-];
-
-export type Maker = {
-  name: string;
-  region: string;
-  craft: string;
-  products: number;
-  swatch: [string, string];
-};
-
-export const makers: Maker[] = [
-  { name: "Zeynəb Əliyeva", region: "Gakh", craft: "Jams & preserves", products: 14, swatch: ["#A83A2B", "#EBD3CB"] },
-  { name: "Basti Hüseynova", region: "Sheki", craft: "Kəlağayı weaving", products: 9, swatch: ["#33432A", "#DCE3CE"] },
-  { name: "Nərgiz Quliyeva", region: "Lahıc", craft: "Herbal remedies", products: 21, swatch: ["#5E6E3A", "#C9A87C"] },
-  { name: "Aygün Məmmədova", region: "Ismayıllı", craft: "Ceramics", products: 11, swatch: ["#C0892E", "#877667"] },
-];
+// Note: product & maker mock data now lives in `shop-data.ts` and
+// `makers-data.ts` so the Shop, Product and Seller Profile pages share one
+// consistent source of truth.
 
 export const impactStats = [
   { value: "180+", label: "Village makers empowered" },

@@ -1,10 +1,12 @@
 import { shopProducts, type ShopProduct } from "@/lib/shop-data";
+import { getMakerByShopName, getMakerProducts } from "@/lib/makers-data";
 
 export type Spec = { label: string; value: string };
 
 export type Seller = {
   name: string;
   region: string;
+  slug?: string;
   bio: string;
   since: number;
   rating: number;
@@ -128,112 +130,40 @@ const CATEGORY_DEFAULTS: Record<string, CategoryDefaults> = {
   },
 };
 
-const SELLER_DIRECTORY: Record<string, Seller> = {
-  "Zeynəb's Kitchen": {
-    name: "Zeynəb's Kitchen",
-    region: "Gakh",
-    bio: "Zeynəb has been preserving fruit from her family orchard for over twenty years. Every jar is cooked in small batches on her stovetop in Gakh.",
-    since: 2019,
-    rating: 4.9,
-    sales: 1240,
-    responseTime: "Usually replies within a day",
-    swatch: ["#A83A2B", "#EBD3CB"],
-  },
-  "Basti's Loom": {
-    name: "Basti's Loom",
-    region: "Sheki",
-    bio: "Basti learned kəlağayı weaving from her grandmother in Basqal. She now works with three other women in her workshop, keeping the craft alive.",
-    since: 2018,
-    rating: 5,
-    sales: 860,
-    responseTime: "Usually replies within a few hours",
-    swatch: ["#33432A", "#DCE3CE"],
-  },
-  "Nərgiz's Herbs": {
-    name: "Nərgiz's Herbs",
-    region: "Lahıc",
-    bio: "Nərgiz forages herbs in the hills above Lahıc with her daughters, drying and blending them the way her mother taught her.",
-    since: 2020,
-    rating: 4.9,
-    sales: 970,
-    responseTime: "Usually replies within a day",
-    swatch: ["#5E6E3A", "#C9A87C"],
-  },
-  "Lahıc Herb House": {
-    name: "Lahıc Herb House",
-    region: "Lahıc",
-    bio: "A small family operation drying and packing herbs and spices sourced from farms across the Lahıc valley.",
-    since: 2017,
-    rating: 4.8,
-    sales: 1510,
-    responseTime: "Usually replies within a day",
-    swatch: ["#7E2A20", "#C0892E"],
-  },
-  "Aygün's Studio": {
-    name: "Aygün's Studio",
-    region: "Ismayıllı",
-    bio: "Aygün trained under a master potter in Lahıc before opening her own studio. Each piece is wheel-thrown and wood-fired.",
-    since: 2016,
-    rating: 4.9,
-    sales: 640,
-    responseTime: "Usually replies within 2 days",
-    swatch: ["#C0892E", "#877667"],
-  },
-  "Səbinə's Table": {
-    name: "Səbinə's Table",
-    region: "Sheki",
-    bio: "Səbinə runs a small home bakery specializing in traditional Şəki sweets, made fresh to order every week.",
-    since: 2021,
-    rating: 5,
-    sales: 430,
-    responseTime: "Usually replies within a few hours",
-    swatch: ["#C0892E", "#EFE4D0"],
-  },
-  "Xədicə's Pantry": {
-    name: "Xədicə's Pantry",
-    region: "Quba",
-    bio: "Xədicə preserves fruit grown on her family's land in Quba, following recipes handed down from her grandmother.",
-    since: 2020,
-    rating: 4.8,
-    sales: 510,
-    responseTime: "Usually replies within a day",
-    swatch: ["#A83A2B", "#C9A87C"],
-  },
-  "Firuzə Textiles": {
-    name: "Firuzə Textiles",
-    region: "Basqal",
-    bio: "Firuzə and her two sisters hand-embroider textiles in the tekelduz style, a craft native to their village.",
-    since: 2019,
-    rating: 4.7,
-    sales: 380,
-    responseTime: "Usually replies within 2 days",
-    swatch: ["#A83A2B", "#EFE4D0"],
-  },
-  "By Aurum Girls": {
-    name: "By Aurum Girls",
-    region: "Multi-region",
-    bio: "Our in-house team curates gift sets that bring together work from several village makers into one thoughtfully packed box.",
-    since: 2022,
-    rating: 4.9,
-    sales: 2100,
-    responseTime: "Usually replies within a few hours",
-    swatch: ["#C9A87C", "#EFE4D0"],
-  },
-};
+// Seller info for the product page's buy-box card is sourced from the maker
+// profile directory (single source of truth shared with the Seller Profile page).
+const FALLBACK_SALES_MULTIPLIER = 6;
 
 export function getSeller(makerName: string): Seller {
-  return (
-    SELLER_DIRECTORY[makerName] ?? {
+  const profile = getMakerByShopName(makerName);
+  if (!profile) {
+    return {
       name: makerName,
       region: "Azerbaijan",
+      slug: undefined,
       bio: `${makerName} is one of the village makers behind the By Aurum Girls marketplace, selling directly to buyers like you.`,
       since: 2021,
       rating: 4.8,
       sales: 300,
       responseTime: "Usually replies within a day",
       swatch: ["#C9A87C", "#877667"],
-    }
+    };
+  }
+  const sales = getMakerProducts(makerName).reduce(
+    (sum, p) => sum + p.reviews * FALLBACK_SALES_MULTIPLIER,
+    0
   );
+  return {
+    name: profile.shopName,
+    region: profile.village,
+    slug: profile.slug,
+    bio: profile.bio,
+    since: profile.joinedYear,
+    rating: profile.rating,
+    sales,
+    responseTime: profile.responseTime,
+    swatch: profile.swatch,
+  };
 }
 
 function buildGallery(product: ShopProduct): ProductDetail["gallery"] {
