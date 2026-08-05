@@ -78,12 +78,13 @@ export default function Header() {
                 <Heart size={18} strokeWidth={1.8} />
               </button>
 
-              <button
-                aria-label="Account"
+              <Link
+                href="/signin"
+                aria-label="Sign in"
                 className="hidden sm:inline-flex h-9 w-9 items-center justify-center rounded-pill hover:bg-sand transition-colors text-ink"
               >
                 <User size={18} strokeWidth={1.8} />
-              </button>
+              </Link>
 
               <Link
                 href="/cart"
