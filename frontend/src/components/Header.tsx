@@ -85,15 +85,16 @@ export default function Header() {
                 <User size={18} strokeWidth={1.8} />
               </button>
 
-              <button
-                aria-label="Cart, 0 items"
+              <Link
+                href="/cart"
+                aria-label="View cart, 5 items"
                 className="relative inline-flex h-9 w-9 items-center justify-center rounded-pill hover:bg-sand transition-colors text-ink"
               >
                 <ShoppingBag size={18} strokeWidth={1.8} />
                 <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-pill bg-nar text-white text-[9.5px] font-bold flex items-center justify-center">
-                  0
+                  5
                 </span>
-              </button>
+              </Link>
 
               <Link
                 href="/sell"
