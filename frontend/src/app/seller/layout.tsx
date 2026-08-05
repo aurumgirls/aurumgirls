@@ -15,7 +15,7 @@ export default function SellerLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </main>
-      <CheckoutFooter />
+      <CheckoutFooter maxWidth={1280} />
     </div>
   );
 }

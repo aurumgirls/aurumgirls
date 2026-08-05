@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function AboutCTA() {
   return (
-    <div className="rounded-xl bg-ink text-linen px-6 sm:px-14 py-12 sm:py-16 text-center">
+    <div className="rounded-xl bg-grove text-linen px-6 sm:px-12 py-12 sm:py-14 text-center">
       <span className="text-[11.5px] font-semibold tracking-[0.2em] uppercase text-aurum-soft">
         Be part of the story
       </span>
@@ -21,7 +21,7 @@ export default function AboutCTA() {
           Shop the Collection
         </Link>
         <Link
-          href="/signup"
+          href="/signup/buyer"
           className="inline-flex items-center rounded-sm border-[1.5px] border-sage/40 text-linen text-[15px] font-semibold px-7 py-3.5 hover:bg-linen/10 transition-colors"
         >
           Become a Seller

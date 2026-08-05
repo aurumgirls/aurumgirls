@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </main>
-      <CheckoutFooter />
+      <CheckoutFooter maxWidth={1400} />
     </div>
   );
 }

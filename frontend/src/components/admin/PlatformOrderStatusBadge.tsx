@@ -1,9 +1,9 @@
 import type { PlatformOrderStatus } from "@/lib/admin-data";
 
 const STYLES: Record<PlatformOrderStatus, string> = {
-  pending: "bg-sand text-ink",
-  processing: "bg-aurum-soft text-[#6b4a17]",
-  shipped: "bg-kraft/40 text-ink",
+  pending: "bg-nar text-white",
+  processing: "bg-sand text-ink",
+  shipped: "bg-aurum-soft text-[#6b4a17]",
   delivered: "bg-sage text-grove",
   cancelled: "bg-nar-soft text-nar-deep",
 };
