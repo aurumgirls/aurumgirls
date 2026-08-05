@@ -10,6 +10,8 @@ export function TextField({
   span,
   defaultValue,
   autoComplete,
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
@@ -19,6 +21,8 @@ export function TextField({
   span?: "full" | "half";
   defaultValue?: string;
   autoComplete?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }) {
   return (
     <div className={span === "full" ? "sm:col-span-2" : undefined}>
@@ -32,7 +36,9 @@ export function TextField({
         type={type}
         required={required}
         placeholder={placeholder}
-        defaultValue={defaultValue}
+        {...(onChange
+          ? { value: value ?? "", onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value) }
+          : { defaultValue })}
         autoComplete={autoComplete}
         className={inputClass}
       />
