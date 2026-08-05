@@ -52,12 +52,16 @@ export function SelectField({
   options,
   required = true,
   defaultValue,
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
   options: string[];
   required?: boolean;
   defaultValue?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }) {
   return (
     <div>
@@ -69,7 +73,9 @@ export function SelectField({
         id={name}
         name={name}
         required={required}
-        defaultValue={defaultValue}
+        {...(onChange
+          ? { value: value ?? options[0], onChange: (e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value) }
+          : { defaultValue })}
         className={inputClass + " appearance-none cursor-pointer"}
       >
         {options.map((opt) => (
