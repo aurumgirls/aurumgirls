@@ -60,16 +60,16 @@ export default function Header() {
           </div>
 
           {/* Center Brand Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <Image
               src="/images/logo-color-custom.png"
               alt="By Aurum Girls Logo"
-              width={40}
-              height={40}
+              width={80}
+              height={80}
               unoptimized
-              className="w-10 h-10 object-contain group-hover:scale-105 transition-transform"
+              className="w-20 h-20 object-contain group-hover:scale-105 transition-transform"
             />
-            <span className="font-display text-xl lg:text-2xl font-bold text-forest tracking-tight">
+            <span className="font-display text-2xl lg:text-3xl font-bold text-forest tracking-tight">
               BY AURUM GIRLS
             </span>
           </Link>

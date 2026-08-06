@@ -8,8 +8,7 @@ export default function Footer() {
     <footer className="bg-forest text-cream">
       {/* Newsletter Section */}
       <div className="container mx-auto px-4 lg:px-8 py-16 text-center border-b border-forest-light">
-        <h2 className="font-display text-3xl lg:text-4xl font-semibold mb-4 text-cream">Kənd Qadınlarının Əməyinə Dəstək Olun</h2>
-        <p className="mb-8 text-cream/80 max-w-md mx-auto">Yeni məhsullar, təbii reseptlər və xüsusi hədiyyə setlərimiz haqqında ilk siz xəbərdar olun.</p>
+        <h2 className="font-display text-3xl lg:text-4xl font-semibold mb-8 text-cream">Kənd Qadınlarının Əməyinə Dəstək Olun</h2>
         <form className="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
           <input 
             type="email" 
@@ -27,16 +26,16 @@ export default function Footer() {
       <div className="container mx-auto px-4 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Brand Column */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Image
               src="/images/logo-color-custom.png"
               alt="By Aurum Girls Logo"
-              width={36}
-              height={36}
+              width={72}
+              height={72}
               unoptimized
-              className="w-9 h-9 object-contain"
+              className="w-18 h-18 object-contain"
             />
-            <span className="font-display text-2xl font-bold tracking-tight text-cream">BY AURUM GIRLS</span>
+            <span className="font-display text-2xl lg:text-3xl font-bold tracking-tight text-cream">BY AURUM GIRLS</span>
           </div>
           <p className="text-cream/80 text-sm leading-relaxed">
             Kəndli qadınlarımızın əl əməyi ilə hazırlanan 100% təbii dağ balı, ev mürəbbələri və dağ çayları. Azərpoçt ilə bütün Azərbaycana çatdırılma.

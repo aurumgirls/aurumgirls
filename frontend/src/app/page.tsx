@@ -6,7 +6,6 @@ import GiftSetBanner from '@/components/GiftSetBanner';
 import FeaturedProducts from '@/components/FeaturedProducts';
 import ValuePillars from '@/components/ValuePillars';
 import ImpactStats from '@/components/ImpactStats';
-import MakersPreview from '@/components/MakersPreview';
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
         <FeaturedProducts />
         <ValuePillars />
         <ImpactStats />
-        <MakersPreview />
       </main>
       <Footer />
     </>
