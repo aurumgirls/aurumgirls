@@ -51,9 +51,6 @@ export default function Header() {
             <Link href="/shop" className="hover:text-terracotta transition-colors">
               Market / Məhsullar
             </Link>
-            <Link href="/product/hadiyya-seti" className="hover:text-terracotta transition-colors font-semibold text-terracotta">
-              🎁 Hədiyyə Seti
-            </Link>
             <Link href="/about" className="hover:text-terracotta transition-colors">
               Bizim Hekayə
             </Link>
@@ -110,13 +107,6 @@ export default function Header() {
               className="block text-forest hover:text-terracotta font-medium text-base py-1"
             >
               Market / Məhsullar
-            </Link>
-            <Link
-              href="/product/hadiyya-seti"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-terracotta font-semibold text-base py-1"
-            >
-              🎁 Hədiyyə Seti (5-i 1-ində)
             </Link>
             <Link
               href="/about"

@@ -53,7 +53,6 @@ export default function Footer() {
         <div>
           <h3 className="font-display text-lg font-semibold mb-4 text-cream">Məhsullarımız</h3>
           <ul className="space-y-2.5 text-sm text-cream/80">
-            <li><Link href="/product/hadiyya-seti" className="hover:text-cream transition-colors font-semibold text-terracotta-light">🎁 Hədiyyə Seti (5-i 1-ində)</Link></li>
             <li><Link href="/product/dali-bal" className="hover:text-cream transition-colors">Təbii Dağ Balı (500q)</Link></li>
             <li><Link href="/product/murebbe" className="hover:text-cream transition-colors">Ev Mürəbbəsi (450q)</Link></li>
             <li><Link href="/product/keklikotu" className="hover:text-cream transition-colors">Kəklikotu (100q)</Link></li>
