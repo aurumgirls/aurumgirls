@@ -6,22 +6,6 @@ import { InstagramIcon, FacebookIcon, TikTokIcon, PinterestIcon } from './Social
 export default function Footer() {
   return (
     <footer className="bg-forest text-cream">
-      {/* Newsletter Section */}
-      <div className="container mx-auto px-4 lg:px-8 py-16 text-center border-b border-forest-light">
-        <h2 className="font-display text-3xl lg:text-4xl font-semibold mb-8 text-cream">Kənd Qadınlarının Əməyinə Dəstək Olun</h2>
-        <form className="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
-          <input 
-            type="email" 
-            placeholder="E-poçt ünvanınızı daxil edin" 
-            className="px-5 py-3 rounded-full text-charcoal bg-cream focus:outline-none focus:ring-2 focus:ring-terracotta flex-1"
-            required
-          />
-          <button type="submit" className="btn-secondary whitespace-nowrap">
-            Abunə Ol
-          </button>
-        </form>
-      </div>
-
       {/* Main Footer Links */}
       <div className="container mx-auto px-4 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Brand Column */}
