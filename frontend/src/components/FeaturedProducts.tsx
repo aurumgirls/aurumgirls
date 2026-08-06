@@ -1,59 +1,97 @@
 "use client";
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { featuredProducts } from '@/lib/data';
-import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { shopProducts } from '@/lib/shop-data';
+import { Star, ShoppingBag, ArrowRight } from 'lucide-react';
+import FadeUp from '@/components/motion/FadeUp';
+import { useCartStore } from '@/store/cart-store';
 
 export default function FeaturedProducts() {
+  const { addItem } = useCartStore();
+
   return (
-    <section className="py-20 bg-linen">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-end mb-12">
-          <h2 className="text-3xl md:text-4xl font-display text-forest">
-            Our Skyr Lineup
-          </h2>
-          <Link href="/shop" className="hidden sm:flex items-center text-terracotta hover:text-terracotta-light font-semibold group">
-            View all <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+    <section className="py-20 lg:py-28 bg-cream">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div>
+            <span className="text-xs font-semibold text-terracotta tracking-wider uppercase block mb-2">Mağaza Kataloqu</span>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-forest">Təbii Məhsullarımız</h2>
+            <p className="text-slate text-base mt-2">Məhsullarımızı tək-tək və ya xüsusi hədiyyə seti şəklində əldə edə bilərsiniz.</p>
+          </div>
+          <Link href="/shop" className="btn-outline shrink-0 inline-flex items-center gap-2">
+            Bütün Məhsullar <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-shadow duration-300 group flex flex-col h-full">
-              <Link href={`/product/${product.slug}`} className="block relative aspect-square" style={{ backgroundColor: product.flavorColor }}>
-                {product.image ? (
-                  <Image src={product.image} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center opacity-30">
-                    <span className="text-4xl font-display text-forest">PS</span>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {shopProducts.map((product, idx) => (
+            <FadeUp key={product.id} delay={0.1 * idx}>
+              <div className="bg-white rounded-3xl overflow-hidden border border-sand shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col h-full group">
+                {/* Product Image / Gradient */}
+                <div
+                  className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
+                  style={{ backgroundColor: product.flavorColor }}
+                >
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 rounded-full bg-forest/10 flex items-center justify-center p-4 text-center">
+                      <span className="font-display text-forest font-bold text-lg">{product.name}</span>
+                    </div>
+                  )}
+
+                  <div className="absolute top-4 left-4 bg-cream/90 backdrop-blur-sm text-forest font-semibold text-xs px-3 py-1 rounded-full shadow-sm">
+                    {product.protein}
                   </div>
-                )}
-              </Link>
-              
-              <div className="p-6 flex flex-col flex-grow">
-                <div className="mb-4 flex-grow">
-                  <div className="text-xs font-bold text-slate mb-1">{product.size}</div>
-                  <h3 className="font-display text-xl text-charcoal mb-2">
-                    <Link href={`/product/${product.slug}`} className="hover:text-forest transition-colors">
-                      {product.name}
-                    </Link>
-                  </h3>
-                  <p className="text-sm text-slate">${product.price.toFixed(2)}</p>
                 </div>
-                
-                <button className="w-full py-3 bg-terracotta hover:bg-terracotta-light text-cream rounded-full font-semibold transition-colors mt-auto">
-                  Add to Cart
-                </button>
+
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-1 justify-between">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-1 text-honey text-xs font-semibold">
+                        <Star className="w-3.5 h-3.5 fill-honey" />
+                        <span>{product.rating}</span>
+                        <span className="text-slate/60">({product.reviews})</span>
+                      </div>
+                      <span className="text-xs text-slate">{product.region}</span>
+                    </div>
+
+                    <Link href={`/product/${product.slug}`} className="block">
+                      <h3 className="font-display text-xl font-bold text-forest mb-2 group-hover:text-terracotta transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
+
+                    <p className="text-slate text-sm line-clamp-2 mb-4 leading-relaxed">
+                      {product.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-sand/60 mt-2">
+                    <span className="font-display text-2xl font-bold text-forest">
+                      {product.price} {product.currency}
+                    </span>
+
+                    <button
+                      onClick={() => addItem(product)}
+                      className="btn-primary text-xs py-2.5 px-4"
+                    >
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span>Səbətə Əlavə Et</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </FadeUp>
           ))}
-        </div>
-        
-        <div className="mt-8 text-center sm:hidden">
-          <Link href="/shop" className="inline-flex items-center text-terracotta font-semibold">
-            View all <ArrowRight className="w-4 h-4 ml-1" />
-          </Link>
         </div>
       </div>
     </section>

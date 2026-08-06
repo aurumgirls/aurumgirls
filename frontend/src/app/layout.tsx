@@ -16,15 +16,15 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Painterland Sisters Yogurt | Organic Skyr Yogurt",
+  title: "By Aurum Girls — Qadın İcmasının Təbii Qida Məhsulları",
   description:
-    "Our organic skyr yogurt is made with organic milk from our family farm in Pennsylvania, along with milk from trusted neighboring farms that share our commitment to quality and sustainability.",
+    "Kəndli qadınlarımızın sevgi ilə hazırladığı təbii dağ balı, ev mürəbbələri, kəklikotu və dağ çayları. Poçt vasitəsilə çatdırılma və onlayn ödəniş.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="az"
       className={`${playfair.variable} ${outfit.variable} h-full antialiased`}
     >
       <body

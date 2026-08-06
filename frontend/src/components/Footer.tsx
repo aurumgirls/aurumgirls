@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { InstagramIcon, FacebookIcon, TikTokIcon, PinterestIcon } from './SocialIcons';
 
 export default function Footer() {
@@ -7,88 +8,90 @@ export default function Footer() {
     <footer className="bg-forest text-cream">
       {/* Newsletter Section */}
       <div className="container mx-auto px-4 lg:px-8 py-16 text-center border-b border-forest-light">
-        <h2 className="font-display text-3xl lg:text-4xl font-semibold mb-4 text-cream">Join the Moovement</h2>
-        <p className="mb-8 text-cream/80 max-w-md mx-auto">Subscribe for farm updates, new flavor drops, and exclusive offers straight to your inbox.</p>
+        <h2 className="font-display text-3xl lg:text-4xl font-semibold mb-4 text-cream">Kənd Qadınlarının Əməyinə Dəstək Olun</h2>
+        <p className="mb-8 text-cream/80 max-w-md mx-auto">Yeni məhsullar, təbii reseptlər və xüsusi hədiyyə setlərimiz haqqında ilk siz xəbərdar olun.</p>
         <form className="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
           <input 
             type="email" 
-            placeholder="Enter your email" 
-            className="flex-1 px-5 py-3 rounded-full bg-cream text-charcoal focus:outline-none focus:ring-2 focus:ring-terracotta"
+            placeholder="E-poçt ünvanınızı daxil edin" 
+            className="px-5 py-3 rounded-full text-charcoal bg-cream focus:outline-none focus:ring-2 focus:ring-terracotta flex-1"
             required
           />
-          <button type="submit" className="px-8 py-3 rounded-full bg-terracotta text-white font-semibold hover:bg-terracotta-light transition-colors whitespace-nowrap">
-            Subscribe
+          <button type="submit" className="btn-secondary whitespace-nowrap">
+            Abunə Ol
           </button>
         </form>
       </div>
 
       {/* Main Footer Links */}
-      <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          
-          {/* Col 1 */}
-          <div className="space-y-6">
-            <h3 className="font-display text-2xl font-semibold tracking-tight text-cream">Painterland Sisters</h3>
-            <p className="text-cream/80 text-sm leading-relaxed">
-              Organic skyr yogurt from our family farm in Pennsylvania. High in protein, low in sugar, and made with love.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><InstagramIcon /></a>
-              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><FacebookIcon /></a>
-              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><TikTokIcon /></a>
-              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><PinterestIcon /></a>
-            </div>
+      <div className="container mx-auto px-4 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        {/* Brand Column */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Image
+              src="/images/logo-color-custom.png"
+              alt="By Aurum Girls Logo"
+              width={36}
+              height={36}
+              unoptimized
+              className="w-9 h-9 object-contain"
+            />
+            <span className="font-display text-2xl font-bold tracking-tight text-cream">BY AURUM GIRLS</span>
           </div>
+          <p className="text-cream/80 text-sm leading-relaxed">
+            Kəndli qadınlarımızın əl əməyi ilə hazırlanan 100% təbii dağ balı, ev mürəbbələri və dağ çayları. Azərpoçt ilə bütün Azərbaycana çatdırılma.
+          </p>
+          <div className="flex space-x-4 pt-2">
+            <a href="#" className="hover:text-terracotta transition-colors"><InstagramIcon className="w-5 h-5" /></a>
+            <a href="#" className="hover:text-terracotta transition-colors"><FacebookIcon className="w-5 h-5" /></a>
+            <a href="#" className="hover:text-terracotta transition-colors"><TikTokIcon className="w-5 h-5" /></a>
+            <a href="#" className="hover:text-terracotta transition-colors"><PinterestIcon className="w-5 h-5" /></a>
+          </div>
+        </div>
 
-          {/* Col 2 */}
-          <div>
-            <h4 className="font-medium text-lg mb-6 text-cream">Shop</h4>
-            <ul className="space-y-3 text-sm text-cream/80">
-              <li><Link href="/shop/plain" className="hover:text-terracotta transition-colors">Plain</Link></li>
-              <li><Link href="/shop/vanilla-bean" className="hover:text-terracotta transition-colors">Vanilla Bean</Link></li>
-              <li><Link href="/shop/blueberry-lemon" className="hover:text-terracotta transition-colors">Blueberry Lemon</Link></li>
-              <li><Link href="/shop/strawberry" className="hover:text-terracotta transition-colors">Strawberry</Link></li>
-              <li><Link href="/shop/meadow-berry" className="hover:text-terracotta transition-colors">Meadow Berry</Link></li>
-              <li><Link href="/shop/peach" className="hover:text-terracotta transition-colors">Peach</Link></li>
-              <li><Link href="/shop/passion-fruit" className="hover:text-terracotta transition-colors">Passion Fruit</Link></li>
-            </ul>
-          </div>
+        {/* Shop Column */}
+        <div>
+          <h3 className="font-display text-lg font-semibold mb-4 text-cream">Məhsullarımız</h3>
+          <ul className="space-y-2.5 text-sm text-cream/80">
+            <li><Link href="/product/hadiyya-seti" className="hover:text-cream transition-colors font-semibold text-terracotta-light">🎁 Hədiyyə Seti (5-i 1-ində)</Link></li>
+            <li><Link href="/product/dali-bal" className="hover:text-cream transition-colors">Təbii Dağ Balı (500q)</Link></li>
+            <li><Link href="/product/murebbe" className="hover:text-cream transition-colors">Ev Mürəbbəsi (450q)</Link></li>
+            <li><Link href="/product/keklikotu" className="hover:text-cream transition-colors">Kəklikotu (100q)</Link></li>
+            <li><Link href="/product/sari-cicek" className="hover:text-cream transition-colors">Sarı Çiçək / Baf Çayı (80q)</Link></li>
+            <li><Link href="/product/dag-cayi" className="hover:text-cream transition-colors">Dağ Çayı Blend (120q)</Link></li>
+          </ul>
+        </div>
 
-          {/* Col 3 */}
-          <div>
-            <h4 className="font-medium text-lg mb-6 text-cream">Discover</h4>
-            <ul className="space-y-3 text-sm text-cream/80">
-              <li><Link href="/about" className="hover:text-terracotta transition-colors">Our Story</Link></li>
-              <li><Link href="/farm" className="hover:text-terracotta transition-colors">Our Farm</Link></li>
-              <li><Link href="/recipes" className="hover:text-terracotta transition-colors">Recipes</Link></li>
-              <li><Link href="/news" className="hover:text-terracotta transition-colors">In the News</Link></li>
-            </ul>
-          </div>
+        {/* Discover Column */}
+        <div>
+          <h3 className="font-display text-lg font-semibold mb-4 text-cream">Bizim İcma</h3>
+          <ul className="space-y-2.5 text-sm text-cream/80">
+            <li><Link href="/#icma" className="hover:text-cream transition-colors">İcma Haqqında</Link></li>
+            <li><Link href="/about" className="hover:text-cream transition-colors">Qadınlarımızın Hekayəsi</Link></li>
+            <li><Link href="/recipes" className="hover:text-cream transition-colors">Çay & Bal Reseptləri</Link></li>
+            <li><Link href="/contact" className="hover:text-cream transition-colors">Sosial Təsirimiz</Link></li>
+          </ul>
+        </div>
 
-          {/* Col 4 */}
-          <div>
-            <h4 className="font-medium text-lg mb-6 text-cream">Support</h4>
-            <ul className="space-y-3 text-sm text-cream/80">
-              <li><Link href="/contact" className="hover:text-terracotta transition-colors">Contact Us</Link></li>
-              <li><Link href="/find-us" className="hover:text-terracotta transition-colors">Where to Buy</Link></li>
-              <li><Link href="/faq" className="hover:text-terracotta transition-colors">FAQ</Link></li>
-              <li><Link href="/accessibility" className="hover:text-terracotta transition-colors">Accessibility</Link></li>
-              <li><Link href="/terms" className="hover:text-terracotta transition-colors">Terms of Service</Link></li>
-              <li><Link href="/privacy" className="hover:text-terracotta transition-colors">Privacy Policy</Link></li>
-            </ul>
-          </div>
+        {/* Support Column */}
+        <div>
+          <h3 className="font-display text-lg font-semibold mb-4 text-cream">Çatdırılma & Dəstək</h3>
+          <ul className="space-y-2.5 text-sm text-cream/80">
+            <li><Link href="/contact" className="hover:text-cream transition-colors">Əlaqə</Link></li>
+            <li><Link href="/contact" className="hover:text-cream transition-colors">Azərpoçt Çatdırılma Haqqında</Link></li>
+            <li><Link href="/contact" className="hover:text-cream transition-colors">Saytda Onlayn Ödəniş</Link></li>
+            <li><Link href="/contact" className="hover:text-cream transition-colors">Tez-tez Verilən Suallar</Link></li>
+          </ul>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-forest-light">
-        <div className="container mx-auto px-4 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-cream/60">
-          <p>&copy; {new Date().getFullYear()} Painterland Sisters. All rights reserved.</p>
-          <div className="flex gap-2 opacity-50 grayscale">
-            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">Visa</span>
-            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">MC</span>
-            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">Amex</span>
-            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">Shop Pay</span>
+      {/* Bottom Payment & Copyright Bar */}
+      <div className="border-t border-forest-light py-8">
+        <div className="container mx-auto px-4 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-cream/70">
+          <p>© {new Date().getFullYear()} By Aurum Girls. Bütün hüquqlar qorunur.</p>
+          <div className="flex items-center gap-3">
+            <span className="bg-forest-light px-3 py-1 rounded text-cream font-medium">📦 Azərpoçt Çatdırılma</span>
+            <span className="bg-forest-light px-3 py-1 rounded text-cream font-medium">💳 Visa / Mastercard</span>
           </div>
         </div>
       </div>

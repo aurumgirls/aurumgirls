@@ -1,71 +1,42 @@
 "use client";
-
-import Image from 'next/image';
-import { useCartStore } from '@/store/cart-store';
+import Image from "next/image";
 
 export function CheckoutSummary() {
-  const { items, total } = useCartStore();
-  
-  const subtotal = total;
-  const shipping = subtotal > 25 ? 0 : 5.99;
-  const finalTotal = subtotal + shipping;
-
   return (
-    <div className="bg-white rounded-3xl border border-sand p-6 lg:p-8 shadow-soft">
-      <h3 className="font-display text-2xl text-forest mb-6">Order Details</h3>
+    <div className="bg-cream p-6 sm:p-8 rounded-2xl shadow-soft h-fit sticky top-8">
+      <h3 className="text-xl font-display text-forest mb-6">Order Summary</h3>
       
-      <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
-        {items.map((item) => (
-          <div key={item.id} className="flex gap-4">
-            <div className="relative w-16 h-16 rounded-xl bg-cream flex-shrink-0 flex items-center justify-center border border-sand overflow-hidden">
-              {item.image ? (
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={48}
-                  height={48}
-                  unoptimized
-                  className="object-contain"
-                />
-              ) : (
-                <span className="text-[10px] text-forest font-display">Painterland</span>
-              )}
-              <span className="absolute -top-2 -right-2 bg-terracotta text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium shadow-sm">
-                {item.quantity}
-              </span>
-            </div>
-            
-            <div className="flex-1 min-w-0">
-              <h4 className="text-forest font-medium truncate">{item.name}</h4>
-              <p className="text-xs text-slate">{item.category}</p>
-            </div>
-            
-            <div className="text-right font-medium text-charcoal">
-              ${(item.price * item.quantity).toFixed(2)}
-            </div>
+      <div className="flex gap-4 py-4 border-b border-sand">
+        <div className="w-16 h-16 bg-vanilla rounded-lg relative">
+          <Image src="/images/yogurt-strawberry.jpg" alt="Strawberry Skyr" fill className="object-contain p-1" unoptimized />
+        </div>
+        <div className="flex-1 flex justify-between">
+          <div>
+            <h4 className="font-medium text-forest text-sm">Strawberry Skyr</h4>
+            <span className="text-slate text-xs">Qty: 2</span>
           </div>
-        ))}
+          <span className="font-medium text-sm">$18.00</span>
+        </div>
       </div>
-
-      <div className="space-y-3 py-4 border-t border-b border-sand text-sm">
+      
+      <div className="space-y-3 text-sm font-body py-6 border-b border-sand">
         <div className="flex justify-between text-slate">
           <span>Subtotal</span>
-          <span className="font-medium text-charcoal">${subtotal.toFixed(2)}</span>
+          <span>$18.00</span>
         </div>
         <div className="flex justify-between text-slate">
-          <span>Shipping</span>
-          <span className="font-medium text-charcoal">
-            {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
-          </span>
+          <span>Standard Shipping</span>
+          <span>$5.00</span>
+        </div>
+        <div className="flex justify-between text-slate">
+          <span>Taxes</span>
+          <span>$0.00</span>
         </div>
       </div>
-
-      <div className="flex justify-between items-end pt-4">
-        <span className="font-medium text-charcoal text-lg">Total</span>
-        <div className="text-right">
-          <span className="font-display text-3xl text-forest font-medium">${finalTotal.toFixed(2)}</span>
-          <p className="text-xs text-slate mt-1">USD</p>
-        </div>
+      
+      <div className="pt-4 flex justify-between items-center">
+        <span className="font-display text-lg text-forest">Total</span>
+        <span className="font-display text-2xl text-forest">$23.00</span>
       </div>
     </div>
   );

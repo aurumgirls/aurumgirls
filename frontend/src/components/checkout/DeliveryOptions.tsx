@@ -1,58 +1,32 @@
 "use client";
 
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { useCartStore } from '@/store/cart-store';
-
 export function DeliveryOptions() {
-  const [selected, setSelected] = useState('standard');
-  const { total } = useCartStore();
-  const isFreeStandard = total > 25;
-
-  const options = [
-    {
-      id: 'standard',
-      title: 'Standard Cold Shipping',
-      time: '5-7 business days',
-      price: isFreeStandard ? 0 : 5.99,
-    },
-    {
-      id: 'express',
-      title: 'Express Cold Shipping',
-      time: '1-2 business days',
-      price: 12.99,
-    }
-  ];
-
   return (
-    <div className="space-y-4">
-      {options.map((option) => (
-        <label 
-          key={option.id}
-          className={cn(
-            "flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all",
-            selected === option.id 
-              ? "border-forest bg-forest/5 ring-1 ring-forest" 
-              : "border-sand hover:border-forest/30"
-          )}
-        >
-          <div className="flex items-center gap-4">
-            <div className={cn(
-              "w-5 h-5 rounded-full border flex items-center justify-center",
-              selected === option.id ? "border-forest" : "border-slate"
-            )}>
-              {selected === option.id && <div className="w-2.5 h-2.5 rounded-full bg-forest" />}
-            </div>
+    <div className="mb-10">
+      <h3 className="text-xl font-display text-forest mb-4">Delivery Method</h3>
+      <div className="space-y-4">
+        <label className="flex items-center justify-between p-4 border border-terracotta bg-terracotta/5 rounded-xl cursor-pointer">
+          <div className="flex items-center gap-3">
+            <input type="radio" name="delivery" defaultChecked className="text-terracotta focus:ring-terracotta h-4 w-4" />
             <div>
-              <p className="font-medium text-charcoal">{option.title}</p>
-              <p className="text-sm text-slate">{option.time}</p>
+              <div className="font-medium text-forest">Standard Shipping</div>
+              <div className="text-xs text-slate">3-5 business days</div>
             </div>
           </div>
-          <div className="font-medium text-forest">
-            {option.price === 0 ? 'Free' : `$${option.price.toFixed(2)}`}
-          </div>
+          <span className="font-medium text-forest">$5.00</span>
         </label>
-      ))}
+        
+        <label className="flex items-center justify-between p-4 border border-sand hover:border-forest/30 rounded-xl cursor-pointer transition-colors">
+          <div className="flex items-center gap-3">
+            <input type="radio" name="delivery" className="text-terracotta focus:ring-terracotta h-4 w-4" />
+            <div>
+              <div className="font-medium text-forest">Express Shipping</div>
+              <div className="text-xs text-slate">1-2 business days</div>
+            </div>
+          </div>
+          <span className="font-medium text-forest">$12.00</span>
+        </label>
+      </div>
     </div>
   );
 }

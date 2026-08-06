@@ -1,69 +1,79 @@
 "use client";
 
 import { useState } from 'react';
-import { CreditCard, Wallet } from 'lucide-react';
+import { CreditCard, Wallet, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Field } from './Field';
 
 export function PaymentMethods() {
   const [method, setMethod] = useState('card');
 
   return (
     <div className="space-y-6">
-      <div className="flex gap-4">
-        <label className={cn(
-          "flex-1 p-4 rounded-xl border cursor-pointer transition-all flex flex-col items-center justify-center gap-2",
-          method === 'card' 
-            ? "border-forest bg-forest/5 ring-1 ring-forest" 
-            : "border-sand hover:border-forest/30"
-        )}>
-          <input 
-            type="radio" 
-            name="payment" 
-            value="card" 
-            checked={method === 'card'}
-            onChange={(e) => setMethod(e.target.value)}
-            className="sr-only"
-          />
-          <CreditCard className={cn("w-6 h-6", method === 'card' ? "text-forest" : "text-slate")} />
-          <span className={cn("text-sm font-medium", method === 'card' ? "text-forest" : "text-slate")}>Credit Card</span>
+      <h3 className="font-display text-xl text-forest font-semibold mb-4">Onlayn Ödəniş Üsulu</h3>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label
+          onClick={() => setMethod('card')}
+          className={cn(
+            "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
+            method === 'card'
+              ? "border-terracotta bg-cream shadow-soft"
+              : "border-sand bg-white hover:border-forest/40"
+          )}
+        >
+          <CreditCard className="w-6 h-6 text-terracotta shrink-0" />
+          <div>
+            <p className="font-semibold text-forest text-sm">Bank Kartı (Visa / Mastercard)</p>
+            <p className="text-xs text-slate">Saytda 3D Secure təhlükəsiz ödəniş</p>
+          </div>
         </label>
-        
-        <label className={cn(
-          "flex-1 p-4 rounded-xl border cursor-pointer transition-all flex flex-col items-center justify-center gap-2",
-          method === 'paypal' 
-            ? "border-forest bg-forest/5 ring-1 ring-forest" 
-            : "border-sand hover:border-forest/30"
-        )}>
-          <input 
-            type="radio" 
-            name="payment" 
-            value="paypal" 
-            checked={method === 'paypal'}
-            onChange={(e) => setMethod(e.target.value)}
-            className="sr-only"
-          />
-          <Wallet className={cn("w-6 h-6", method === 'paypal' ? "text-forest" : "text-slate")} />
-          <span className={cn("text-sm font-medium", method === 'paypal' ? "text-forest" : "text-slate")}>PayPal</span>
+
+        <label
+          onClick={() => setMethod('applepay')}
+          className={cn(
+            "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
+            method === 'applepay'
+              ? "border-terracotta bg-cream shadow-soft"
+              : "border-sand bg-white hover:border-forest/40"
+          )}
+        >
+          <Wallet className="w-6 h-6 text-forest shrink-0" />
+          <div>
+            <p className="font-semibold text-forest text-sm">Apple Pay / Google Pay</p>
+            <p className="text-xs text-slate">Bir kliklə tez ödəniş</p>
+          </div>
         </label>
       </div>
 
       {method === 'card' && (
-        <div className="space-y-4 p-5 bg-cream rounded-xl border border-sand">
-          <Field label="Card Number" id="cardNumber" placeholder="0000 0000 0000 0000" />
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="Expiration Date" id="exp" placeholder="MM/YY" />
-            <Field label="CVC" id="cvc" placeholder="123" />
+        <div className="p-6 rounded-2xl bg-white border border-sand space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-forest mb-1">Kart üzərindəki ad və soyad</label>
+            <input type="text" placeholder="Araz Əliyev" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
           </div>
-          <Field label="Name on Card" id="cardName" placeholder="Jane Doe" />
+
+          <div>
+            <label className="block text-xs font-semibold text-forest mb-1">Kart Nömrəsi</label>
+            <input type="text" placeholder="4543 0000 0000 0000" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">Bitmə Tarixi</label>
+              <input type="text" placeholder="MM/YY" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">CVV / CVC</label>
+              <input type="password" maxLength={4} placeholder="123" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+            </div>
+          </div>
         </div>
       )}
 
-      {method === 'paypal' && (
-        <div className="p-5 bg-cream rounded-xl border border-sand text-center text-sm text-slate">
-          You will be redirected to PayPal to complete your purchase securely.
-        </div>
-      )}
+      <div className="flex items-center gap-2 text-xs text-slate bg-linen/50 p-4 rounded-xl border border-sand">
+        <ShieldCheck className="w-4 h-4 text-forest shrink-0" />
+        <span>Bütün kart ödənişləriniz SSL şifrələnməsi ilə 100% qorunur.</span>
+      </div>
     </div>
   );
 }
