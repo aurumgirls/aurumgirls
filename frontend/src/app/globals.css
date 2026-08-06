@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  --aurum-green: #2E7D32;
+  --aurum-green-light: #388E3C;
+  --aurum-red: #D32F2F;
+  --aurum-red-light: #E53935;
+  --aurum-gold: #F57C00;
+  --cream: #FFFDF8;
+  --linen: #F7F3E9;
+  --sand: #E5DEC9;
+  --slate: #5A6B63;
+  --charcoal: #2C3531;
+
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 34px;
+  --r-pill: 999px;
+
+  --sh-soft: 0 10px 40px -10px rgba(46, 125, 50, .08);
+  --sh-soft-lg: 0 20px 50px -15px rgba(46, 125, 50, .12);
+  --sh-card-hover: 0 16px 48px -12px rgba(46, 125, 50, .14);
+}
+
+@theme inline {
+  --color-forest: var(--aurum-green);
+  --color-forest-light: var(--aurum-green-light);
+  --color-terracotta: var(--aurum-red);
+  --color-terracotta-light: var(--aurum-red-light);
+  --color-honey: var(--aurum-gold);
+  --color-cream: var(--cream);
+  --color-linen: var(--linen);
+  --color-sand: var(--sand);
+  --color-slate: var(--slate);
+  --color-charcoal: var(--charcoal);
+
+  --font-display: var(--font-playfair);
+  --font-body: var(--font-outfit);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--aurum-green);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  border-radius: 999px;
+  background: var(--aurum-green);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px -4px rgba(46, 125, 50, 0.4);
+}
+.btn-primary:hover {
+  background: var(--aurum-green-light);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  border-radius: 999px;
+  background: var(--aurum-red);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background: var(--aurum-red-light);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.75rem;
+  border-radius: 999px;
+  border: 2px solid var(--aurum-green);
+  color: var(--aurum-green);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--aurum-green);
+  color: white;
+}
