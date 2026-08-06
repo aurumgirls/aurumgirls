@@ -1,89 +1,87 @@
 "use client";
 
-import { ChevronDown, LayoutGrid, X } from "lucide-react";
+import { SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 
-export type SortValue = "featured" | "newest" | "price-asc" | "price-desc" | "rating";
+interface ShopToolbarProps {
+  resultCount: number;
+  currentSort: string;
+  onSortChange: (sort: string) => void;
+  onToggleFilters: () => void;
+  isFiltersOpen: boolean;
+}
 
-const SORT_OPTIONS: { value: SortValue; label: string }[] = [
-  { value: "featured", label: "Featured" },
-  { value: "newest", label: "Newest arrivals" },
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
-  { value: "rating", label: "Top rated" },
+const sortOptions = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'newest', label: 'Newest Arrivals' },
+  { value: 'price-asc', label: 'Price: Low to High' },
+  { value: 'price-desc', label: 'Price: High to Low' },
 ];
 
-export type Chip = { key: string; label: string; onRemove: () => void };
+export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFilters, isFiltersOpen }: ShopToolbarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-export default function ShopToolbar({
-  resultCount,
-  sort,
-  onSortChange,
-  chips,
-  onClearAll,
-}: {
-  resultCount: number;
-  sort: SortValue;
-  onSortChange: (value: SortValue) => void;
-  chips: Chip[];
-  onClearAll: () => void;
-}) {
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentLabel = sortOptions.find(o => o.value === currentSort)?.label || 'Sort by';
+
   return (
-    <div className="flex flex-col gap-4 pb-5 mb-6 border-b border-black/10">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-[14px] text-stone">
-          <span className="font-semibold text-ink">{resultCount}</span>{" "}
-          {resultCount === 1 ? "product" : "products"}
-        </p>
-
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1 text-stone">
-            <span className="h-8 w-8 inline-flex items-center justify-center rounded-sm bg-sand text-ink">
-              <LayoutGrid size={15} strokeWidth={1.8} />
-            </span>
-          </div>
-
-          <div className="relative">
-            <select
-              value={sort}
-              onChange={(e) => onSortChange(e.target.value as SortValue)}
-              aria-label="Sort products"
-              className="appearance-none rounded-pill bg-cream border border-black/12 pl-4 pr-9 py-2.5 text-[13.5px] font-medium text-ink shadow-sm outline-none focus:ring-2 focus:ring-aurum cursor-pointer"
-            >
-              {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  Sort: {opt.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown
-              size={15}
-              strokeWidth={2}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone pointer-events-none"
-            />
-          </div>
-        </div>
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+      <div className="text-slate text-sm">
+        Showing <span className="font-semibold text-charcoal">{resultCount}</span> delicious products
       </div>
 
-      {chips.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          {chips.map((chip) => (
-            <button
-              key={chip.key}
-              onClick={chip.onRemove}
-              className="inline-flex items-center gap-1.5 rounded-pill bg-sage text-grove text-[12.5px] font-semibold pl-3 pr-2 py-1.5 hover:bg-sage/70 transition-colors"
-            >
-              {chip.label}
-              <X size={13} strokeWidth={2.2} />
-            </button>
-          ))}
+      <div className="flex items-center gap-3 w-full sm:w-auto">
+        <button
+          onClick={onToggleFilters}
+          className={`lg:hidden flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
+            isFiltersOpen 
+              ? 'bg-forest text-white border-forest' 
+              : 'bg-white text-charcoal border-sand hover:bg-linen'
+          }`}
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          Filters
+        </button>
+
+        <div className="relative w-full sm:w-auto" ref={dropdownRef}>
           <button
-            onClick={onClearAll}
-            className="text-[12.5px] font-semibold text-nar hover:text-nar-deep transition-colors ml-1"
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full sm:w-auto flex items-center justify-between gap-2 px-4 py-2 bg-white border border-sand rounded-full text-sm font-medium text-charcoal hover:bg-linen transition-colors"
           >
-            Clear all
+            <span>{currentLabel}</span>
+            <ChevronDown className="w-4 h-4 text-slate" />
           </button>
+
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-sand rounded-xl shadow-soft-lg z-20 py-2 overflow-hidden">
+              {sortOptions.map(option => (
+                <button
+                  key={option.value}
+                  onClick={() => {
+                    onSortChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-linen transition-colors ${
+                    currentSort === option.value ? 'text-terracotta font-medium bg-cream' : 'text-charcoal'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

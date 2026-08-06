@@ -1,35 +1,19 @@
-import { shopProducts } from "@/lib/shop-data";
+import { shopProducts } from '@/lib/shop-data';
 
-export type CartLine = {
-  productId: number;
-  qty: number;
-};
+export type CartLine = { productId: number; qty: number };
 
-function idFor(name: string): number {
-  const product = shopProducts.find((p) => p.name === name);
-  if (!product) throw new Error(`Unknown seed product: ${name}`);
-  return product.id;
-}
-
-// Pre-populated for the demo so the cart page has something real to show.
 export const initialCartLines: CartLine[] = [
-  { productId: idFor("Rose Petal Jam (Gakh)"), qty: 2 },
-  { productId: idFor('Hand-dyed "Kəlağayı" Scarf'), qty: 1 },
-  { productId: idFor("Sumac Spice Pouch"), qty: 1 },
-  { productId: idFor("Village Gift Hamper"), qty: 1 },
+  { productId: 2, qty: 3 },
+  { productId: 4, qty: 2 },
+  { productId: 10, qty: 1 },
 ];
 
-export type Coupon = {
-  code: string;
-  label: string;
-  kind: "percent" | "flat";
-  value: number;
-};
+export type Coupon = { code: string; label: string; kind: 'percent' | 'flat'; value: number };
 
 export const COUPONS: Coupon[] = [
-  { code: "AURUM10", label: "10% off your order", kind: "percent", value: 10 },
-  { code: "WELCOME5", label: "₼5 off your order", kind: "flat", value: 5 },
+  { code: 'SKYR10', label: '10% off your order', kind: 'percent', value: 10 },
+  { code: 'MOOCREW', label: '$3 off your order', kind: 'flat', value: 3 },
 ];
 
-export const FREE_SHIPPING_THRESHOLD = 60;
-export const FLAT_SHIPPING_RATE = 6;
+export const FREE_SHIPPING_THRESHOLD = 25;
+export const FLAT_SHIPPING_RATE = 5.99;

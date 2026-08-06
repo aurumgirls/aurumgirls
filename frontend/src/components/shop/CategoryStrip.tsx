@@ -1,42 +1,41 @@
 "use client";
 
-import { shopCategories } from "@/lib/shop-data";
+import { shopCategories } from '@/lib/shop-data';
+import { cn } from '@/lib/utils';
 
-export default function CategoryStrip({
-  selected,
-  onToggle,
-}: {
-  selected: string[];
-  onToggle: (slug: string) => void;
-}) {
+interface CategoryStripProps {
+  selectedCategory: string;
+  onSelectCategory: (category: string) => void;
+}
+
+export function CategoryStrip({ selectedCategory, onSelectCategory }: CategoryStripProps) {
   return (
-    <div className="flex items-center gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
       <button
-        onClick={() => selected.forEach((s) => onToggle(s))}
-        className={`shrink-0 rounded-pill px-4 py-2 text-[13.5px] font-semibold border transition-colors ${
-          selected.length === 0
-            ? "bg-nar text-white border-nar shadow-sm"
-            : "bg-cream text-ink border-black/12 hover:bg-sand"
-        }`}
+        onClick={() => onSelectCategory('all')}
+        className={cn(
+          "px-5 py-2.5 rounded-full whitespace-nowrap font-medium transition-all duration-300 text-sm border",
+          selectedCategory === 'all'
+            ? "bg-terracotta text-white border-terracotta"
+            : "bg-cream text-charcoal border-sand hover:bg-linen"
+        )}
       >
-        All products
+        All Flavors
       </button>
-      {shopCategories.map((cat) => {
-        const active = selected.includes(cat.slug);
-        return (
-          <button
-            key={cat.slug}
-            onClick={() => onToggle(cat.slug)}
-            className={`shrink-0 rounded-pill px-4 py-2 text-[13.5px] font-semibold border transition-colors ${
-              active
-                ? "bg-nar text-white border-nar shadow-sm"
-                : "bg-cream text-ink border-black/12 hover:bg-sand"
-            }`}
-          >
-            {cat.name}
-          </button>
-        );
-      })}
+      {shopCategories.map((category) => (
+        <button
+          key={category.slug}
+          onClick={() => onSelectCategory(category.slug)}
+          className={cn(
+            "px-5 py-2.5 rounded-full whitespace-nowrap font-medium transition-all duration-300 text-sm border",
+            selectedCategory === category.slug
+              ? "bg-terracotta text-white border-terracotta"
+              : "bg-cream text-charcoal border-sand hover:bg-linen"
+          )}
+        >
+          {category.name}
+        </button>
+      ))}
     </div>
   );
 }

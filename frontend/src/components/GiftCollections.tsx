@@ -1,33 +1,35 @@
-import Link from "next/link";
-import { giftCollections } from "@/lib/data";
+"use client";
+
+import { Leaf, RefreshCcw, Heart } from 'lucide-react';
+
+const certifications = [
+  { icon: Leaf, title: 'USDA Organic', desc: 'No synthetic pesticides or fertilizers. Just pure, organic goodness from our farm to your fridge.' },
+  { icon: RefreshCcw, title: 'Regeneratively Farmed', desc: 'Farming practices that restore soil health, improve water cycles, and draw carbon from the atmosphere.' },
+  { icon: Heart, title: 'Women Owned', desc: 'Founded and led by sisters Stephanie and Hayley, empowering women in agriculture.' },
+];
 
 export default function GiftCollections() {
   return (
-    <section className="mx-auto max-w-[1160px] px-5 sm:px-7 py-12 sm:py-16">
-      <div className="flex items-end justify-between mb-7">
-        <h2 className="text-[26px] sm:text-[32px]">Curated gift collections</h2>
-        <Link href="/gifts" className="text-sm font-semibold text-nar hover:text-nar-deep hidden sm:inline-block">
-          Explore gifting →
-        </Link>
-      </div>
-      <div className="grid sm:grid-cols-3 gap-5">
-        {giftCollections.map((g) => (
-          <Link
-            key={g.name}
-            href="/gifts"
-            className="group relative rounded-lg overflow-hidden h-52 sm:h-60 border border-black/10 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div
-              className="absolute inset-0"
-              style={{ background: `linear-gradient(150deg, ${g.swatch[0]}, ${g.swatch[1]})` }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-5 text-linen">
-              <h3 className="text-[19px]">{g.name}</h3>
-              <p className="text-[12.5px] text-linen/85 mt-1">{g.blurb}</p>
-            </div>
-          </Link>
-        ))}
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-display text-forest text-center mb-12">
+          Certifications & Quality
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {certifications.map((cert, idx) => {
+            const Icon = cert.icon;
+            return (
+              <div key={idx} className="bg-linen p-8 rounded-2xl flex flex-col items-center text-center">
+                <div className="w-16 h-16 bg-cream rounded-full flex items-center justify-center mb-6 text-terracotta shadow-soft">
+                  <Icon className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-display text-forest mb-3">{cert.title}</h3>
+                <p className="text-slate text-sm">{cert.desc}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

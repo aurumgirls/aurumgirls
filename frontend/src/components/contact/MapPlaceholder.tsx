@@ -1,42 +1,25 @@
-import { ExternalLink, MapPin } from "lucide-react";
+"use client";
+
+import { MapPin } from 'lucide-react';
 
 export default function MapPlaceholder() {
   return (
-    <div className="rounded-lg overflow-hidden border border-black/10 shadow-sm relative h-[280px] sm:h-[340px] bg-sand">
-      <div
-        className="absolute inset-0 opacity-70"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(38,32,26,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(38,32,26,.08) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-[0.5]"
-        style={{ background: "radial-gradient(circle at 50% 45%, rgba(192,137,46,.22), transparent 55%)" }}
-      />
-
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+10px)] flex flex-col items-center">
-        <span className="h-12 w-12 rounded-pill bg-nar text-white flex items-center justify-center shadow-md">
-          <MapPin size={20} strokeWidth={2} />
-        </span>
-        <span className="mt-2 h-3 w-3 rounded-pill bg-ink/15 blur-[1px]" />
-      </div>
-
-      <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-[320px] rounded-md bg-cream/95 backdrop-blur px-4 py-3.5 shadow-md flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-[13.5px] font-semibold text-ink truncate">By Aurum Girls HQ</p>
-          <p className="text-[12px] text-stone truncate">28 Nizami Street, Baku</p>
+    <div className="relative w-full h-[400px] rounded-3xl overflow-hidden shadow-soft border border-sand bg-linen flex items-center justify-center">
+      {/* Decorative background representing a map */}
+      <div className="absolute inset-0 opacity-10 bg-[url('/images/farm-landscape.jpg')] bg-cover bg-center mix-blend-luminosity"></div>
+      
+      {/* Grid overlay */}
+      <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(#EAE5D9 1px, transparent 1px), linear-gradient(90deg, #EAE5D9 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      
+      <div className="relative z-10 flex flex-col items-center p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-soft max-w-sm text-center transform -translate-y-4">
+        <div className="w-12 h-12 bg-terracotta rounded-full flex items-center justify-center text-cream mb-4 shadow-md animate-bounce">
+          <MapPin size={24} />
         </div>
-        <a
-          href="https://maps.google.com"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Open in Google Maps"
-          className="h-9 w-9 shrink-0 inline-flex items-center justify-center rounded-pill bg-sand text-ink hover:bg-kraft/40 transition-colors"
-        >
-          <ExternalLink size={15} strokeWidth={1.9} />
-        </a>
+        <h4 className="text-xl font-display text-forest mb-2">Painterland Sisters Farm</h4>
+        <p className="text-slate mb-4">Tioga County, PA</p>
+        <p className="text-sm text-slate italic">
+          * Our working farm is not open to the public, but you can find our skyr in stores nationwide!
+        </p>
       </div>
     </div>
   );

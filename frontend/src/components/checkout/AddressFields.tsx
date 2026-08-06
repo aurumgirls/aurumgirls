@@ -1,42 +1,47 @@
-import { TextField, SelectField } from "./Field";
+import { Field } from './Field';
 
-const COUNTRIES = ["Azerbaijan", "Turkey", "Georgia", "United States", "United Kingdom", "Germany"];
-
-export default function AddressFields({ idPrefix }: { idPrefix: string }) {
+export function AddressFields() {
   return (
-    <div className="grid sm:grid-cols-2 gap-4">
-      <TextField label="Full name" name={`${idPrefix}-name`} placeholder="Fidan Xəlilova" autoComplete="name" />
-      <TextField
-        label="Phone number"
-        name={`${idPrefix}-phone`}
-        type="tel"
-        placeholder="+994 50 123 45 67"
-        autoComplete="tel"
-      />
-      <TextField
-        label="Email address"
-        name={`${idPrefix}-email`}
-        type="email"
-        placeholder="you@example.com"
-        span="full"
-        autoComplete="email"
-      />
-      <SelectField label="Country" name={`${idPrefix}-country`} options={COUNTRIES} defaultValue="Azerbaijan" />
-      <TextField label="City" name={`${idPrefix}-city`} placeholder="Baku" autoComplete="address-level2" />
-      <TextField
-        label="Street address"
-        name={`${idPrefix}-street`}
-        placeholder="28 May Street, 12"
-        span="full"
-        autoComplete="street-address"
-      />
-      <TextField
-        label="Apartment, suite, etc. (optional)"
-        name={`${idPrefix}-apartment`}
-        placeholder="Apt. 4"
-        required={false}
-      />
-      <TextField label="Postal code" name={`${idPrefix}-postal`} placeholder="AZ1000" autoComplete="postal-code" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Field label="First Name" id="firstName" placeholder="Jane" required />
+      <Field label="Last Name" id="lastName" placeholder="Doe" required />
+      
+      <div className="md:col-span-2">
+        <Field label="Email Address" id="email" type="email" placeholder="jane@example.com" required />
+      </div>
+      
+      <div className="md:col-span-2">
+        <Field label="Street Address" id="address" placeholder="123 Farm Road" required />
+      </div>
+      
+      <div className="md:col-span-2">
+        <Field label="Apartment, suite, etc. (optional)" id="apartment" placeholder="Apt 4B" />
+      </div>
+      
+      <Field label="City" id="city" placeholder="Westfield" required />
+      
+      <div className="flex flex-col gap-1">
+        <label htmlFor="state" className="text-sm font-medium text-charcoal ml-1">State / Province</label>
+        <select 
+          id="state" 
+          className="bg-white border border-sand rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest transition-colors w-full appearance-none"
+          required
+        >
+          <option value="" disabled selected>Select a State</option>
+          <option value="PA">Pennsylvania</option>
+          <option value="NY">New York</option>
+          <option value="NJ">New Jersey</option>
+          <option value="OH">Ohio</option>
+          <option value="MD">Maryland</option>
+          <option value="other">Other State</option>
+        </select>
+      </div>
+      
+      <Field label="ZIP / Postal Code" id="zip" placeholder="16950" required />
+      
+      <div className="md:col-span-2">
+        <Field label="Phone" id="phone" type="tel" placeholder="(555) 123-4567" required />
+      </div>
     </div>
   );
 }

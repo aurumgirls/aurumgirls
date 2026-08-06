@@ -1,38 +1,44 @@
 "use client";
 
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus } from 'lucide-react';
 
-export default function QuantitySelector({
-  value,
-  onChange,
-  max = 20,
-}: {
-  value: number;
-  onChange: (value: number) => void;
+interface QuantitySelectorProps {
+  quantity: number;
+  onChange: (quantity: number) => void;
   max?: number;
-}) {
+}
+
+export function QuantitySelector({ quantity, onChange, max = 99 }: QuantitySelectorProps) {
+  const decrease = () => {
+    if (quantity > 1) onChange(quantity - 1);
+  };
+
+  const increase = () => {
+    if (quantity < max) onChange(quantity + 1);
+  };
+
   return (
-    <div className="inline-flex items-center rounded-pill border border-black/15 bg-cream overflow-hidden">
+    <div className="flex items-center bg-cream border border-sand rounded-full h-12 p-1">
       <button
-        type="button"
+        onClick={decrease}
+        disabled={quantity <= 1}
+        className="w-10 h-10 flex items-center justify-center rounded-full text-forest hover:bg-linen disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
         aria-label="Decrease quantity"
-        onClick={() => onChange(Math.max(1, value - 1))}
-        disabled={value <= 1}
-        className="h-11 w-11 flex items-center justify-center text-ink hover:bg-sand transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
       >
-        <Minus size={15} strokeWidth={2} />
+        <Minus className="w-4 h-4" />
       </button>
-      <span className="w-10 text-center text-[15px] font-semibold tabular-nums" aria-live="polite">
-        {value}
+      
+      <span className="w-10 text-center font-medium text-charcoal">
+        {quantity}
       </span>
+      
       <button
-        type="button"
+        onClick={increase}
+        disabled={quantity >= max}
+        className="w-10 h-10 flex items-center justify-center rounded-full text-forest hover:bg-linen disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
         aria-label="Increase quantity"
-        onClick={() => onChange(Math.min(max, value + 1))}
-        disabled={value >= max}
-        className="h-11 w-11 flex items-center justify-center text-ink hover:bg-sand transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
       >
-        <Plus size={15} strokeWidth={2} />
+        <Plus className="w-4 h-4" />
       </button>
     </div>
   );

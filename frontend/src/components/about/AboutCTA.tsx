@@ -1,32 +1,32 @@
-import Link from "next/link";
+"use client";
+
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function AboutCTA() {
   return (
-    <div className="rounded-xl bg-grove text-linen px-6 sm:px-12 py-12 sm:py-14 text-center">
-      <span className="text-[11.5px] font-semibold tracking-[0.2em] uppercase text-aurum-soft">
-        Be part of the story
-      </span>
-      <h2 className="text-linen text-[28px] sm:text-[38px] mt-3 max-w-[26ch] mx-auto leading-[1.1]">
-        Every order helps a woman keep her craft — and her income — in her own hands.
-      </h2>
-      <p className="text-sage/85 text-[15px] sm:text-[16px] mt-4 max-w-[52ch] mx-auto leading-relaxed">
-        Shop directly from the makers, or if you know a woman artisan in Azerbaijan,
-        invite her to open her own shop with us.
-      </p>
-      <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-        <Link
-          href="/shop"
-          className="inline-flex items-center rounded-sm bg-nar text-white text-[15px] font-semibold px-7 py-3.5 shadow-sm hover:bg-nar-deep transition-colors"
-        >
-          Shop the Collection
-        </Link>
-        <Link
-          href="/signup/buyer"
-          className="inline-flex items-center rounded-sm border-[1.5px] border-sage/40 text-linen text-[15px] font-semibold px-7 py-3.5 hover:bg-linen/10 transition-colors"
-        >
-          Become a Seller
-        </Link>
+    <section className="py-20 lg:py-32 bg-forest text-cream text-center">
+      <div className="container mx-auto px-4 md:px-6 max-w-3xl flex flex-col items-center">
+        <h2 className="text-4xl md:text-5xl font-display mb-6">Taste the Difference</h2>
+        <p className="text-xl text-linen/90 mb-10">
+          Experience the rich, creamy texture and powerful nutrition of our organic skyr, made straight from our family farm.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link 
+            href="/shop" 
+            className="inline-flex items-center justify-center bg-terracotta hover:bg-terracotta-light text-cream px-8 py-4 rounded-full font-medium transition-colors duration-300"
+          >
+            Shop Skyr
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Link>
+          <Link 
+            href="/find-us" 
+            className="inline-flex items-center justify-center bg-transparent border-2 border-cream hover:bg-cream hover:text-forest text-cream px-8 py-4 rounded-full font-medium transition-colors duration-300"
+          >
+            Find in Stores
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

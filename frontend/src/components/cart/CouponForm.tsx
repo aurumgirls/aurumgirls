@@ -1,74 +1,57 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Tag, X } from "lucide-react";
-import type { Coupon } from "@/lib/cart-data";
+import { useState } from 'react';
+import { Tag } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function CouponForm({
-  applied,
-  error,
-  onApply,
-  onRemove,
-}: {
-  applied: Coupon | null;
-  error: string | null;
-  onApply: (code: string) => void;
-  onRemove: () => void;
-}) {
-  const [code, setCode] = useState("");
+export function CouponForm() {
+  const [code, setCode] = useState('');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!code.trim()) return;
-    onApply(code.trim());
-    setCode("");
+    if (code.toUpperCase() === 'SKYR10' || code.toUpperCase() === 'MOOCREW') {
+      setStatus('success');
+    } else {
+      setStatus('error');
+    }
   };
 
-  if (applied) {
-    return (
-      <div className="flex items-center justify-between gap-3 rounded-sm bg-sage border border-olive/25 px-4 py-3">
-        <span className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-grove">
-          <Check size={15} strokeWidth={2.4} />
-          {applied.code} applied — {applied.label}
-        </span>
-        <button
-          onClick={onRemove}
-          aria-label="Remove coupon"
-          className="text-grove hover:text-nar transition-colors"
-        >
-          <X size={16} strokeWidth={2} />
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="flex items-stretch gap-2">
-        <div className="relative flex-1">
-          <Tag
-            size={15}
-            strokeWidth={1.8}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone pointer-events-none"
-          />
-          <input
-            type="text"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="Coupon code"
-            aria-label="Coupon code"
-            className="w-full rounded-sm bg-linen border border-black/15 pl-9 pr-3 py-2.5 text-[13.5px] text-ink placeholder:text-stone outline-none focus:ring-2 focus:ring-aurum focus:border-aurum uppercase"
-          />
-        </div>
-        <button
+    <div className="py-6 border-b border-sand">
+      <button className="flex items-center gap-2 text-forest hover:text-terracotta transition-colors font-medium mb-4">
+        <Tag className="w-4 h-4" />
+        Have a promo code?
+      </button>
+      
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          type="text"
+          value={code}
+          onChange={(e) => {
+            setCode(e.target.value);
+            setStatus('idle');
+          }}
+          placeholder="e.g. SKYR10"
+          className={cn(
+            "flex-1 bg-white border rounded-full px-4 py-2.5 text-sm focus:outline-none transition-colors",
+            status === 'error' ? "border-terracotta focus:ring-1 focus:ring-terracotta" : "border-sand focus:border-forest"
+          )}
+        />
+        <button 
           type="submit"
-          className="rounded-sm border-[1.5px] border-olive text-grove text-[13px] font-semibold px-5 hover:bg-sage transition-colors shrink-0"
+          className="bg-forest hover:bg-forest-light text-cream px-6 py-2.5 rounded-full text-sm font-medium transition-colors"
         >
           Apply
         </button>
       </form>
-      {error && <p className="text-[12.5px] text-nar mt-2">{error}</p>}
-      <p className="text-[11.5px] text-stone mt-2">Try <span className="font-semibold">AURUM10</span> for 10% off.</p>
+      
+      {status === 'error' && (
+        <p className="text-terracotta text-xs mt-2 ml-4">Invalid promo code.</p>
+      )}
+      {status === 'success' && (
+        <p className="text-forest text-xs mt-2 ml-4">Promo code applied successfully!</p>
+      )}
     </div>
   );
 }

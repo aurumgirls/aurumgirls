@@ -1,99 +1,95 @@
-"use client";
-
-import Image from "next/image";
-import Link from "next/link";
-import { InstagramIcon, FacebookIcon } from "./SocialIcons";
-
-const LINKS = [
-  { label: "Marketplace", href: "/marketplace" },
-  { label: "Our Story", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
+import React from 'react';
+import Link from 'next/link';
+import { InstagramIcon, FacebookIcon, TikTokIcon, PinterestIcon } from './SocialIcons';
 
 export default function Footer() {
   return (
-    <footer className="bg-aurum-sand">
-      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
-          {/* Col 1 — Logo & tagline */}
-          <div className="lg:col-span-4">
-            <Image
-              src="/images/logo-color.png"
-              alt="By Aurum Girls"
-              width={128}
-              height={128}
-              className="w-32 h-auto"
-            />
-            <p className="font-sans text-sm text-aurum-stone mt-4 max-w-[32ch] leading-relaxed">
-              From village hands to your table — handmade goods from the women of rural
-              Azerbaijan.
+    <footer className="bg-forest text-cream">
+      {/* Newsletter Section */}
+      <div className="container mx-auto px-4 lg:px-8 py-16 text-center border-b border-forest-light">
+        <h2 className="font-display text-3xl lg:text-4xl font-semibold mb-4 text-cream">Join the Moovement</h2>
+        <p className="mb-8 text-cream/80 max-w-md mx-auto">Subscribe for farm updates, new flavor drops, and exclusive offers straight to your inbox.</p>
+        <form className="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
+          <input 
+            type="email" 
+            placeholder="Enter your email" 
+            className="flex-1 px-5 py-3 rounded-full bg-cream text-charcoal focus:outline-none focus:ring-2 focus:ring-terracotta"
+            required
+          />
+          <button type="submit" className="px-8 py-3 rounded-full bg-terracotta text-white font-semibold hover:bg-terracotta-light transition-colors whitespace-nowrap">
+            Subscribe
+          </button>
+        </form>
+      </div>
+
+      {/* Main Footer Links */}
+      <div className="container mx-auto px-4 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          
+          {/* Col 1 */}
+          <div className="space-y-6">
+            <h3 className="font-display text-2xl font-semibold tracking-tight text-cream">Painterland Sisters</h3>
+            <p className="text-cream/80 text-sm leading-relaxed">
+              Organic skyr yogurt from our family farm in Pennsylvania. High in protein, low in sugar, and made with love.
             </p>
+            <div className="flex gap-4">
+              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><InstagramIcon /></a>
+              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><FacebookIcon /></a>
+              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><TikTokIcon /></a>
+              <a href="#" className="text-cream/80 hover:text-terracotta transition-colors"><PinterestIcon /></a>
+            </div>
           </div>
 
-          {/* Col 2 — Newsletter */}
-          <div className="lg:col-span-4">
-            <h4 className="font-serif text-lg text-aurum-charcoal mb-3">Stay close to the story</h4>
-            <form
-              className="flex flex-col sm:flex-row gap-2"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                required
-                placeholder="Your email address"
-                aria-label="Email address"
-                className="flex-1 bg-aurum-cream border-none rounded-pill px-4 py-2 text-sm text-aurum-charcoal placeholder-aurum-stone outline-none focus:ring-2 focus:ring-aurum-clay transition-shadow"
-              />
-              <button
-                type="submit"
-                className="rounded-pill bg-aurum-charcoal text-aurum-cream text-sm font-medium px-6 py-2 hover:bg-aurum-earth transition-colors duration-300 shrink-0"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-
-          {/* Col 3 — Links */}
-          <div className="lg:col-span-2">
-            <h4 className="font-sans text-sm font-medium text-aurum-charcoal mb-3.5">Explore</h4>
-            <ul className="space-y-2.5">
-              {LINKS.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="font-sans text-sm text-aurum-stone hover:text-aurum-clay transition-colors duration-300"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
+          {/* Col 2 */}
+          <div>
+            <h4 className="font-medium text-lg mb-6 text-cream">Shop</h4>
+            <ul className="space-y-3 text-sm text-cream/80">
+              <li><Link href="/shop/plain" className="hover:text-terracotta transition-colors">Plain</Link></li>
+              <li><Link href="/shop/vanilla-bean" className="hover:text-terracotta transition-colors">Vanilla Bean</Link></li>
+              <li><Link href="/shop/blueberry-lemon" className="hover:text-terracotta transition-colors">Blueberry Lemon</Link></li>
+              <li><Link href="/shop/strawberry" className="hover:text-terracotta transition-colors">Strawberry</Link></li>
+              <li><Link href="/shop/meadow-berry" className="hover:text-terracotta transition-colors">Meadow Berry</Link></li>
+              <li><Link href="/shop/peach" className="hover:text-terracotta transition-colors">Peach</Link></li>
+              <li><Link href="/shop/passion-fruit" className="hover:text-terracotta transition-colors">Passion Fruit</Link></li>
             </ul>
           </div>
 
-          {/* Col 4 — Social */}
-          <div className="lg:col-span-2">
-            <h4 className="font-sans text-sm font-medium text-aurum-charcoal mb-3.5">Follow</h4>
-            <div className="flex items-center gap-3">
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="text-aurum-charcoal hover:text-aurum-clay transition-colors duration-300"
-              >
-                <InstagramIcon size={20} />
-              </a>
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="text-aurum-charcoal hover:text-aurum-clay transition-colors duration-300"
-              >
-                <FacebookIcon size={20} />
-              </a>
-            </div>
+          {/* Col 3 */}
+          <div>
+            <h4 className="font-medium text-lg mb-6 text-cream">Discover</h4>
+            <ul className="space-y-3 text-sm text-cream/80">
+              <li><Link href="/about" className="hover:text-terracotta transition-colors">Our Story</Link></li>
+              <li><Link href="/farm" className="hover:text-terracotta transition-colors">Our Farm</Link></li>
+              <li><Link href="/recipes" className="hover:text-terracotta transition-colors">Recipes</Link></li>
+              <li><Link href="/news" className="hover:text-terracotta transition-colors">In the News</Link></li>
+            </ul>
+          </div>
+
+          {/* Col 4 */}
+          <div>
+            <h4 className="font-medium text-lg mb-6 text-cream">Support</h4>
+            <ul className="space-y-3 text-sm text-cream/80">
+              <li><Link href="/contact" className="hover:text-terracotta transition-colors">Contact Us</Link></li>
+              <li><Link href="/find-us" className="hover:text-terracotta transition-colors">Where to Buy</Link></li>
+              <li><Link href="/faq" className="hover:text-terracotta transition-colors">FAQ</Link></li>
+              <li><Link href="/accessibility" className="hover:text-terracotta transition-colors">Accessibility</Link></li>
+              <li><Link href="/terms" className="hover:text-terracotta transition-colors">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="hover:text-terracotta transition-colors">Privacy Policy</Link></li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        <div className="mt-14 pt-6 border-t border-aurum-charcoal/10 text-xs text-aurum-stone">
-          © {new Date().getFullYear()} By Aurum Girls. Proudly handmade in Azerbaijan.
+      {/* Bottom Bar */}
+      <div className="border-t border-forest-light">
+        <div className="container mx-auto px-4 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-cream/60">
+          <p>&copy; {new Date().getFullYear()} Painterland Sisters. All rights reserved.</p>
+          <div className="flex gap-2 opacity-50 grayscale">
+            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">Visa</span>
+            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">MC</span>
+            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">Amex</span>
+            <span className="px-2 py-1 bg-white rounded border border-sand text-charcoal">Shop Pay</span>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,59 +1,73 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+"use client";
 
-const DETAILS = [
-  { icon: MapPin, label: "Address", value: "28 Nizami Street, Baku, Azerbaijan" },
-  { icon: Mail, label: "Email", value: "hello@byaurumgirls.com" },
-  { icon: Phone, label: "Phone", value: "+994 12 345 6789" },
-  { icon: Clock, label: "Hours", value: "Mon–Fri, 9:00–18:00 (GMT+4)" },
-];
-
-const SOCIALS = [
-  { label: "Instagram", short: "IG", swatch: ["#A83A2B", "#C0892E"] as [string, string] },
-  { label: "Facebook", short: "FB", swatch: ["#33432A", "#5E6E3A"] as [string, string] },
-  { label: "Pinterest", short: "PT", swatch: ["#7E2A20", "#C9A87C"] as [string, string] },
-  { label: "TikTok", short: "TT", swatch: ["#26201A", "#877667"] as [string, string] },
-];
+import { MapPin, Mail, Phone, Clock } from 'lucide-react';
+import { InstagramIcon, FacebookIcon, TikTokIcon, PinterestIcon } from '@/components/SocialIcons';
+import Link from 'next/link';
 
 export default function ContactInfoCard() {
   return (
-    <div className="rounded-lg bg-cream border border-black/10 shadow-sm p-6 sm:p-7 flex flex-col gap-6">
-      <div>
-        <h2 className="text-[20px]">Contact information</h2>
-        <p className="text-[13.5px] text-stone mt-1.5">
-          Reach us directly, or send a note through the form.
-        </p>
+    <div className="bg-white p-8 rounded-3xl shadow-soft border border-sand">
+      <h3 className="text-2xl font-display text-forest mb-8">Contact Information</h3>
+      
+      <div className="space-y-6">
+        <div className="flex items-start gap-4 text-slate">
+          <div className="mt-1 text-terracotta shrink-0">
+            <MapPin size={24} />
+          </div>
+          <div>
+            <p className="font-medium text-forest">Farm & Creamery</p>
+            <p>Tioga County, Pennsylvania</p>
+            <p>USA</p>
+          </div>
+        </div>
+        
+        <div className="flex items-start gap-4 text-slate">
+          <div className="mt-1 text-terracotta shrink-0">
+            <Mail size={24} />
+          </div>
+          <div>
+            <p className="font-medium text-forest">Email Us</p>
+            <a href="mailto:hello@painterlandsisters.com" className="hover:text-terracotta transition-colors">
+              hello@painterlandsisters.com
+            </a>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-4 text-slate">
+          <div className="mt-1 text-terracotta shrink-0">
+            <Phone size={24} />
+          </div>
+          <div>
+            <p className="font-medium text-forest">Call Us</p>
+            <a href="tel:+15705550123" className="hover:text-terracotta transition-colors">
+              (570) 555-0123
+            </a>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-4 text-slate">
+          <div className="mt-1 text-terracotta shrink-0">
+            <Clock size={24} />
+          </div>
+          <div>
+            <p className="font-medium text-forest">Hours</p>
+            <p>Mon-Fri, 9:00 AM - 5:00 PM EST</p>
+          </div>
+        </div>
       </div>
 
-      <ul className="flex flex-col gap-4">
-        {DETAILS.map((d) => (
-          <li key={d.label} className="flex items-start gap-3.5">
-            <span className="h-10 w-10 shrink-0 rounded-pill bg-sand text-ink flex items-center justify-center">
-              <d.icon size={16} strokeWidth={1.8} />
-            </span>
-            <div>
-              <p className="text-[11.5px] font-semibold tracking-[0.1em] uppercase text-aurum">{d.label}</p>
-              <p className="text-[14px] text-ink mt-0.5">{d.value}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <div className="pt-5 border-t border-black/8">
-        <p className="text-[11.5px] font-semibold tracking-[0.1em] uppercase text-aurum mb-3">
-          Follow along
-        </p>
-        <div className="flex items-center gap-2.5">
-          {SOCIALS.map((s) => (
-            <a
-              key={s.label}
-              href="#"
-              aria-label={s.label}
-              className="h-10 w-10 rounded-pill flex items-center justify-center text-linen text-[11.5px] font-bold shadow-sm hover:opacity-90 transition-opacity"
-              style={{ background: `linear-gradient(135deg, ${s.swatch[0]}, ${s.swatch[1]})` }}
-            >
-              {s.short}
-            </a>
-          ))}
+      <div className="mt-10 pt-8 border-t border-sand">
+        <p className="font-medium text-forest mb-4">Follow Our Farm Journey</p>
+        <div className="flex gap-4">
+          <Link href="#" className="w-10 h-10 rounded-full bg-linen flex items-center justify-center text-forest hover:bg-terracotta hover:text-cream transition-colors">
+            <InstagramIcon className="w-5 h-5" />
+          </Link>
+          <Link href="#" className="w-10 h-10 rounded-full bg-linen flex items-center justify-center text-forest hover:bg-terracotta hover:text-cream transition-colors">
+            <FacebookIcon className="w-5 h-5" />
+          </Link>
+          <Link href="#" className="w-10 h-10 rounded-full bg-linen flex items-center justify-center text-forest hover:bg-terracotta hover:text-cream transition-colors">
+            <TikTokIcon className="w-5 h-5" />
+          </Link>
         </div>
       </div>
     </div>

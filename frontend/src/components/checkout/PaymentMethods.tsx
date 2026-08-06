@@ -1,76 +1,69 @@
 "use client";
 
-import { Banknote, CreditCard, Lock } from "lucide-react";
-import { TextField } from "./Field";
+import { useState } from 'react';
+import { CreditCard, Wallet } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Field } from './Field';
 
-export type PaymentMethodId = "card" | "cod";
+export function PaymentMethods() {
+  const [method, setMethod] = useState('card');
 
-const METHODS: { id: PaymentMethodId; label: string; icon: typeof CreditCard }[] = [
-  { id: "card", label: "Credit / Debit Card", icon: CreditCard },
-  { id: "cod", label: "Cash on Delivery", icon: Banknote },
-];
-
-export default function PaymentMethods({
-  value,
-  onChange,
-}: {
-  value: PaymentMethodId;
-  onChange: (id: PaymentMethodId) => void;
-}) {
   return (
-    <div>
-      <div className="grid sm:grid-cols-2 gap-3 mb-5">
-        {METHODS.map((method) => {
-          const active = value === method.id;
-          return (
-            <button
-              type="button"
-              key={method.id}
-              onClick={() => onChange(method.id)}
-              className={`flex items-center gap-3 rounded-md border px-4 py-3.5 text-left transition-colors ${
-                active ? "border-nar bg-nar-soft/40" : "border-black/12 bg-linen hover:border-black/25"
-              }`}
-            >
-              <span
-                className={`h-9 w-9 rounded-pill flex items-center justify-center shrink-0 ${
-                  active ? "bg-nar text-white" : "bg-sand text-ink"
-                }`}
-              >
-                <method.icon size={16} strokeWidth={1.8} />
-              </span>
-              <span className="text-[14px] font-medium text-ink">{method.label}</span>
-            </button>
-          );
-        })}
+    <div className="space-y-6">
+      <div className="flex gap-4">
+        <label className={cn(
+          "flex-1 p-4 rounded-xl border cursor-pointer transition-all flex flex-col items-center justify-center gap-2",
+          method === 'card' 
+            ? "border-forest bg-forest/5 ring-1 ring-forest" 
+            : "border-sand hover:border-forest/30"
+        )}>
+          <input 
+            type="radio" 
+            name="payment" 
+            value="card" 
+            checked={method === 'card'}
+            onChange={(e) => setMethod(e.target.value)}
+            className="sr-only"
+          />
+          <CreditCard className={cn("w-6 h-6", method === 'card' ? "text-forest" : "text-slate")} />
+          <span className={cn("text-sm font-medium", method === 'card' ? "text-forest" : "text-slate")}>Credit Card</span>
+        </label>
+        
+        <label className={cn(
+          "flex-1 p-4 rounded-xl border cursor-pointer transition-all flex flex-col items-center justify-center gap-2",
+          method === 'paypal' 
+            ? "border-forest bg-forest/5 ring-1 ring-forest" 
+            : "border-sand hover:border-forest/30"
+        )}>
+          <input 
+            type="radio" 
+            name="payment" 
+            value="paypal" 
+            checked={method === 'paypal'}
+            onChange={(e) => setMethod(e.target.value)}
+            className="sr-only"
+          />
+          <Wallet className={cn("w-6 h-6", method === 'paypal' ? "text-forest" : "text-slate")} />
+          <span className={cn("text-sm font-medium", method === 'paypal' ? "text-forest" : "text-slate")}>PayPal</span>
+        </label>
       </div>
 
-      {value === "card" ? (
-        <div className="grid sm:grid-cols-2 gap-4">
-          <TextField
-            label="Card number"
-            name="card-number"
-            placeholder="4242 4242 4242 4242"
-            span="full"
-            autoComplete="cc-number"
-          />
-          <TextField label="Name on card" name="card-name" placeholder="Fidan Xəlilova" span="full" autoComplete="cc-name" />
-          <TextField label="Expiry date" name="card-expiry" placeholder="MM / YY" autoComplete="cc-exp" />
-          <TextField label="CVV" name="card-cvv" placeholder="123" autoComplete="cc-csc" />
-        </div>
-      ) : (
-        <div className="rounded-md bg-linen border border-black/10 px-4 py-4 flex items-start gap-3">
-          <Banknote size={18} strokeWidth={1.7} className="text-olive shrink-0 mt-0.5" />
-          <p className="text-[13.5px] text-ink/90 leading-relaxed">
-            Pay in cash when your order arrives. Please have the exact amount ready for the
-            courier where possible.
-          </p>
+      {method === 'card' && (
+        <div className="space-y-4 p-5 bg-cream rounded-xl border border-sand">
+          <Field label="Card Number" id="cardNumber" placeholder="0000 0000 0000 0000" />
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Expiration Date" id="exp" placeholder="MM/YY" />
+            <Field label="CVC" id="cvc" placeholder="123" />
+          </div>
+          <Field label="Name on Card" id="cardName" placeholder="Jane Doe" />
         </div>
       )}
 
-      <p className="flex items-center gap-1.5 text-[12px] text-stone mt-4">
-        <Lock size={12} strokeWidth={2} />
-        Your payment details are encrypted and never stored on our servers.
-      </p>
+      {method === 'paypal' && (
+        <div className="p-5 bg-cream rounded-xl border border-sand text-center text-sm text-slate">
+          You will be redirected to PayPal to complete your purchase securely.
+        </div>
+      )}
     </div>
   );
 }

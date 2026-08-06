@@ -1,91 +1,70 @@
-// Mock content for the MVP homepage.
-// Swap for real API data once the backend is wired up.
+export type FlavorColor = string;
 
-export type Category = {
+export const flavorColors: Record<string, FlavorColor> = {
+  plain: '#F0EDE8',
+  'vanilla-bean': '#F5EBE6',
+  'blueberry-lemon': '#BAC7E8',
+  strawberry: '#F7C5C2',
+  'meadow-berry': '#C68BB0',
+  peach: '#F9C7A1',
+  'passion-fruit': '#FFD700',
+  raspberry: '#E8A0BF',
+};
+
+export type FeaturedProduct = {
+  id: number;
   name: string;
   slug: string;
-  blurb: string;
-  swatch: [string, string]; // gradient pair
+  price: number;
+  size: string;
+  image?: string;
+  flavorColor: string;
+  description: string;
 };
 
-export const categories: Category[] = [
-  {
-    name: "Handwoven Textiles",
-    slug: "textiles",
-    blurb: "Kelağayı scarves, rugs & kilims",
-    swatch: ["#A83A2B", "#C9A87C"],
-  },
-  {
-    name: "Gourmet Jams & Spices",
-    slug: "jams-preserves",
-    blurb: "Rose petal jam, sumac, herbs",
-    swatch: ["#7E2A20", "#C0892E"],
-  },
-  {
-    name: "Traditional Ceramics",
-    slug: "handicraft",
-    blurb: "Hand-thrown pottery & clay",
-    swatch: ["#C9A87C", "#877667"],
-  },
-  {
-    name: "Natural Remedies",
-    slug: "dried-herbs",
-    blurb: "Herbal teas, oils & tonics",
-    swatch: ["#5E6E3A", "#DCE3CE"],
-  },
+export const featuredProducts: FeaturedProduct[] = [
+  { id: 1, name: 'Plain Skyr', slug: 'plain-cup', price: 2.49, size: '5.3oz', image: undefined, flavorColor: '#F0EDE8', description: 'Pure, thick, and creamy organic skyr.' },
+  { id: 2, name: 'Vanilla Bean Skyr', slug: 'vanilla-bean-cup', price: 2.49, size: '5.3oz', image: '/images/yogurt-vanilla.jpg', flavorColor: '#F5EBE6', description: 'Real vanilla bean specks in every spoonful.' },
+  { id: 3, name: 'Strawberry Fields Skyr', slug: 'strawberry', price: 2.49, size: '5.3oz', image: '/images/yogurt-strawberry.jpg', flavorColor: '#F7C5C2', description: 'Sweet organic strawberry blend.' },
+  { id: 4, name: 'Blueberry Lemon Skyr', slug: 'blueberry-lemon', price: 2.49, size: '5.3oz', image: '/images/yogurt-blueberry.jpg', flavorColor: '#BAC7E8', description: 'Zesty lemon meets wild blueberry.' },
 ];
-
-// Note: product & maker mock data now lives in `shop-data.ts` and
-// `makers-data.ts` so the Shop, Product and Seller Profile pages share one
-// consistent source of truth.
 
 export const impactStats = [
-  { value: "180+", label: "Village makers empowered" },
-  { value: "23", label: "Regions across Azerbaijan" },
-  { value: "₼410K", label: "Paid directly to women" },
-  { value: "4.9★", label: "Average maker rating" },
+  { value: '100+', label: 'Years of Farming Heritage' },
+  { value: '5th', label: 'Generation Dairy Farmers' },
+  { value: '100%', label: 'Organic & Regenerative' },
+  { value: '16-21g', label: 'Protein Per Serving' },
 ];
 
-export type GiftCollection = {
-  name: string;
-  blurb: string;
-  swatch: [string, string];
-};
-
-export const giftCollections: GiftCollection[] = [
-  { name: "For the Home", blurb: "Ceramics, textiles & table linens", swatch: ["#C9A87C", "#EFE4D0"] },
-  { name: "Flavors of Azerbaijan", blurb: "Jams, preserves & spice sets", swatch: ["#A83A2B", "#C0892E"] },
-  { name: "Gifts under ₼25", blurb: "Small tokens, big impact", swatch: ["#5E6E3A", "#DCE3CE"] },
+export const valuePillars = [
+  { icon: 'protein', title: '16-21g Protein', description: 'High protein to fuel your day' },
+  { icon: 'lactose', title: 'Lactose Free', description: 'Easy on sensitive stomachs' },
+  { icon: 'probiotic', title: 'BB12 Probiotics', description: 'Supports gut health naturally' },
+  { icon: 'organic', title: 'USDA Organic', description: 'Certified organic ingredients' },
+  { icon: 'milk', title: '6% Whole Milk Fat', description: 'Rich, creamy whole milk skyr' },
+  { icon: 'women', title: 'Women Owned', description: 'Proudly sister-founded & led' },
 ];
 
-export type JournalPost = {
+export type Recipe = {
   title: string;
-  excerpt: string;
-  tag: string;
-  readTime: string;
-  swatch: [string, string];
+  description: string;
+  category: string;
+  prepTime: string;
+  protein: string;
+  image?: string;
+  flavorUsed: string;
 };
 
-export const journalPosts: JournalPost[] = [
-  {
-    title: "The last kəlağayı weavers of Basqal",
-    excerpt: "How a handful of women in one Sheki village kept a UNESCO-listed craft alive.",
-    tag: "Craft",
-    readTime: "6 min read",
-    swatch: ["#33432A", "#A83A2B"],
-  },
-  {
-    title: "A recipe for Gakh-style rose petal jam",
-    excerpt: "Zeynəb walks through the three-day process behind her best-selling jar.",
-    tag: "Recipe",
-    readTime: "4 min read",
-    swatch: ["#7E2A20", "#EBD3CB"],
-  },
-  {
-    title: "Why we pay makers before the order ships",
-    excerpt: "A look inside the payout model built to put income in women's hands faster.",
-    tag: "Impact",
-    readTime: "5 min read",
-    swatch: ["#C0892E", "#EFE4D0"],
-  },
+export const recipes: Recipe[] = [
+  { title: 'Berry Bliss Smoothie Bowl', description: 'A vibrant smoothie bowl topped with fresh berries, granola, and a drizzle of honey.', category: 'Breakfast', prepTime: '10 min', protein: '24g', image: '/images/recipe-hero.jpg', flavorUsed: 'Blueberry Lemon' },
+  { title: 'Skyr Protein Pancakes', description: 'Fluffy pancakes made with skyr for extra protein and incredible texture.', category: 'Breakfast', prepTime: '15 min', protein: '28g', image: undefined, flavorUsed: 'Vanilla Bean' },
+  { title: 'Creamy Tzatziki Dip', description: 'A Mediterranean-inspired dip perfect with fresh vegetables or pita bread.', category: 'Dips & Savory', prepTime: '5 min', protein: '18g', image: undefined, flavorUsed: 'Plain' },
+  { title: 'Strawberry Skyr Parfait', description: 'Layered strawberry skyr with homemade granola and fresh fruit.', category: 'Desserts', prepTime: '8 min', protein: '22g', image: undefined, flavorUsed: 'Strawberry Fields' },
+  { title: 'Peach Mango Smoothie', description: 'A tropical blend of peach skyr with fresh mango and coconut water.', category: 'Smoothies', prepTime: '5 min', protein: '20g', image: undefined, flavorUsed: "Savannah's Peach" },
+  { title: 'High-Protein Overnight Oats', description: 'Prep the night before for a grab-and-go breakfast packed with protein.', category: 'Breakfast', prepTime: '5 min', protein: '26g', image: undefined, flavorUsed: 'Vanilla Bean' },
+];
+
+export const retailers = [
+  'Whole Foods Market', 'Sprouts Farmers Market', 'Publix', 'Wegmans',
+  'Fresh Market', 'Natural Grocers', 'FreshDirect', 'Instacart',
 ];

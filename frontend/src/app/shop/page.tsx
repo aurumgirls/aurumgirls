@@ -1,43 +1,30 @@
-import type { Metadata } from "next";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Breadcrumbs from "@/components/shop/Breadcrumbs";
-import ShopExperience from "@/components/shop/ShopExperience";
+import { Suspense } from 'react';
+import { ShopExperience } from '@/components/shop/ShopExperience';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Shop All — By Aurum Girls",
-  description:
-    "Browse handcrafted jams, teas, textiles and handicraft made by village women across Azerbaijan. Filter by category, price and availability.",
+  title: 'Shop Skyr Yogurt — Painterland Sisters',
+  description: 'Shop our delicious, organic skyr yogurt made with love on our Pennsylvania family farm.',
 };
 
 export default function ShopPage() {
   return (
-    <>
+    <div className="min-h-screen bg-cream flex flex-col font-body">
       <Header />
-      <main className="flex-1 pb-16 lg:pb-0">
-        <div className="bg-cream border-b border-black/10">
-          <div className="mx-auto max-w-[1160px] px-5 sm:px-7 pt-6 pb-8 sm:pb-10">
-            <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Shop" }]} />
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mt-4">
-              <div>
-                <span className="text-[11.5px] font-semibold tracking-[0.14em] uppercase text-aurum">
-                  The full collection
-                </span>
-                <h1 className="text-[32px] sm:text-[42px] mt-1.5">Shop All</h1>
-                <p className="text-stone text-[15px] mt-2 max-w-[56ch]">
-                  Jams, teas, textiles and handicraft — handmade by village women across
-                  Azerbaijan, sold directly from their hands to yours.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-[1160px] px-5 sm:px-7 py-8 sm:py-10">
+      <main className="flex-1">
+        <section className="bg-forest text-cream py-16 px-6 text-center">
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl mb-4">Our Organic Skyr Lineup</h1>
+          <p className="text-lg md:text-xl text-cream/90 max-w-2xl mx-auto">
+            Discover our thick, creamy, and protein-packed Icelandic-style skyr, available in a variety of delicious flavors.
+          </p>
+        </section>
+        <Suspense fallback={<div className="py-20 text-center text-forest">Loading shop...</div>}>
           <ShopExperience />
-        </div>
+        </Suspense>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

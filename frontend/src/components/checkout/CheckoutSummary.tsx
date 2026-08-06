@@ -1,94 +1,72 @@
-import Image from "next/image";
-import { Lock, ShieldCheck } from "lucide-react";
-import { initialCartLines } from "@/lib/cart-data";
-import { shopProducts } from "@/lib/shop-data";
+"use client";
 
-const items = initialCartLines
-  .map((line) => ({ line, product: shopProducts.find((p) => p.id === line.productId) }))
-  .filter((x): x is { line: typeof x.line; product: NonNullable<typeof x.product> } => Boolean(x.product));
+import Image from 'next/image';
+import { useCartStore } from '@/store/cart-store';
 
-export default function CheckoutSummary({
-  shipping,
-  currency,
-  submitting,
-}: {
-  shipping: number;
-  currency: string;
-  submitting: boolean;
-}) {
-  const subtotal = items.reduce((sum, i) => sum + i.product.price * i.line.qty, 0);
-  const total = subtotal + shipping;
-  const itemCount = items.reduce((sum, i) => sum + i.line.qty, 0);
+export function CheckoutSummary() {
+  const { items, total } = useCartStore();
+  
+  const subtotal = total;
+  const shipping = subtotal > 25 ? 0 : 5.99;
+  const finalTotal = subtotal + shipping;
 
   return (
-    <div className="lg:sticky lg:top-8 h-fit rounded-lg bg-cream border border-black/10 shadow-sm p-6">
-      <h2 className="text-[19px] mb-5">Order Summary</h2>
-
-      <div className="flex flex-col gap-4 pb-5 mb-5 border-b border-dashed border-black/10 max-h-[280px] overflow-y-auto pr-1">
-        {items.map(({ product, line }) => (
-          <div key={product.id} className="flex items-center gap-3">
-            <div className="relative h-14 w-14 shrink-0 rounded-md overflow-hidden border border-black/10 bg-linen">
-              {product.image ? (
-                <Image src={product.image} alt={product.name} fill className="object-cover" />
-              ) : (
-                <div
-                  className="absolute inset-0"
-                  style={{ background: `linear-gradient(135deg, ${product.swatch[0]}, ${product.swatch[1]})` }}
+    <div className="bg-white rounded-3xl border border-sand p-6 lg:p-8 shadow-soft">
+      <h3 className="font-display text-2xl text-forest mb-6">Order Details</h3>
+      
+      <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+        {items.map((item) => (
+          <div key={item.id} className="flex gap-4">
+            <div className="relative w-16 h-16 rounded-xl bg-cream flex-shrink-0 flex items-center justify-center border border-sand overflow-hidden">
+              {item.image ? (
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={48}
+                  height={48}
+                  unoptimized
+                  className="object-contain"
                 />
+              ) : (
+                <span className="text-[10px] text-forest font-display">Painterland</span>
               )}
-              <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-pill bg-grove text-linen text-[10px] font-bold flex items-center justify-center">
-                {line.qty}
+              <span className="absolute -top-2 -right-2 bg-terracotta text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium shadow-sm">
+                {item.quantity}
               </span>
             </div>
+            
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-medium text-ink truncate">{product.name}</p>
-              <p className="text-[11.5px] text-stone">{product.maker}</p>
+              <h4 className="text-forest font-medium truncate">{item.name}</h4>
+              <p className="text-xs text-slate">{item.category}</p>
             </div>
-            <span className="text-[13.5px] font-medium text-ink shrink-0">
-              {currency}
-              {product.price * line.qty}
-            </span>
+            
+            <div className="text-right font-medium text-charcoal">
+              ${(item.price * item.quantity).toFixed(2)}
+            </div>
           </div>
         ))}
       </div>
 
-      <dl className="flex flex-col gap-3 pb-5 border-b border-dashed border-black/10">
-        <div className="flex items-center justify-between text-[14px]">
-          <dt className="text-stone">Subtotal ({itemCount} items)</dt>
-          <dd className="font-medium text-ink">
-            {currency}
-            {subtotal.toFixed(2)}
-          </dd>
+      <div className="space-y-3 py-4 border-t border-b border-sand text-sm">
+        <div className="flex justify-between text-slate">
+          <span>Subtotal</span>
+          <span className="font-medium text-charcoal">${subtotal.toFixed(2)}</span>
         </div>
-        <div className="flex items-center justify-between text-[14px]">
-          <dt className="text-stone">Delivery</dt>
-          <dd className="font-medium text-ink">
-            {shipping === 0 ? <span className="text-olive font-semibold">Free</span> : `${currency}${shipping.toFixed(2)}`}
-          </dd>
+        <div className="flex justify-between text-slate">
+          <span>Shipping</span>
+          <span className="font-medium text-charcoal">
+            {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+          </span>
         </div>
-      </dl>
-
-      <div className="flex items-center justify-between pt-5 mb-6">
-        <span className="text-[16px] font-medium">Total</span>
-        <span className="font-serif text-[28px]">
-          {currency}
-          {total.toFixed(2)}
-        </span>
       </div>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-sm bg-nar text-white text-[15px] font-semibold px-6 py-3.5 shadow-sm hover:bg-nar-deep transition-colors disabled:opacity-60 disabled:cursor-wait"
-      >
-        <Lock size={15} strokeWidth={2} />
-        {submitting ? "Placing your order…" : "Place Order"}
-      </button>
-
-      <p className="flex items-center justify-center gap-1.5 text-[11.5px] text-stone mt-4">
-        <ShieldCheck size={13} strokeWidth={1.8} />
-        Secured &amp; encrypted checkout
-      </p>
+      <div className="flex justify-between items-end pt-4">
+        <span className="font-medium text-charcoal text-lg">Total</span>
+        <div className="text-right">
+          <span className="font-display text-3xl text-forest font-medium">${finalTotal.toFixed(2)}</span>
+          <p className="text-xs text-slate mt-1">USD</p>
+        </div>
+      </div>
     </div>
   );
 }

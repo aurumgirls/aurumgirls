@@ -1,26 +1,31 @@
-import Link from "next/link";
-import ProductCard from "@/components/shop/ProductCard";
-import type { ShopProduct } from "@/lib/shop-data";
+"use client";
 
-export default function RelatedProducts({ products }: { products: ShopProduct[] }) {
-  if (products.length === 0) return null;
+import { shopProducts } from '@/lib/shop-data';
+import { ProductCard } from '@/components/shop/ProductCard';
+
+interface RelatedProductsProps {
+  currentProductId: number;
+  category: string;
+}
+
+export function RelatedProducts({ currentProductId, category }: RelatedProductsProps) {
+  const relatedProducts = shopProducts
+    .filter(p => p.id !== currentProductId && p.category === category)
+    .slice(0, 4);
+
+  if (relatedProducts.length === 0) {
+    return null;
+  }
 
   return (
-    <section>
-      <div className="flex items-end justify-between mb-7">
-        <div>
-          <span className="text-[11.5px] font-semibold tracking-[0.14em] uppercase text-aurum">
-            You may also like
-          </span>
-          <h2 className="text-[26px] sm:text-[32px] mt-1">Related products</h2>
-        </div>
-        <Link href="/shop" className="text-sm font-semibold text-nar hover:text-nar-deep hidden sm:inline-block">
-          View all →
-        </Link>
+    <section className="mt-24 pt-16 border-t border-sand">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="font-display text-3xl text-forest">You May Also Like</h2>
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {relatedProducts.map(product => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>

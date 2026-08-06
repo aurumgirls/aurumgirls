@@ -1,44 +1,53 @@
-import Link from "next/link";
-import { journalPosts } from "@/lib/data";
+"use client";
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { recipes } from '@/lib/data';
+import { Clock, HeartPulse } from 'lucide-react';
 
 export default function JournalTeasers() {
+  const displayRecipes = recipes.slice(0, 3);
+  
   return (
-    <section className="bg-cream border-t border-black/10">
-      <div className="mx-auto max-w-[1160px] px-5 sm:px-7 py-12 sm:py-16">
-        <div className="flex items-end justify-between mb-7">
-          <div>
-            <span className="text-[11.5px] font-semibold tracking-[0.14em] uppercase text-aurum">
-              Journal
-            </span>
-            <h2 className="text-[26px] sm:text-[32px] mt-1">Stories, recipes &amp; craft</h2>
-          </div>
-          <Link href="/journal" className="text-sm font-semibold text-nar hover:text-nar-deep hidden sm:inline-block">
-            Read the journal →
+    <section className="py-20 bg-linen">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-end mb-12">
+          <h2 className="text-3xl md:text-4xl font-display text-forest">
+            Skyr Recipes
+          </h2>
+          <Link href="/recipes" className="hidden sm:inline-flex text-terracotta hover:text-terracotta-light font-semibold">
+            View all recipes →
           </Link>
         </div>
-
-        <div className="grid sm:grid-cols-3 gap-5">
-          {journalPosts.map((post) => (
-            <Link
-              key={post.title}
-              href="/journal"
-              className="rounded-lg overflow-hidden bg-linen border border-black/10 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div
-                className="h-36 sm:h-40"
-                style={{ background: `linear-gradient(135deg, ${post.swatch[0]}, ${post.swatch[1]})` }}
-              />
-              <div className="p-4">
-                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-aurum">
-                  <span>{post.tag}</span>
-                  <span className="text-stone/50">·</span>
-                  <span className="text-stone normal-case font-medium">{post.readTime}</span>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {displayRecipes.map((recipe, idx) => (
+            <Link key={idx} href="/recipes" className="group bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300">
+              <div className="relative aspect-[16/9] bg-vanilla">
+                {recipe.image ? (
+                  <Image src={recipe.image} alt={recipe.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-vanilla to-peach opacity-50" />
+                )}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-forest">
+                  {recipe.category}
                 </div>
-                <h3 className="text-[16.5px] mt-2 leading-snug">{post.title}</h3>
-                <p className="text-[13px] text-stone mt-2 leading-relaxed">{post.excerpt}</p>
+              </div>
+              <div className="p-6">
+                <h3 className="font-display text-xl text-charcoal mb-3 group-hover:text-terracotta transition-colors">{recipe.title}</h3>
+                <div className="flex gap-4 text-sm text-slate font-medium">
+                  <span className="flex items-center"><Clock className="w-4 h-4 mr-1" /> {recipe.prepTime}</span>
+                  <span className="flex items-center"><HeartPulse className="w-4 h-4 mr-1" /> {recipe.protein}</span>
+                </div>
               </div>
             </Link>
           ))}
+        </div>
+        
+        <div className="mt-8 text-center sm:hidden">
+          <Link href="/recipes" className="inline-flex text-terracotta font-semibold">
+            View all recipes →
+          </Link>
         </div>
       </div>
     </section>

@@ -1,38 +1,51 @@
-import type { LucideIcon } from "lucide-react";
+import { ReactNode } from 'react';
+import { Check, Edit2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export default function SectionCard({
-  icon: Icon,
-  step,
-  title,
-  description,
-  children,
-  action,
-}: {
-  icon: LucideIcon;
+interface SectionCardProps {
   step: number;
   title: string;
-  description?: string;
-  children: React.ReactNode;
-  action?: React.ReactNode;
-}) {
+  isActive: boolean;
+  isCompleted: boolean;
+  onEdit: () => void;
+  children: ReactNode;
+}
+
+export function SectionCard({ step, title, isActive, isCompleted, onEdit, children }: SectionCardProps) {
   return (
-    <section className="rounded-lg bg-cream border border-black/10 shadow-sm p-6 sm:p-7">
-      <div className="flex items-start justify-between gap-4 mb-6">
-        <div className="flex items-center gap-3">
-          <span className="h-9 w-9 shrink-0 rounded-pill bg-sand text-ink flex items-center justify-center">
-            <Icon size={16} strokeWidth={1.8} />
-          </span>
-          <div>
-            <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-aurum">
-              Step {step}
-            </p>
-            <h2 className="text-[19px] leading-snug">{title}</h2>
-            {description && <p className="text-[12.5px] text-stone mt-0.5">{description}</p>}
+    <div className={cn(
+      "bg-white rounded-3xl border transition-all duration-300",
+      isActive ? "border-forest shadow-soft" : "border-sand",
+      !isActive && !isCompleted && "opacity-60"
+    )}>
+      <div className="px-6 md:px-8 py-6 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className={cn(
+            "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
+            isCompleted ? "bg-forest text-cream" : isActive ? "bg-terracotta text-white" : "bg-cream text-slate border border-sand"
+          )}>
+            {isCompleted ? <Check className="w-4 h-4" /> : step}
           </div>
+          <h2 className="font-display text-2xl text-forest">{title}</h2>
         </div>
-        {action}
+        
+        {isCompleted && !isActive && (
+          <button 
+            onClick={onEdit}
+            className="text-slate hover:text-terracotta transition-colors flex items-center gap-1 text-sm font-medium"
+          >
+            <Edit2 className="w-4 h-4" />
+            <span className="hidden sm:inline">Edit</span>
+          </button>
+        )}
       </div>
-      {children}
-    </section>
+
+      <div className={cn(
+        "overflow-hidden transition-all duration-500",
+        isActive ? "max-h-[1000px] opacity-100 px-6 md:px-8 pb-8" : "max-h-0 opacity-0 px-6 md:px-8 pb-0"
+      )}>
+        {children}
+      </div>
+    </div>
   );
 }

@@ -1,62 +1,86 @@
-import { Layers, Ruler, SprayCan } from "lucide-react";
-import type { ProductDetail } from "@/lib/product-detail";
+"use client";
 
-export default function ProductInfoSection({ product }: { product: ProductDetail }) {
+import { useState } from 'react';
+import { ProductDetail } from '@/lib/product-detail';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+export function ProductInfoSection({ product }: { product: ProductDetail }) {
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    nutrition: true,
+    ingredients: false,
+  });
+
+  const toggleSection = (section: string) => {
+    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
   return (
-    <div className="grid lg:grid-cols-[1fr_360px] gap-10 lg:gap-14">
-      <div className="flex flex-col gap-10">
-        <div>
-          <h2 className="text-[24px] sm:text-[28px] mb-3">Description</h2>
-          <p className="text-[15.5px] text-ink/90 leading-relaxed max-w-[70ch]">
-            {product.description}
-          </p>
-        </div>
-
-        <div className="grid sm:grid-cols-3 gap-4">
-          <div className="rounded-md bg-cream border border-black/10 p-5">
-            <Layers size={18} strokeWidth={1.6} className="text-olive mb-3" />
-            <h3 className="text-[13px] font-bold tracking-[0.06em] uppercase text-stone mb-2.5">
-              {product.materialsLabel}
-            </h3>
-            <ul className="flex flex-col gap-1.5">
-              {product.materials.map((m) => (
-                <li key={m} className="text-[13.5px] text-ink/90 leading-snug">
-                  {m}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="rounded-md bg-cream border border-black/10 p-5">
-            <Ruler size={18} strokeWidth={1.6} className="text-olive mb-3" />
-            <h3 className="text-[13px] font-bold tracking-[0.06em] uppercase text-stone mb-2.5">
-              Dimensions
-            </h3>
-            <p className="text-[13.5px] text-ink/90 leading-snug">{product.dimensions}</p>
-          </div>
-
-          <div className="rounded-md bg-cream border border-black/10 p-5">
-            <SprayCan size={18} strokeWidth={1.6} className="text-olive mb-3" />
-            <h3 className="text-[13px] font-bold tracking-[0.06em] uppercase text-stone mb-2.5">
-              Care
-            </h3>
-            <p className="text-[13.5px] text-ink/90 leading-snug">{product.care}</p>
+    <div className="bg-white rounded-3xl shadow-soft border border-sand overflow-hidden">
+      {/* Nutrition Facts */}
+      <div className="border-b border-sand last:border-0">
+        <button 
+          onClick={() => toggleSection('nutrition')}
+          className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-linen transition-colors"
+        >
+          <span className="font-display text-xl text-forest">Nutrition Facts</span>
+          {openSections.nutrition ? (
+            <ChevronUp className="w-5 h-5 text-forest" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-forest" />
+          )}
+        </button>
+        
+        <div className={cn(
+          "px-6 overflow-hidden transition-all duration-300",
+          openSections.nutrition ? "py-4 max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        )}>
+          <div className="border-2 border-charcoal p-4 bg-white font-sans text-charcoal">
+            <h4 className="font-black text-2xl border-b-8 border-charcoal pb-1 mb-2">Nutrition Facts</h4>
+            <div className="flex justify-between font-bold border-b border-charcoal pb-1 mb-1 text-lg">
+              <span>Calories</span>
+              <span>{product.nutritionFacts.calories}</span>
+            </div>
+            <div className="text-sm">
+              <div className="flex justify-between border-b border-charcoal/30 py-1">
+                <span className="font-bold">Total Fat <span className="font-normal">{product.nutritionFacts.totalFat}</span></span>
+              </div>
+              <div className="flex justify-between border-b border-charcoal/30 py-1">
+                <span className="font-bold">Total Sugars <span className="font-normal">{product.nutritionFacts.sugars}</span></span>
+              </div>
+              <div className="flex justify-between border-b border-charcoal/30 py-1">
+                <span className="font-bold">Protein <span className="font-normal">{product.nutritionFacts.protein}</span></span>
+              </div>
+              <div className="flex justify-between border-b border-charcoal/30 py-1">
+                <span className="font-bold">Calcium <span className="font-normal">{product.nutritionFacts.calcium}</span></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div>
-        <h2 className="text-[24px] sm:text-[28px] mb-3">Specifications</h2>
-        <dl className="rounded-md bg-cream border border-black/10 divide-y divide-dashed divide-black/10 overflow-hidden">
-          {product.specs.map((spec) => (
-            <div key={spec.label} className="flex items-center justify-between gap-4 px-5 py-3.5">
-              <dt className="text-[13px] text-stone">{spec.label}</dt>
-              <dd className="text-[13.5px] font-medium text-ink capitalize text-right">
-                {spec.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+      {/* Ingredients */}
+      <div className="border-b border-sand last:border-0">
+        <button 
+          onClick={() => toggleSection('ingredients')}
+          className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-linen transition-colors"
+        >
+          <span className="font-display text-xl text-forest">Ingredients</span>
+          {openSections.ingredients ? (
+            <ChevronUp className="w-5 h-5 text-forest" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-forest" />
+          )}
+        </button>
+        
+        <div className={cn(
+          "px-6 overflow-hidden transition-all duration-300",
+          openSections.ingredients ? "py-4 max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        )}>
+          <p className="text-slate leading-relaxed">
+            {product.ingredients}
+          </p>
+        </div>
       </div>
     </div>
   );

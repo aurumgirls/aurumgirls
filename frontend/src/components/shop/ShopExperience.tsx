@@ -1,182 +1,147 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { shopCategories, shopProducts, priceBounds, type Availability } from "@/lib/shop-data";
-import ShopFilters from "./ShopFilters";
-import ShopToolbar, { type SortValue, type Chip } from "./ShopToolbar";
-import CategoryStrip from "./CategoryStrip";
-import SearchBar from "./SearchBar";
-import ProductCard from "./ProductCard";
-import Pagination from "./Pagination";
-import { PackageSearch } from "lucide-react";
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { Breadcrumbs } from './Breadcrumbs';
+import { SearchBar } from './SearchBar';
+import { CategoryStrip } from './CategoryStrip';
+import { ShopToolbar } from './ShopToolbar';
+import { ShopFilters, FilterState } from './ShopFilters';
+import { ProductCard } from './ProductCard';
+import { Pagination } from './Pagination';
+import FadeUp from '@/components/motion/FadeUp';
+import { StaggerGroup } from '@/components/motion/Stagger';
+import { shopProducts, priceBounds } from '@/lib/shop-data';
+import { SlidersHorizontal } from 'lucide-react';
 
-const PAGE_SIZE = 12;
+const ITEMS_PER_PAGE = 12;
 
-export default function ShopExperience() {
-  const [search, setSearch] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([priceBounds.min, priceBounds.max]);
-  const [selectedAvailability, setSelectedAvailability] = useState<Availability[]>([]);
-  const [sort, setSort] = useState<SortValue>("featured");
-  const [page, setPage] = useState(1);
+export function ShopExperience() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const p of shopProducts) counts[p.category] = (counts[p.category] ?? 0) + 1;
-    return counts;
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
-  const toggleCategory = (slug: string) => {
-    setPage(1);
-    setSelectedCategories((prev) =>
-      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
-    );
-  };
+  // Parse URL params
+  const currentCategory = searchParams.get('category') || 'all';
+  const currentSearch = searchParams.get('q') || '';
+  const currentSort = searchParams.get('sort') || 'featured';
+  const currentPage = parseInt(searchParams.get('page') || '1');
 
-  const toggleAvailability = (value: Availability) => {
-    setPage(1);
-    setSelectedAvailability((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
-  };
+  const [filters, setFilters] = useState<FilterState>({
+    priceRange: [priceBounds.min, priceBounds.max],
+  });
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    let list = shopProducts.filter((p) => {
-      const matchesSearch =
-        !q ||
-        p.name.toLowerCase().includes(q) ||
-        p.maker.toLowerCase().includes(q) ||
-        p.region.toLowerCase().includes(q);
-      const matchesCategory =
-        selectedCategories.length === 0 || selectedCategories.includes(p.category);
-      const matchesPrice = p.price >= priceRange[0] && p.price <= priceRange[1];
-      const matchesAvailability =
-        selectedAvailability.length === 0 || selectedAvailability.includes(p.availability);
-      return matchesSearch && matchesCategory && matchesPrice && matchesAvailability;
+  // Derived state
+  const filteredProducts = useMemo(() => {
+    return shopProducts.filter((product) => {
+      if (currentCategory !== 'all' && product.category !== currentCategory) return false;
+      if (currentSearch && !product.name.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+      if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
+      return true;
+    }).sort((a, b) => {
+      switch (currentSort) {
+        case 'price-asc': return a.price - b.price;
+        case 'price-desc': return b.price - a.price;
+        case 'newest': return (a.isNew === b.isNew) ? 0 : a.isNew ? -1 : 1;
+        default: return b.rating - a.rating;
+      }
     });
+  }, [currentCategory, currentSearch, filters, currentSort]);
 
-    list = [...list];
-    switch (sort) {
-      case "price-asc":
-        list.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        list.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        list.sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
-        break;
-      case "newest":
-        list.sort((a, b) => Number(b.isNew) - Number(a.isNew) || b.id - a.id);
-        break;
-      default:
-        list.sort((a, b) => Number(b.isNew) - Number(a.isNew) || a.id - b.id);
-    }
-    return list;
-  }, [search, selectedCategories, priceRange, selectedAvailability, sort]);
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-
-  const priceIsDefault = priceRange[0] === priceBounds.min && priceRange[1] === priceBounds.max;
-
-  const chips: Chip[] = [
-    ...selectedCategories.map((slug) => ({
-      key: `cat-${slug}`,
-      label: shopCategories.find((c) => c.slug === slug)?.name ?? slug,
-      onRemove: () => toggleCategory(slug),
-    })),
-    ...selectedAvailability.map((a) => ({
-      key: `av-${a}`,
-      label: a.replace("-", " "),
-      onRemove: () => toggleAvailability(a),
-    })),
-    ...(priceIsDefault
-      ? []
-      : [
-          {
-            key: "price",
-            label: `₼${priceRange[0]} – ₼${priceRange[1]}`,
-            onRemove: () => setPriceRange([priceBounds.min, priceBounds.max]),
-          },
-        ]),
-    ...(search
-      ? [{ key: "search", label: `"${search}"`, onRemove: () => setSearch("") }]
-      : []),
-  ];
-
-  const activeCount = selectedCategories.length + selectedAvailability.length + (priceIsDefault ? 0 : 1);
-
-  const clearAll = () => {
-    setSearch("");
-    setSelectedCategories([]);
-    setSelectedAvailability([]);
-    setPriceRange([priceBounds.min, priceBounds.max]);
-    setPage(1);
+  const updateUrl = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null) params.delete(key);
+      else params.set(key, value);
+    });
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
+
+  if (!mounted) return null;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-        <SearchBar value={search} onChange={(v) => { setSearch(v); setPage(1); }} />
+    <div className="max-w-7xl mx-auto px-6 py-8">
+      <Breadcrumbs items={[{ label: 'Shop', href: '/shop' }]} />
+
+      <div className="flex flex-col md:flex-row gap-6 mb-8 items-center">
+        <div className="w-full md:w-2/3">
+          <CategoryStrip 
+            selectedCategory={currentCategory} 
+            onSelectCategory={(c) => updateUrl({ category: c === 'all' ? null : c, page: '1' })} 
+          />
+        </div>
+        <div className="w-full md:w-1/3">
+          <SearchBar 
+            initialValue={currentSearch}
+            onSearch={(q) => updateUrl({ q: q || null, page: '1' })}
+          />
+        </div>
       </div>
 
-      <CategoryStrip selected={selectedCategories} onToggle={toggleCategory} />
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        <aside className={`lg:w-64 flex-shrink-0 lg:block ${isFiltersOpen ? 'block' : 'hidden'}`}>
+          <div className="sticky top-24">
+            <ShopFilters filters={filters} onFilterChange={setFilters} />
+          </div>
+        </aside>
 
-      <div className="grid lg:grid-cols-[260px_1fr] gap-8">
-        <ShopFilters
-          categoryCounts={categoryCounts}
-          selectedCategories={selectedCategories}
-          onToggleCategory={toggleCategory}
-          priceRange={priceRange}
-          onPriceChange={(r) => { setPriceRange(r); setPage(1); }}
-          selectedAvailability={selectedAvailability}
-          onToggleAvailability={toggleAvailability}
-          onClear={clearAll}
-          activeCount={activeCount}
-        />
-
-        <div>
-          <ShopToolbar
-            resultCount={filtered.length}
-            sort={sort}
-            onSortChange={setSort}
-            chips={chips}
-            onClearAll={clearAll}
+        <div className="flex-1 w-full">
+          <ShopToolbar 
+            resultCount={filteredProducts.length}
+            currentSort={currentSort}
+            onSortChange={(s) => updateUrl({ sort: s, page: '1' })}
+            onToggleFilters={() => setIsFiltersOpen(!isFiltersOpen)}
+            isFiltersOpen={isFiltersOpen}
           />
 
-          {paged.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {paged.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center text-center py-20 rounded-lg bg-cream border border-black/10">
-              <PackageSearch size={34} strokeWidth={1.5} className="text-stone mb-3" />
-              <p className="font-serif text-[20px] text-ink">No products match these filters</p>
-              <p className="text-stone text-[14px] mt-1 max-w-[38ch]">
-                Try widening your price range or clearing a filter to see more of the collection.
-              </p>
-              <button
-                onClick={clearAll}
-                className="mt-5 inline-flex items-center rounded-pill bg-nar text-white text-[13.5px] font-semibold px-5 py-2.5 hover:bg-nar-deep transition-colors"
+          {filteredProducts.length === 0 ? (
+            <div className="py-20 text-center bg-white rounded-2xl border border-sand">
+              <h3 className="text-xl font-display text-forest mb-2">No products found</h3>
+              <p className="text-slate">Try adjusting your filters or search term.</p>
+              <button 
+                onClick={() => {
+                  setFilters({ priceRange: [priceBounds.min, priceBounds.max] });
+                  router.push('/shop');
+                }}
+                className="mt-6 px-6 py-2 bg-terracotta text-white rounded-full hover:bg-terracotta-light transition-colors"
               >
-                Clear filters
+                Clear All Filters
               </button>
             </div>
-          )}
+          ) : (
+            <>
+              <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {paginatedProducts.map(product => (
+                  <FadeUp key={product.id}>
+                    <ProductCard product={product} />
+                  </FadeUp>
+                ))}
+              </StaggerGroup>
 
-          <Pagination
-            page={currentPage}
-            totalPages={totalPages}
-            onChange={(p) => {
-              setPage(p);
-              if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          />
+              {totalPages > 1 && (
+                <div className="mt-12 flex justify-center">
+                  <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={(p) => updateUrl({ page: p.toString() })}
+                  />
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

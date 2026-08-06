@@ -1,93 +1,91 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { Heart, Star } from "lucide-react";
-import type { ShopProduct } from "@/lib/shop-data";
+import Image from 'next/image';
+import Link from 'next/link';
+import { ShopProduct } from '@/lib/shop-data';
+import { Star, Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useCartStore } from '@/store/cart-store';
 
-export default function ProductCard({ product }: { product: ShopProduct }) {
-  const outOfStock = product.availability === "out-of-stock";
-  const lowStock = product.availability === "low-stock";
+interface ProductCardProps {
+  product: ShopProduct;
+}
+
+export function ProductCard({ product }: ProductCardProps) {
+  const { addItem } = useCartStore();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+  };
 
   return (
-    <div className="group rounded-lg overflow-hidden bg-cream border border-black/10 shadow-sm hover:shadow-md transition-shadow flex flex-col">
-      <div className="relative">
-        <Link href={`/product/${product.slug}`} className="block relative h-44">
+    <Link href={`/product/${product.slug}`} className="group block h-full">
+      <div className="bg-white rounded-2xl overflow-hidden border border-sand transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-soft-lg h-full flex flex-col relative">
+        {product.isNew && (
+          <div className="absolute top-4 left-4 z-10 bg-terracotta text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            New
+          </div>
+        )}
+        
+        <div 
+          className="relative aspect-square p-6 flex items-center justify-center overflow-hidden"
+          style={{ backgroundColor: product.flavorColor || '#F5EBE6' }}
+        >
           {product.image ? (
-            <Image src={product.image} alt={product.name} fill className="object-cover" />
-          ) : (
-            <div
-              className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${product.swatch[0]}, ${product.swatch[1]})`,
-              }}
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              unoptimized
+              className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
             />
-          )}
-          {outOfStock && (
-            <div className="absolute inset-0 bg-ink/45 flex items-center justify-center">
-              <span className="text-linen text-[12px] font-semibold tracking-wide uppercase bg-ink/70 px-3 py-1.5 rounded-pill">
-                Out of stock
-              </span>
+          ) : (
+            <div className="w-32 h-32 rounded-full bg-white/40 backdrop-blur-sm flex items-center justify-center shadow-soft">
+              <span className="font-display text-forest text-xl text-center px-4 leading-tight">Painterland<br/>Sisters</span>
             </div>
           )}
-        </Link>
-
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
-          {product.isNew && (
-            <span className="text-[10px] font-bold tracking-wide uppercase bg-olive text-linen px-2 py-1 rounded-xs">
-              New
-            </span>
-          )}
-          {lowStock && (
-            <span className="text-[10px] font-bold tracking-wide uppercase bg-aurum text-linen px-2 py-1 rounded-xs">
-              Low stock
-            </span>
-          )}
         </div>
 
-        <button
-          aria-label={`Save ${product.name} to wishlist`}
-          className="absolute top-2.5 right-2.5 h-8 w-8 rounded-pill bg-cream/95 border border-black/10 flex items-center justify-center shadow-sm hover:text-nar transition-colors"
-        >
-          <Heart size={15} strokeWidth={1.8} />
-        </button>
+        <div className="p-5 flex flex-col flex-grow bg-cream">
+          <div className="flex justify-between items-start mb-2">
+            <div>
+              <p className="text-slate text-xs uppercase tracking-wider font-semibold mb-1">{product.category}</p>
+              <h3 className="font-display text-forest text-xl mb-1">{product.name}</h3>
+            </div>
+            {product.protein && (
+              <span className="bg-forest-light/10 text-forest text-xs font-bold px-2 py-1 rounded-md ml-2 flex-shrink-0">
+                {product.protein} Protein
+              </span>
+            )}
+          </div>
+          
+          <div className="flex items-center gap-1 mb-4">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={cn(
+                  "w-3.5 h-3.5",
+                  i < Math.floor(product.rating) ? "text-honey fill-honey" : "text-sand fill-sand"
+                )}
+              />
+            ))}
+            <span className="text-slate text-xs ml-1">({product.reviews})</span>
+          </div>
 
-        <div className="absolute left-2.5 bottom-2.5 flex items-center gap-1.5 bg-cream/95 rounded-pill pl-1 pr-2.5 py-1 text-[11px] font-semibold shadow-sm">
-          <span className="h-5 w-5 rounded-pill bg-sage" />
-          {product.maker}
-        </div>
-      </div>
-
-      <div className="p-4 flex flex-col gap-2 flex-1">
-        <span className="text-[10.5px] font-semibold tracking-[0.1em] uppercase text-aurum">
-          {product.region}
-        </span>
-        <Link href={`/product/${product.slug}`} className="font-medium text-[14.5px] leading-snug hover:text-nar transition-colors">
-          {product.name}
-        </Link>
-        <div className="flex items-center gap-1 text-[12px] text-stone">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              size={12}
-              className={i < Math.round(product.rating) ? "fill-aurum text-aurum" : "text-sand"}
-            />
-          ))}
-          <span className="ml-1">({product.reviews})</span>
-        </div>
-        <div className="mt-auto flex items-center justify-between pt-2">
-          <span className="font-serif text-[19px]">
-            {product.currency}
-            {product.price}
-          </span>
-          <button
-            disabled={outOfStock}
-            className="rounded-pill bg-nar text-white text-[12.5px] font-semibold px-3.5 py-2 hover:bg-nar-deep transition-colors disabled:bg-sand disabled:text-stone disabled:cursor-not-allowed"
-          >
-            {outOfStock ? "Notify me" : "Add to Cart"}
-          </button>
+          <div className="mt-auto pt-4 border-t border-sand flex items-center justify-between">
+            <span className="font-display text-forest text-lg font-medium">${product.price.toFixed(2)}</span>
+            <button
+              onClick={handleAddToCart}
+              className="bg-cream hover:bg-terracotta text-terracotta hover:text-white border border-terracotta rounded-full w-8 h-8 flex items-center justify-center transition-colors shadow-sm"
+              aria-label={`Add ${product.name} to cart`}
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,71 +1,75 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Trash2 } from "lucide-react";
-import QuantitySelector from "@/components/product/QuantitySelector";
-import type { ShopProduct } from "@/lib/shop-data";
+"use client";
 
-export default function CartItemRow({
-  product,
-  qty,
-  onQtyChange,
-  onRemove,
-}: {
-  product: ShopProduct;
-  qty: number;
-  onQtyChange: (qty: number) => void;
-  onRemove: () => void;
-}) {
-  const lineTotal = product.price * qty;
+import Image from 'next/image';
+import Link from 'next/link';
+import { CartItem, useCartStore } from '@/store/cart-store';
+import { QuantitySelector } from '@/components/product/QuantitySelector';
+import { Trash2 } from 'lucide-react';
+
+interface CartItemRowProps {
+  item: CartItem;
+}
+
+export function CartItemRow({ item }: CartItemRowProps) {
+  const { updateQuantity, removeItem } = useCartStore();
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 py-5">
-      <Link
-        href={`/product/${product.slug}`}
-        className="relative h-24 w-24 sm:h-28 sm:w-28 shrink-0 rounded-md overflow-hidden border border-black/10 bg-linen"
-      >
-        {product.image ? (
-          <Image src={product.image} alt={product.name} fill className="object-cover" />
-        ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(135deg, ${product.swatch[0]}, ${product.swatch[1]})`,
-            }}
-          />
-        )}
+    <div className="flex gap-6 py-6 border-b border-sand last:border-0 last:pb-0 first:pt-0">
+      <Link href={`/product/${item.slug}`} className="flex-shrink-0">
+        <div 
+          className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl flex items-center justify-center overflow-hidden transition-transform hover:scale-105"
+          style={{ backgroundColor: item.flavorColor || '#F5EBE6' }}
+        >
+          {item.image ? (
+            <Image
+              src={item.image}
+              alt={item.name}
+              width={120}
+              height={120}
+              unoptimized
+              className="object-contain p-2"
+            />
+          ) : (
+            <span className="font-display text-forest text-sm">Painterland</span>
+          )}
+        </div>
       </Link>
 
-      <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-4">
-        <div className="flex-1 min-w-0">
-          <span className="text-[10.5px] font-semibold tracking-[0.1em] uppercase text-aurum">
-            {product.region}
-          </span>
-          <Link
-            href={`/product/${product.slug}`}
-            className="block font-medium text-[15.5px] leading-snug mt-1 hover:text-nar transition-colors"
-          >
-            {product.name}
-          </Link>
-          <p className="text-[12.5px] text-stone mt-1">
-            {product.currency}
-            {product.price} each
-          </p>
-
-          <button
-            onClick={onRemove}
-            className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-stone hover:text-nar transition-colors mt-3"
-          >
-            <Trash2 size={14} strokeWidth={1.8} />
-            Remove
-          </button>
+      <div className="flex-1 flex flex-col">
+        <div className="flex justify-between items-start mb-1">
+          <div>
+            <p className="text-xs text-slate uppercase tracking-wider font-semibold mb-1">{item.category}</p>
+            <Link href={`/product/${item.slug}`}>
+              <h4 className="font-display text-lg text-forest hover:text-terracotta transition-colors">{item.name}</h4>
+            </Link>
+          </div>
+          <div className="font-display text-lg text-forest font-medium">
+            ${(item.price * item.quantity).toFixed(2)}
+          </div>
         </div>
+        
+        {item.protein && (
+          <div className="mb-4">
+            <span className="bg-forest-light/10 text-forest text-xs font-bold px-2 py-1 rounded-md">
+              {item.protein} Protein
+            </span>
+          </div>
+        )}
 
-        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 sm:gap-2.5 shrink-0">
-          <QuantitySelector value={qty} onChange={onQtyChange} max={10} />
-          <span className="font-serif text-[18px] sm:text-right w-16 sm:w-auto">
-            {product.currency}
-            {lineTotal}
-          </span>
+        <div className="mt-auto flex items-center justify-between">
+          <div className="w-32">
+            <QuantitySelector 
+              quantity={item.quantity} 
+              onChange={(q) => updateQuantity(item.id, q)} 
+            />
+          </div>
+          <button 
+            onClick={() => removeItem(item.id)}
+            className="text-slate hover:text-terracotta transition-colors p-2"
+            aria-label="Remove item"
+          >
+            <Trash2 className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </div>

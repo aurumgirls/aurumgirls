@@ -1,28 +1,30 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+"use client";
 
-export type Crumb = { label: string; href?: string };
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 
-export default function Breadcrumbs({ items }: { items: Crumb[] }) {
+interface BreadcrumbsProps {
+  items: { label: string; href?: string }[];
+}
+
+export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-1.5 text-[13px]">
-      {items.map((item, i) => {
-        const isLast = i === items.length - 1;
-        return (
-          <span key={item.label} className="flex items-center gap-1.5">
-            {item.href && !isLast ? (
-              <Link href={item.href} className="text-stone hover:text-nar transition-colors font-medium">
-                {item.label}
-              </Link>
-            ) : (
-              <span className={isLast ? "text-ink font-semibold" : "text-stone font-medium"}>
-                {item.label}
-              </span>
-            )}
-            {!isLast && <ChevronRight size={13} className="text-stone/50" strokeWidth={2} />}
-          </span>
-        );
-      })}
+    <nav className="flex items-center text-sm mb-6 overflow-x-auto whitespace-nowrap pb-2">
+      <Link href="/" className="text-slate hover:text-terracotta transition-colors">
+        Home
+      </Link>
+      {items.map((item, index) => (
+        <div key={index} className="flex items-center">
+          <ChevronRight className="w-4 h-4 text-sand mx-2 flex-shrink-0" />
+          {item.href ? (
+            <Link href={item.href} className="text-slate hover:text-terracotta transition-colors">
+              {item.label}
+            </Link>
+          ) : (
+            <span className="text-forest font-medium">{item.label}</span>
+          )}
+        </div>
+      ))}
     </nav>
   );
 }
