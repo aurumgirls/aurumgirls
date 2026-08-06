@@ -1,22 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand palette — By Aurum Girls */
-  --linen: #FAF5EC;
-  --cream: #FFFCF6;
-  --sand: #EFE4D0;
-  --kraft: #C9A87C;
-  --stone: #877667;
-  --ink: #26201A;
-
-  --aurum: #C0892E;
-  --aurum-soft: #E7CF9C;
-  --nar: #A83A2B;
-  --nar-deep: #7E2A20;
-  --nar-soft: #EBD3CB;
-  --olive: #5E6E3A;
-  --grove: #33432A;
-  --sage: #DCE3CE;
+  /* Brand palette — By Aurum Girls (2026 redesign) */
+  --aurum-cream: #F9F6F0;
+  --aurum-sand: #EDE6D9;
+  --aurum-clay: #C27A65;
+  --aurum-earth: #8B5A4B;
+  --aurum-forest: #4A5D4E;
+  --aurum-charcoal: #2C2A29;
+  --aurum-stone: #706E6B;
+  --aurum-gold: #D4AF37;
 
   --r-xs: 6px;
   --r-sm: 10px;
@@ -25,29 +18,23 @@
   --r-xl: 34px;
   --r-pill: 999px;
 
-  --sh-sm: 0 1px 2px rgba(60,42,28,.06), 0 1px 1px rgba(60,42,28,.04);
-  --sh-md: 0 8px 20px -8px rgba(60,42,28,.14), 0 2px 6px -2px rgba(60,42,28,.08);
+  --sh-soft: 0 10px 40px -10px rgba(44, 42, 41, .08);
+  --sh-soft-lg: 0 20px 50px -15px rgba(44, 42, 41, .12);
+  --sh-inner-soft: inset 0 2px 4px 0 rgba(44, 42, 41, .04);
 
-  --hair: 1px solid rgba(38,32,26,.10);
-  --line: rgba(38,32,26,.16);
+  --hair: 1px solid rgba(44, 42, 41, .10);
+  --line: rgba(44, 42, 41, .16);
 }
 
 @theme inline {
-  --color-linen: var(--linen);
-  --color-cream: var(--cream);
-  --color-sand: var(--sand);
-  --color-kraft: var(--kraft);
-  --color-stone: var(--stone);
-  --color-ink: var(--ink);
-
-  --color-aurum: var(--aurum);
-  --color-aurum-soft: var(--aurum-soft);
-  --color-nar: var(--nar);
-  --color-nar-deep: var(--nar-deep);
-  --color-nar-soft: var(--nar-soft);
-  --color-olive: var(--olive);
-  --color-grove: var(--grove);
-  --color-sage: var(--sage);
+  --color-aurum-cream: var(--aurum-cream);
+  --color-aurum-sand: var(--aurum-sand);
+  --color-aurum-clay: var(--aurum-clay);
+  --color-aurum-earth: var(--aurum-earth);
+  --color-aurum-forest: var(--aurum-forest);
+  --color-aurum-charcoal: var(--aurum-charcoal);
+  --color-aurum-stone: var(--aurum-stone);
+  --color-aurum-gold: var(--aurum-gold);
 
   --radius-xs: var(--r-xs);
   --radius-sm: var(--r-sm);
@@ -56,11 +43,21 @@
   --radius-xl: var(--r-xl);
   --radius-pill: var(--r-pill);
 
-  --shadow-sm: var(--sh-sm);
-  --shadow-md: var(--sh-md);
+  --shadow-soft: var(--sh-soft);
+  --shadow-soft-lg: var(--sh-soft-lg);
+  --shadow-inner-soft: var(--sh-inner-soft);
 
-  --font-serif: var(--font-fraunces);
-  --font-sans: var(--font-hanken);
+  --ease-organic: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  --animate-subtle-zoom: subtle-zoom 20s ease-in-out infinite;
+
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-lato);
+}
+
+@keyframes subtle-zoom {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 html {
@@ -68,9 +65,9 @@ html {
 }
 
 body {
-  background: var(--linen);
-  color: var(--ink);
-  font-family: var(--font-hanken), system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--aurum-cream);
+  color: var(--aurum-charcoal);
+  font-family: var(--font-lato), system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -81,14 +78,14 @@ body::before {
   pointer-events: none;
   z-index: 0;
   opacity: .5;
-  background-image: radial-gradient(rgba(38,32,26,.025) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(44, 42, 41, .025) 1px, transparent 1px);
   background-size: 4px 4px;
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-fraunces), Georgia, serif;
+  font-family: var(--font-playfair), Georgia, serif;
   font-weight: 400;
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -0.01em;
 }
 
@@ -98,4 +95,5 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
