@@ -34,13 +34,11 @@ export default function Footer() {
 
         {/* Shop Column */}
         <div>
-          <h3 className="font-display text-lg font-semibold mb-4 text-cream">Məhsullarımız</h3>
+          <h3 className="font-display text-lg font-semibold mb-4 text-cream">Shop</h3>
           <ul className="space-y-2.5 text-sm text-cream/80">
-            <li><Link href="/product/dali-bal" className="hover:text-cream transition-colors">Təbii Dağ Balı (500q)</Link></li>
-            <li><Link href="/product/murebbe" className="hover:text-cream transition-colors">Ev Mürəbbəsi (450q)</Link></li>
-            <li><Link href="/product/keklikotu" className="hover:text-cream transition-colors">Kəklikotu (100q)</Link></li>
-            <li><Link href="/product/sari-cicek" className="hover:text-cream transition-colors">Sarı Çiçək / Baf Çayı (80q)</Link></li>
-            <li><Link href="/product/dag-cayi" className="hover:text-cream transition-colors">Dağ Çayı Blend (120q)</Link></li>
+            <li><Link href="/shop" className="hover:text-cream transition-colors">Shop All</Link></li>
+            <li><Link href="/shop?category=textiles" className="hover:text-cream transition-colors">Textiles</Link></li>
+            <li><Link href="/shop?category=gourmet" className="hover:text-cream transition-colors">Gourmet</Link></li>
           </ul>
         </div>
 
