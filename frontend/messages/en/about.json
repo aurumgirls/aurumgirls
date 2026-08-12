@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "About Our Community — By Aurum Girls",
+    "description": "The story of By Aurum Girls: a socio-economic community project bringing together artisan women in Caucasus mountain villages."
+  },
+  "hero": {
+    "title": "The Strength and Love of Our Rural Women",
+    "subtitle": "We are a community project that brings together artisan women living in mountain villages and delivers their handiwork straight to your table.",
+    "imageAlt": "The By Aurum Girls community"
+  },
+  "impact": {
+    "stat1Value": "50+",
+    "stat1Label": "Artisan Women",
+    "stat2Value": "5+",
+    "stat2Label": "Mountain Villages",
+    "stat3Value": "100%",
+    "stat3Label": "Natural Production",
+    "stat4Value": "Handmade",
+    "stat4Label": "In Every Product"
+  },
+  "story": {
+    "title": "Our Story",
+    "paragraph1": "By Aurum Girls was founded as a socio-economic community project bringing together our rural women living in the high pastures of the Caucasus mountains. Our goal was simple: open a door to fair earnings for our women's labor, without losing the traditional recipes and gathering methods preserved for generations.",
+    "paragraph2": "Every jar of honey, every pot of jam, and every bundle of tea is made by our rural women with their own hands, in season, without chemical additives. They hand-pick the plants from mountain pastures, process them using traditional methods, and deliver the product straight to you.",
+    "paragraph3": "This path both protects the purity of nature and gives our women a steady source of income and economic independence for their families. By buying from By Aurum Girls, you directly support this community."
+  },
+  "missionVision": {
+    "missionTitle": "Our Mission",
+    "missionText": "To honor the traditional skills of our rural women by giving them fair income and economic independence, while delivering 100% natural food products free of chemical additives to you.",
+    "visionTitle": "Our Vision",
+    "visionText": "A future where women's communities in every mountain village of Azerbaijan are recognized and supported through their own products — where traditions are preserved and nature is respected."
+  },
+  "artisans": {
+    "title": "Our Artisans",
+    "subtitle": "Behind every category stand our rural women, working with years of experience and love.",
+    "role1Title": "Honey Makers",
+    "role1Text": "Our women who tend beehives in the mountain pastures and produce pure, strained honey each season.",
+    "role2Title": "Jam Artisans",
+    "role2Text": "Our artisans who hand-pick wild forest berries and turn them into jam using traditional village methods.",
+    "role3Title": "Tea Harvesters",
+    "role3Text": "Our women who hand-pick and dry thyme, yellow flower, and mountain herbs at just the right season."
+  },
+  "gallery": {
+    "title": "From Our Village Life",
+    "item1": "Mountain Pastures",
+    "item2": "Straining Honey",
+    "item3": "Cooking Jam",
+    "item4": "Hand Harvesting",
+    "item5": "Packaging",
+    "item6": "Community Gatherings"
+  },
+  "cta": {
+    "title": "Taste the Difference",
+    "subtitle": "Discover the rich taste of natural mountain honey, jam, and teas handcrafted by our rural women.",
+    "shopButton": "Browse Products",
+    "contactButton": "Contact Us"
+  }
+}

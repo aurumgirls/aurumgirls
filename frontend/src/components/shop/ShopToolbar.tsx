@@ -2,6 +2,7 @@
 
 import { SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ShopToolbarProps {
   resultCount: number;
@@ -11,16 +12,17 @@ interface ShopToolbarProps {
   isFiltersOpen: boolean;
 }
 
-const sortOptions = [
-  { value: 'featured', label: 'Featured' },
-  { value: 'newest', label: 'Newest Arrivals' },
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-];
-
 export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFilters, isFiltersOpen }: ShopToolbarProps) {
+  const t = useTranslations('shop');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const sortOptions = [
+    { value: 'featured', label: t('toolbar.sortFeatured') },
+    { value: 'newest', label: t('toolbar.sortNewest') },
+    { value: 'price-asc', label: t('toolbar.sortPriceAsc') },
+    { value: 'price-desc', label: t('toolbar.sortPriceDesc') },
+  ];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,25 +34,25 @@ export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFi
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const currentLabel = sortOptions.find(o => o.value === currentSort)?.label || 'Sort by';
+  const currentLabel = sortOptions.find(o => o.value === currentSort)?.label ?? t('toolbar.sortLabel');
 
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
       <div className="text-slate text-sm">
-        Showing <span className="font-semibold text-charcoal">{resultCount}</span> delicious products
+        {t('toolbar.resultsPrefix')} <span className="font-semibold text-charcoal">{resultCount}</span> {t('toolbar.resultsSuffix')}
       </div>
 
       <div className="flex items-center gap-3 w-full sm:w-auto">
         <button
           onClick={onToggleFilters}
           className={`lg:hidden flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
-            isFiltersOpen 
-              ? 'bg-forest text-white border-forest' 
+            isFiltersOpen
+              ? 'bg-forest text-white border-forest'
               : 'bg-white text-charcoal border-sand hover:bg-linen'
           }`}
         >
           <SlidersHorizontal className="w-4 h-4" />
-          Filters
+          {t('toolbar.filtersButton')}
         </button>
 
         <div className="relative w-full sm:w-auto" ref={dropdownRef}>

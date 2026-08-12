@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "title": "By Aurum Girls — Natural Food Products by a Women's Community",
+    "description": "Natural mountain honey, homemade jams, thyme and mountain teas, lovingly made by our rural women. Delivered by post with secure online payment."
+  },
+  "announcement": "🌿 Natural Products by Our Rural Women — Delivered to Your Door by Azərpoçt!",
+  "nav": {
+    "home": "Home",
+    "about": "About Our Community",
+    "offerings": "Our Services & Products",
+    "trainings": "Trainings",
+    "ecoCamp": "Eco Camp",
+    "products": "Products",
+    "contact": "Contact"
+  },
+  "cart": "Cart",
+  "toggleMenu": "Toggle menu",
+  "language": {
+    "az": "AZ",
+    "en": "EN",
+    "label": "Switch language"
+  },
+  "footer": {
+    "brandDescription": "100% natural mountain honey, homemade jams and mountain teas, handcrafted by our rural women. Delivered across Azerbaijan by Azərpoçt.",
+    "offeringsHeading": "Our Services & Products",
+    "trainings": "Trainings",
+    "ecoCamp": "Eco Camp",
+    "giftSet": "Gift Set",
+    "individualProducts": "Individual Products",
+    "communityHeading": "Our Community",
+    "aboutLink": "About Our Community",
+    "contactHeading": "Delivery & Support",
+    "contactLink": "Contact",
+    "deliveryInfo": "About Azərpoçt Delivery",
+    "onlinePayment": "Online Payment",
+    "faq": "Frequently Asked Questions",
+    "copyright": "All rights reserved.",
+    "deliveryBadge": "📦 Azərpoçt Delivery",
+    "paymentBadge": "💳 Visa / Mastercard"
+  }
+}

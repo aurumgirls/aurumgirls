@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { priceBounds, shopCategories } from '@/lib/shop-data';
+import { useTranslations } from 'next-intl';
+import { priceBounds } from '@/lib/shop-data';
 
 export interface FilterState {
   priceRange: [number, number];
@@ -13,6 +13,8 @@ interface ShopFiltersProps {
 }
 
 export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
+  const t = useTranslations('shop');
+
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFilterChange({ ...filters, priceRange: [priceBounds.min, parseInt(e.target.value)] });
   };
@@ -26,19 +28,19 @@ export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
   return (
     <div className="bg-white p-6 rounded-2xl border border-sand">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="font-display text-lg text-forest">Filters</h3>
+        <h3 className="font-display text-lg text-forest">{t('filters.title')}</h3>
         {isFiltered && (
-          <button 
+          <button
             onClick={clearFilters}
             className="text-sm text-terracotta hover:text-terracotta-light transition-colors"
           >
-            Clear all
+            {t('filters.clearAll')}
           </button>
         )}
       </div>
 
       <div className="mb-8">
-        <h4 className="font-medium text-charcoal mb-4">Price Range</h4>
+        <h4 className="font-medium text-charcoal mb-4">{t('filters.priceRange')}</h4>
         <div className="space-y-4">
           <input
             type="range"
@@ -49,14 +51,11 @@ export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
             className="w-full accent-terracotta"
           />
           <div className="flex justify-between text-sm text-slate">
-            <span>${priceBounds.min}</span>
-            <span>${filters.priceRange[1]}</span>
+            <span>{priceBounds.min} ₼</span>
+            <span>{filters.priceRange[1]} ₼</span>
           </div>
         </div>
       </div>
-      
-      {/* We removed availability filter since yogurt is always available, 
-          and category is handled by CategoryStrip. We can keep this component simple. */}
     </div>
   );
 }

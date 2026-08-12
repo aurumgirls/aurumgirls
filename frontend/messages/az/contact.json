@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Əlaqə — By Aurum Girls",
+    "description": "By Aurum Girls icması ilə əlaqə saxlayın."
+  },
+  "hero": {
+    "title": "Bizimlə Əlaqə Saxlayın",
+    "subtitle": "Məhsullarımız, topdan satış və ya sadəcə salamlaşmaq istəyirsinizsə — sizi eşitməkdən məmnun olarıq."
+  },
+  "info": {
+    "title": "Əlaqə Məlumatları",
+    "locationLabel": "İcmamız",
+    "locationValue1": "Qafqaz Dağ Kəndləri",
+    "locationValue2": "Azərbaycan",
+    "emailLabel": "E-poçt Ünvanımız",
+    "email": "info@byaurumgirls.az",
+    "phoneLabel": "Bizi Zəngləyin",
+    "phone": "+994 50 123 45 67",
+    "hoursLabel": "İş Saatları",
+    "hoursValue": "B.e - Cümə, 09:00 - 18:00",
+    "followLabel": "İcmamızı İzləyin"
+  },
+  "form": {
+    "title": "Mesaj Göndərin",
+    "nameLabel": "Ad Soyad",
+    "namePlaceholder": "Ad Soyad",
+    "emailLabel": "E-poçt Ünvanı",
+    "emailPlaceholder": "e-poçt@nümunə.com",
+    "topicLabel": "Mövzu Nədir?",
+    "topicPlaceholder": "Mövzu seçin...",
+    "topicGeneral": "Ümumi Sual",
+    "topicWholesale": "Topdan Satış",
+    "topicPress": "Mətbuat & Media",
+    "topicQuality": "Məhsul Keyfiyyəti",
+    "topicWhereToBuy": "Haradan Ala Bilərəm?",
+    "messageLabel": "Mesajınız",
+    "messagePlaceholder": "Sizə necə kömək edə bilərik?",
+    "sendButton": "Mesajı Göndər",
+    "sendingButton": "Göndərilir...",
+    "successTitle": "Mesaj Göndərildi!",
+    "successText": "Bizimlə əlaqə saxladığınız üçün təşəkkür edirik. Tezliklə sizinlə əlaqə saxlayacağıq."
+  },
+  "faq": {
+    "title": "Tez-tez Verilən Suallar",
+    "subtitle": "Məhsullarımız haqqında ən çox verilən sualların qısa cavabları.",
+    "q1": "By Aurum Girls məhsullarını haradan ala bilərəm?",
+    "a1": "Bütün məhsullarımızı birbaşa saytımızdan sifariş edə, Azərpoçt vasitəsilə Azərbaycanın istənilən bölgəsinə çatdıra bilərsiniz.",
+    "q2": "Məhsullar həqiqətən 100% təbiidirmi?",
+    "a2": "Bəli! Bal, mürəbbə və çaylarımız kəndli qadınlarımız tərəfindən heç bir kimyəvi qatqı olmadan, ənənəvi üsullarla hazırlanır.",
+    "q3": "Sifarişim nə qədər müddətdə çatar?",
+    "a3": "Azərpoçt vasitəsilə çatdırılma adətən 3-5 iş günü çəkir. Bakı daxilində bəzən daha tez çata bilər.",
+    "q4": "Topdan satış təklif edirsinizmi?",
+    "a4": "Bəli, dəyərlərimizi bölüşən pərakəndə satıcılarla əməkdaşlığa açığıq. Mövzu olaraq \"Topdan Satış\" seçərək bizimlə əlaqə formu vasitəsilə əlaqə saxlayın."
+  },
+  "map": {
+    "title": "Qafqaz Dağ Kəndlərimiz",
+    "subtitle": "Azərbaycan",
+    "note": "* İcmamız fiziki mağaza deyil, lakin məhsullarımızı bütün Azərbaycana Azərpoçt ilə çatdırırıq!"
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 interface PaginationProps {
@@ -10,6 +11,7 @@ interface PaginationProps {
 }
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+  const t = useTranslations('shop');
   if (totalPages <= 1) return null;
 
   return (
@@ -18,7 +20,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-sand text-slate hover:text-terracotta hover:border-terracotta disabled:opacity-50 disabled:hover:text-slate disabled:hover:border-sand transition-colors"
-        aria-label="Previous page"
+        aria-label={t('pagination.previous')}
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
@@ -45,7 +47,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-sand text-slate hover:text-terracotta hover:border-terracotta disabled:opacity-50 disabled:hover:text-slate disabled:hover:border-sand transition-colors"
-        aria-label="Next page"
+        aria-label={t('pagination.next')}
       >
         <ChevronRight className="w-5 h-5" />
       </button>

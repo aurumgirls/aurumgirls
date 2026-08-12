@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Contact — By Aurum Girls",
+    "description": "Get in touch with the By Aurum Girls community."
+  },
+  "hero": {
+    "title": "Get in Touch",
+    "subtitle": "Whether it's about our products, wholesale, or just to say hello — we'd love to hear from you."
+  },
+  "info": {
+    "title": "Contact Information",
+    "locationLabel": "Our Community",
+    "locationValue1": "Caucasus Mountain Villages",
+    "locationValue2": "Azerbaijan",
+    "emailLabel": "Email Us",
+    "email": "info@byaurumgirls.az",
+    "phoneLabel": "Call Us",
+    "phone": "+994 50 123 45 67",
+    "hoursLabel": "Business Hours",
+    "hoursValue": "Mon - Fri, 9:00 AM - 6:00 PM",
+    "followLabel": "Follow Our Community"
+  },
+  "form": {
+    "title": "Send a Message",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "Full Name",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "topicLabel": "What is this regarding?",
+    "topicPlaceholder": "Select a topic...",
+    "topicGeneral": "General Inquiry",
+    "topicWholesale": "Wholesale Inquiry",
+    "topicPress": "Press & Media",
+    "topicQuality": "Product Quality",
+    "topicWhereToBuy": "Where to Buy",
+    "messageLabel": "Your Message",
+    "messagePlaceholder": "How can we help you?",
+    "sendButton": "Send Message",
+    "sendingButton": "Sending...",
+    "successTitle": "Message Sent!",
+    "successText": "Thank you for reaching out. We'll get back to you soon."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Quick answers to the most common questions about our products.",
+    "q1": "Where can I buy By Aurum Girls products?",
+    "a1": "You can order all our products directly from our website, delivered anywhere in Azerbaijan via Azərpoçt.",
+    "q2": "Are the products really 100% natural?",
+    "a2": "Yes! Our honey, jams, and teas are made by our rural women using traditional methods, with no chemical additives whatsoever.",
+    "q3": "How long does delivery take?",
+    "a3": "Delivery via Azərpoçt usually takes 3-5 business days. Within Baku it can sometimes arrive sooner.",
+    "q4": "Do you offer wholesale?",
+    "a4": "Yes, we're open to partnering with retailers who share our values. Select \"Wholesale Inquiry\" as the topic and reach out through our contact form."
+  },
+  "map": {
+    "title": "Our Caucasus Mountain Villages",
+    "subtitle": "Azerbaijan",
+    "note": "* Our community isn't a physical storefront, but we deliver our products across all of Azerbaijan via Azərpoçt!"
+  }
+}
