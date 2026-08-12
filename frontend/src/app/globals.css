@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --aurum-green: #2E7D32;
-  --aurum-green-light: #388E3C;
+  --aurum-green: #339146;
+  --aurum-green-light: #43A047;
   --aurum-red: #D32F2F;
   --aurum-red-light: #E53935;
   --aurum-gold: #F57C00;
@@ -44,18 +44,20 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  background: var(--cream);
-  color: var(--charcoal);
-  font-family: var(--font-outfit), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
+@layer base {
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: var(--font-outfit), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-playfair), Georgia, serif;
-  font-weight: 600;
-  line-height: 1.1;
-  color: var(--aurum-green);
+  h1, h2, h3, h4 {
+    font-family: var(--font-playfair), Georgia, serif;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--aurum-green);
+  }
 }
 
 .btn-primary {

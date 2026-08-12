@@ -72,13 +72,13 @@ export function GiftSetBanner() {
 
           {/* Right Column: Real Box Photo */}
           <FadeUp delay={0.2}>
-            <div className="relative aspect-square max-w-md mx-auto rounded-3xl overflow-hidden border-4 border-cream/20 shadow-soft-lg group">
+            <div className="relative aspect-square max-w-md mx-auto rounded-3xl overflow-hidden border-4 border-cream/20 shadow-soft-lg group bg-forest-light/30 flex items-center justify-center">
               <Image
-                src="/images/aurum-gift-set-real.jpg"
+                src="/images/logo-white.png"
                 alt={t('giftBanner.imageAlt')}
                 fill
                 unoptimized
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                className="object-contain p-12 group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute top-4 right-4 bg-terracotta text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
                 {t('giftBanner.savingsBadge')}
