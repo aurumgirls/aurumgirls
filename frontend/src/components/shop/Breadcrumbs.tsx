@@ -1,17 +1,20 @@
 "use client";
 
-import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 interface BreadcrumbsProps {
   items: { label: string; href?: string }[];
 }
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
+  const t = useTranslations('common');
+
   return (
     <nav className="flex items-center text-sm mb-6 overflow-x-auto whitespace-nowrap pb-2">
       <Link href="/" className="text-slate hover:text-terracotta transition-colors">
-        Home
+        {t('nav.home')}
       </Link>
       {items.map((item, index) => (
         <div key={index} className="flex items-center">

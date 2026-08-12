@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "titleSuffix": "By Aurum Girls",
+    "notFoundTitle": "Product Not Found"
+  },
+  "breadcrumbs": {
+    "shop": "Products"
+  },
+  "gallery": {
+    "previous": "Previous image",
+    "next": "Next image"
+  },
+  "purchase": {
+    "newBadge": "New",
+    "reviewsSuffix": "reviews",
+    "quantityLabel": "Quantity",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy It Now",
+    "freeShipping": "Free Shipping",
+    "freeShippingThreshold": "50 ₼+",
+    "shipsFresh": "Ships Fresh",
+    "secureCheckout": "Secure Checkout"
+  },
+  "info": {
+    "detailsTitle": "Product Details",
+    "ingredientsTitle": "Ingredients",
+    "originLabel": "Origin",
+    "storageLabel": "Storage",
+    "storageValue": "Store in a cool, dry place away from direct sunlight.",
+    "shelfLifeLabel": "Shelf Life",
+    "shelfLifeValue": "12 months from the production date",
+    "ingredientsValue": "100% natural ingredients — no artificial additives, colorants, or preservatives."
+  },
+  "highlights": {
+    "point1": "Handcrafted by our rural women",
+    "point2": "100% natural, free of chemical additives",
+    "point3": "Made with a traditional village recipe",
+    "point4": "Gathered from Caucasus mountain pastures",
+    "point5": "No artificial flavors or preservatives"
+  },
+  "brandCard": {
+    "title": "About By Aurum Girls",
+    "subtitle": "A Women's Community from the Caucasus Mountain Villages",
+    "description": "We are a community project bringing together artisan women living in mountain villages. Every product is handcrafted using natural methods and delivered straight to you.",
+    "cta": "Our Story"
+  },
+  "related": {
+    "title": "You May Also Like"
+  }
+}

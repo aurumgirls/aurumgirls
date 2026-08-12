@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Səbətiniz — By Aurum Girls",
+    "description": "Səbətinizdəki məhsulları nəzərdən keçirin."
+  },
+  "title": "Səbətiniz",
+  "empty": {
+    "title": "Səbətiniz boşdur",
+    "subtitle": "Hələ məhsul əlavə etməmisiniz. Məhsullarımıza baxıb sevdiklərinizi seçin.",
+    "cta": "Məhsullara Bax"
+  },
+  "item": {
+    "remove": "Sil",
+    "decrease": "Azalt",
+    "increase": "Artır"
+  },
+  "summary": {
+    "title": "Sifariş Xülasəsi",
+    "subtotal": "Ara Cəm",
+    "shipping": "Çatdırılma (Azərpoçt)",
+    "freeShipping": "Pulsuz",
+    "discount": "Endirim",
+    "total": "Cəmi",
+    "checkoutButton": "Sifarişi Tamamla"
+  },
+  "coupon": {
+    "toggle": "Endirim kodunuz var?",
+    "placeholder": "məs. AURUM10",
+    "apply": "Tətbiq et",
+    "invalid": "Yanlış endirim kodu.",
+    "success": "Endirim kodu tətbiq olundu!"
+  }
+}

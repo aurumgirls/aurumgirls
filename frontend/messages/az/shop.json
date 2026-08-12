@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "title": "Bizim Xidmət və Məhsullarımız — By Aurum Girls",
+    "description": "Kəndli qadınlarımızın hazırladığı təbii dağ balı, ev mürəbbələri, kəklikotu və dağ çayları."
+  },
+  "hero": {
+    "title": "Bizim Təbii Məhsullarımız",
+    "subtitle": "Qafqaz dağlarının ətəklərindən süfrənizə — kəndli qadınlarımızın əl əməyi ilə hazırlanan 100% təbii məhsullar."
+  },
+  "categories": {
+    "allLabel": "Hamısı",
+    "set": "Hədiyyə Seti",
+    "individual": "Tək Məhsullar"
+  },
+  "toolbar": {
+    "resultsPrefix": "Göstərilir",
+    "resultsSuffix": "məhsul",
+    "sortFeatured": "Seçilmişlər",
+    "sortNewest": "Ən Yeni",
+    "sortPriceAsc": "Qiymət: Aşağıdan Yuxarı",
+    "sortPriceDesc": "Qiymət: Yuxarıdan Aşağı",
+    "filtersButton": "Filtrlər",
+    "sortLabel": "Sırala"
+  },
+  "filters": {
+    "title": "Filtrlər",
+    "clearAll": "Hamısını təmizlə",
+    "priceRange": "Qiymət Aralığı"
+  },
+  "search": {
+    "placeholder": "Məhsul axtar..."
+  },
+  "empty": {
+    "title": "Məhsul tapılmadı",
+    "subtitle": "Filtrləri və ya axtarış sözünü dəyişməyi cəhd edin.",
+    "clearButton": "Bütün Filtrləri Təmizlə"
+  },
+  "productCard": {
+    "addToCart": "Səbətə əlavə et",
+    "newBadge": "Yeni"
+  },
+  "breadcrumbs": {
+    "home": "Ana Səhifə",
+    "shop": "Məhsullar"
+  },
+  "pagination": {
+    "previous": "Əvvəlki səhifə",
+    "next": "Növbəti səhifə"
+  },
+  "products": {
+    "hadiyya-seti": {
+      "name": "Hədiyyə Seti (5-i 1-ində)",
+      "description": "Bütün 5 təbii kənd məhsulumuz xüsusi hədiyyə qutusunda: Dağ Balı (500q), Ev Mürəbbəsi (450q), Kəklikotu (100q), Sarı Çiçək/Baf Çayı (80q), Dağ Çayı (120q).",
+      "region": "Qafqaz İcması",
+      "badge": "Tam Dəst (5 Məhsul)"
+    },
+    "dali-bal": {
+      "name": "Təbii Dağ Balı (500q)",
+      "description": "Yüksək dağ yaylalarından toplanmış 100% xalis dağ balı.",
+      "region": "Qafqaz İcması",
+      "badge": "100% Təbii"
+    },
+    "murebbe": {
+      "name": "Ev Mürəbbəsi (450q)",
+      "description": "Meşə giləmeyvələrindən əllə hazırlanmış ev mürəbbəsi.",
+      "region": "Qafqaz İcması",
+      "badge": "Ənənəvi Resept"
+    },
+    "keklikotu": {
+      "name": "Kəklikotu / Thyme (100q)",
+      "description": "Qafqaz dağlarından əllə toplanmış ətirli dağ kəklikotusu.",
+      "region": "Qafqaz İcması",
+      "badge": "Ətirli Dağ Bitkisi"
+    },
+    "sari-cicek": {
+      "name": "Sarı Çiçək / Baf Çayı (80q)",
+      "description": "Təbii dağ çiçəyi və ıhlamur qarışığı.",
+      "region": "Qafqaz İcması",
+      "badge": "Sakitləşdirici Blend"
+    },
+    "dag-cayi": {
+      "name": "Dağ Çayı Blend (120q)",
+      "description": "Təbiətin ətri ilə zəngin xüsusi dağ bitkiləri çayı.",
+      "region": "Qafqaz İcması",
+      "badge": "Antioksidant Zəngin"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Your Cart — By Aurum Girls",
+    "description": "Review the products in your cart."
+  },
+  "title": "Your Cart",
+  "empty": {
+    "title": "Your cart is empty",
+    "subtitle": "You haven't added any products yet. Browse our products and pick your favorites.",
+    "cta": "Browse Products"
+  },
+  "item": {
+    "remove": "Remove",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
+  },
+  "summary": {
+    "title": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping (Azərpoçt)",
+    "freeShipping": "Free",
+    "discount": "Discount",
+    "total": "Total",
+    "checkoutButton": "Proceed to Checkout"
+  },
+  "coupon": {
+    "toggle": "Have a promo code?",
+    "placeholder": "e.g. AURUM10",
+    "apply": "Apply",
+    "invalid": "Invalid promo code.",
+    "success": "Promo code applied successfully!"
+  }
+}

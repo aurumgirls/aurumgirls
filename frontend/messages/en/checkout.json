@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "Secure Checkout — By Aurum Girls",
+    "description": "Complete your purchase."
+  },
+  "secureCheckout": "Secure Checkout",
+  "title": "Checkout",
+  "contactInfo": "Contact Information",
+  "emailPlaceholder": "Email",
+  "shippingAddress": "Shipping Address",
+  "firstNamePlaceholder": "First Name",
+  "lastNamePlaceholder": "Last Name",
+  "addressPlaceholder": "Address",
+  "cityPlaceholder": "City / Region",
+  "zipPlaceholder": "Postal Code (optional)",
+  "delivery": {
+    "title": "Delivery Method",
+    "standardName": "Azərpoçt Standard Delivery",
+    "standardTime": "3-5 business days"
+  },
+  "payment": {
+    "title": "Online Payment Method",
+    "cardTitle": "Bank Card (Visa / Mastercard)",
+    "cardSubtitle": "Secure 3D Secure payment on the site",
+    "walletTitle": "Apple Pay / Google Pay",
+    "walletSubtitle": "Fast one-click payment",
+    "cardNameLabel": "Name on card",
+    "cardNamePlaceholder": "Jane Doe",
+    "cardNumberLabel": "Card Number",
+    "expiryLabel": "Expiry Date",
+    "cvvLabel": "CVV / CVC",
+    "secureNote": "All your card payments are 100% protected with SSL encryption."
+  },
+  "placeOrder": "Place Order",
+  "emptyCart": "Add products to your cart before checking out.",
+  "emptyCartCta": "Browse Products",
+  "orderSuccess": {
+    "title": "Your Order Has Been Placed!",
+    "text": "Thank you! Details about your order will be sent to the email address you provided.",
+    "backHome": "Back to Home"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "contact": "Contact"
+  },
+  "summary": {
+    "title": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "freeShipping": "Free",
+    "total": "Total",
+    "qty": "Qty"
+  }
+}

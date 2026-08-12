@@ -2,6 +2,7 @@
 
 import { Search, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
   initialValue?: string;
@@ -10,6 +11,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ initialValue = '', onSearch, className = '' }: SearchBarProps) {
+  const t = useTranslations('shop');
   const [query, setQuery] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +41,7 @@ export function SearchBar({ initialValue = '', onSearch, className = '' }: Searc
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for delicious skyr..."
+          placeholder={t('search.placeholder')}
           className="w-full bg-white border border-sand rounded-full py-3 pl-12 pr-12 text-charcoal placeholder:text-slate focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all"
         />
         {query && (

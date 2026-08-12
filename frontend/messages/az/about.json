@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "title": "İcma Haqqında — By Aurum Girls",
+    "description": "By Aurum Girls-in hekayəsi: Qafqaz dağ kəndlərində yaşayan sənətkar qadınlarımızı bir araya gətirən sosial-iqtisadi icma layihəsi."
+  },
+  "hero": {
+    "title": "Kəndli Qadınlarımızın Gücü və Sevgisi",
+    "subtitle": "Biz — dağ kəndlərində yaşayan sənətkar qadınları bir araya gətirən, onların əl əməyini süfrənizə çatdıran icma layihəsiyik.",
+    "imageAlt": "By Aurum Girls icması"
+  },
+  "impact": {
+    "stat1Value": "50+",
+    "stat1Label": "Sənətkar Qadın",
+    "stat2Value": "5+",
+    "stat2Label": "Dağ Kəndi",
+    "stat3Value": "100%",
+    "stat3Label": "Təbii İstehsal",
+    "stat4Value": "Əl İşi",
+    "stat4Label": "Hər Məhsulda"
+  },
+  "story": {
+    "title": "Bizim Hekayəmiz",
+    "paragraph1": "By Aurum Girls, Qafqaz dağlarının yüksək yaylalarında yaşayan kəndli qadınlarımızı bir araya gətirən sosial-iqtisadi icma layihəsi olaraq yarandı. Məqsədimiz sadə idi: nəsillərdən bəri qorunub saxlanan ənənəvi resept və toplama üsullarını itirmədən, qadınlarımızın əməyinə ədalətli qazanc qapısı açmaq.",
+    "paragraph2": "Hər bir qavanoz bal, hər bir mürəbbə qabı və hər bir çay dəstəsi — kəndli qadınlarımızın öz əlləri ilə, mövsümünə uyğun, kimyəvi qatqı olmadan hazırlanır. Onlar dağ yaylalarından bitkiləri əllə toplayır, ənənəvi üsullarla emal edir və məhsulu birbaşa sizə çatdırırlar.",
+    "paragraph3": "Bu yol həm təbiətin təmizliyini qoruyur, həm də qadınlarımıza öz ailələri üçün sabit gəlir mənbəyi və iqtisadi müstəqillik qazandırır. By Aurum Girls almaqla siz birbaşa bu icmaya dəstək olursunuz."
+  },
+  "missionVision": {
+    "missionTitle": "Missiyamız",
+    "missionText": "Kəndli qadınlarımızın ənənəvi bacarıqlarını dəyərləndirərək, onlara ədalətli gəlir və iqtisadi müstəqillik qazandırmaq, eyni zamanda sizə 100% təbii, kimyəvi qatqısız qida məhsulları çatdırmaq.",
+    "visionTitle": "Vizyonumuz",
+    "visionText": "Azərbaycanın hər bir dağ kəndində qadın icmalarının öz məhsulları ilə tanınması və dəstəklənməsi — ənənələrin qorunduğu, təbiətin hörmət gördüyü bir gələcək."
+  },
+  "artisans": {
+    "title": "Bizim Sənətkarlarımız",
+    "subtitle": "Hər bir kateqoriyanın arxasında illərin təcrübəsi və sevgi ilə işləyən kəndli qadınlarımız dayanır.",
+    "role1Title": "Bal Ustaları",
+    "role1Text": "Dağ yaylalarındakı arı ailələrini qoruyaraq, mövsümündə xalis, süzmə bal hazırlayan qadınlarımız.",
+    "role2Title": "Mürəbbə Sənətkarları",
+    "role2Text": "Meşə giləmeyvələrini əllə yığıb, ənənəvi kənd üsulu ilə mürəbbəyə çevirən ustalarımız.",
+    "role3Title": "Çay Yığıcıları",
+    "role3Text": "Kəklikotu, sarı çiçək və dağ bitkilərini düzgün mövsümdə əllə toplayıb qurudan qadınlarımız."
+  },
+  "gallery": {
+    "title": "Kənd Həyatımızdan",
+    "item1": "Dağ Yaylaları",
+    "item2": "Bal Süzülməsi",
+    "item3": "Mürəbbə Bişirilməsi",
+    "item4": "Əl İlə Toplama",
+    "item5": "Qablaşdırma",
+    "item6": "İcma Görüşləri"
+  },
+  "cta": {
+    "title": "Fərqi Dadın",
+    "subtitle": "Kəndli qadınlarımızın əl əməyi ilə hazırladığı təbii dağ balı, mürəbbə və çayların zəngin dadını kəşf edin.",
+    "shopButton": "Məhsullara Bax",
+    "contactButton": "Bizimlə Əlaqə"
+  }
+}

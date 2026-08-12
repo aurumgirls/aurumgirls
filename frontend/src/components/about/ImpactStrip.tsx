@@ -1,11 +1,15 @@
 "use client";
 
+import { useTranslations } from 'next-intl';
+
 export default function ImpactStrip() {
+  const t = useTranslations('about');
+
   const stats = [
-    { value: "100+", label: "Years of Farming" },
-    { value: "5th", label: "Generation Family Farm" },
-    { value: "100%", label: "Organic Certified" },
-    { value: "Small", label: "Batch Crafted" },
+    { valueKey: 'impact.stat1Value', labelKey: 'impact.stat1Label' },
+    { valueKey: 'impact.stat2Value', labelKey: 'impact.stat2Label' },
+    { valueKey: 'impact.stat3Value', labelKey: 'impact.stat3Label' },
+    { valueKey: 'impact.stat4Value', labelKey: 'impact.stat4Label' },
   ];
 
   return (
@@ -15,10 +19,10 @@ export default function ImpactStrip() {
           {stats.map((stat, idx) => (
             <div key={idx} className="flex flex-col items-center text-center px-4">
               <span className="text-3xl md:text-4xl lg:text-5xl font-display text-cream mb-2">
-                {stat.value}
+                {t(stat.valueKey)}
               </span>
               <span className="text-sm md:text-base text-linen/80 uppercase tracking-wider">
-                {stat.label}
+                {t(stat.labelKey)}
               </span>
             </div>
           ))}

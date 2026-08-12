@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 import { Breadcrumbs } from './Breadcrumbs';
 import { SearchBar } from './SearchBar';
 import { CategoryStrip } from './CategoryStrip';
@@ -12,11 +14,11 @@ import { Pagination } from './Pagination';
 import FadeUp from '@/components/motion/FadeUp';
 import { StaggerGroup } from '@/components/motion/Stagger';
 import { shopProducts, priceBounds } from '@/lib/shop-data';
-import { SlidersHorizontal } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 12;
 
 export function ShopExperience() {
+  const t = useTranslations('shop');
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -40,9 +42,14 @@ export function ShopExperience() {
 
   // Derived state
   const filteredProducts = useMemo(() => {
+    const query = currentSearch.toLowerCase();
     return shopProducts.filter((product) => {
       if (currentCategory !== 'all' && product.category !== currentCategory) return false;
-      if (currentSearch && !product.name.toLowerCase().includes(currentSearch.toLowerCase())) return false;
+      if (query) {
+        const azName = product.name.toLowerCase();
+        const enName = t(`products.${product.slug}.name`).toLowerCase();
+        if (!azName.includes(query) && !enName.includes(query)) return false;
+      }
       if (product.price < filters.priceRange[0] || product.price > filters.priceRange[1]) return false;
       return true;
     }).sort((a, b) => {
@@ -53,7 +60,7 @@ export function ShopExperience() {
         default: return b.rating - a.rating;
       }
     });
-  }, [currentCategory, currentSearch, filters, currentSort]);
+  }, [currentCategory, currentSearch, filters, currentSort, t]);
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredProducts.slice(
@@ -74,17 +81,17 @@ export function ShopExperience() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
-      <Breadcrumbs items={[{ label: 'Shop', href: '/shop' }]} />
+      <Breadcrumbs items={[{ label: t('breadcrumbs.shop'), href: '/shop' }]} />
 
       <div className="flex flex-col md:flex-row gap-6 mb-8 items-center">
         <div className="w-full md:w-2/3">
-          <CategoryStrip 
-            selectedCategory={currentCategory} 
-            onSelectCategory={(c) => updateUrl({ category: c === 'all' ? null : c, page: '1' })} 
+          <CategoryStrip
+            selectedCategory={currentCategory}
+            onSelectCategory={(c) => updateUrl({ category: c === 'all' ? null : c, page: '1' })}
           />
         </div>
         <div className="w-full md:w-1/3">
-          <SearchBar 
+          <SearchBar
             initialValue={currentSearch}
             onSearch={(q) => updateUrl({ q: q || null, page: '1' })}
           />
@@ -99,7 +106,7 @@ export function ShopExperience() {
         </aside>
 
         <div className="flex-1 w-full">
-          <ShopToolbar 
+          <ShopToolbar
             resultCount={filteredProducts.length}
             currentSort={currentSort}
             onSortChange={(s) => updateUrl({ sort: s, page: '1' })}
@@ -109,16 +116,16 @@ export function ShopExperience() {
 
           {filteredProducts.length === 0 ? (
             <div className="py-20 text-center bg-white rounded-2xl border border-sand">
-              <h3 className="text-xl font-display text-forest mb-2">No products found</h3>
-              <p className="text-slate">Try adjusting your filters or search term.</p>
-              <button 
+              <h3 className="text-xl font-display text-forest mb-2">{t('empty.title')}</h3>
+              <p className="text-slate">{t('empty.subtitle')}</p>
+              <button
                 onClick={() => {
                   setFilters({ priceRange: [priceBounds.min, priceBounds.max] });
                   router.push('/shop');
                 }}
                 className="mt-6 px-6 py-2 bg-terracotta text-white rounded-full hover:bg-terracotta-light transition-colors"
               >
-                Clear All Filters
+                {t('empty.clearButton')}
               </button>
             </div>
           ) : (
@@ -133,7 +140,7 @@ export function ShopExperience() {
 
               {totalPages > 1 && (
                 <div className="mt-12 flex justify-center">
-                  <Pagination 
+                  <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
                     onPageChange={(p) => updateUrl({ page: p.toString() })}

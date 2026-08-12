@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "Sifarişin Tamamlanması — By Aurum Girls",
+    "description": "Sifarişinizi tamamlayın."
+  },
+  "secureCheckout": "Təhlükəsiz Ödəniş",
+  "title": "Sifarişin Tamamlanması",
+  "contactInfo": "Əlaqə Məlumatı",
+  "emailPlaceholder": "E-poçt",
+  "shippingAddress": "Çatdırılma Ünvanı",
+  "firstNamePlaceholder": "Ad",
+  "lastNamePlaceholder": "Soyad",
+  "addressPlaceholder": "Ünvan",
+  "cityPlaceholder": "Şəhər / Rayon",
+  "zipPlaceholder": "Poçt İndeksi (istəyə görə)",
+  "delivery": {
+    "title": "Çatdırılma Üsulu",
+    "standardName": "Azərpoçt Standart Çatdırılma",
+    "standardTime": "3-5 iş günü"
+  },
+  "payment": {
+    "title": "Onlayn Ödəniş Üsulu",
+    "cardTitle": "Bank Kartı (Visa / Mastercard)",
+    "cardSubtitle": "Saytda 3D Secure təhlükəsiz ödəniş",
+    "walletTitle": "Apple Pay / Google Pay",
+    "walletSubtitle": "Bir kliklə tez ödəniş",
+    "cardNameLabel": "Kart üzərindəki ad və soyad",
+    "cardNamePlaceholder": "Araz Əliyev",
+    "cardNumberLabel": "Kart Nömrəsi",
+    "expiryLabel": "Bitmə Tarixi",
+    "cvvLabel": "CVV / CVC",
+    "secureNote": "Bütün kart ödənişləriniz SSL şifrələnməsi ilə 100% qorunur."
+  },
+  "placeOrder": "Sifarişi Təsdiqlə",
+  "emptyCart": "Sifarişi tamamlamaq üçün əvvəlcə səbətinizə məhsul əlavə edin.",
+  "emptyCartCta": "Məhsullara Bax",
+  "orderSuccess": {
+    "title": "Sifarişiniz Qəbul Edildi!",
+    "text": "Təşəkkür edirik! Sifarişiniz haqqında məlumat qeyd etdiyiniz e-poçta göndəriləcək.",
+    "backHome": "Ana Səhifəyə Qayıt"
+  },
+  "footer": {
+    "rights": "Bütün hüquqlar qorunur.",
+    "terms": "Şərtlər",
+    "privacy": "Məxfilik",
+    "contact": "Əlaqə"
+  },
+  "summary": {
+    "title": "Sifariş Xülasəsi",
+    "subtotal": "Ara Cəm",
+    "shipping": "Çatdırılma",
+    "freeShipping": "Pulsuz",
+    "total": "Cəmi",
+    "qty": "Say"
+  }
+}

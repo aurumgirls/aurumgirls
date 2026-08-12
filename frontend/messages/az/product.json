@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "titleSuffix": "By Aurum Girls",
+    "notFoundTitle": "Məhsul Tapılmadı"
+  },
+  "breadcrumbs": {
+    "shop": "Məhsullar"
+  },
+  "gallery": {
+    "previous": "Əvvəlki şəkil",
+    "next": "Növbəti şəkil"
+  },
+  "purchase": {
+    "newBadge": "Yeni",
+    "reviewsSuffix": "rəy",
+    "quantityLabel": "Say",
+    "addToCart": "Səbətə Əlavə Et",
+    "buyNow": "İndi Al",
+    "freeShipping": "Pulsuz Çatdırılma",
+    "freeShippingThreshold": "50 ₼+",
+    "shipsFresh": "Təzə Göndərilir",
+    "secureCheckout": "Təhlükəsiz Ödəniş"
+  },
+  "info": {
+    "detailsTitle": "Məhsul Məlumatı",
+    "ingredientsTitle": "Tərkib",
+    "originLabel": "Mənşə",
+    "storageLabel": "Saxlama Şəraiti",
+    "storageValue": "Sərin və quru yerdə, birbaşa günəş işığından uzaqda saxlayın.",
+    "shelfLifeLabel": "Son İstifadə Müddəti",
+    "shelfLifeValue": "İstehsal tarixindən etibarən 12 ay",
+    "ingredientsValue": "100% təbii tərkib — heç bir süni əlavə, qatqı və ya qoruyucu istifadə olunmur."
+  },
+  "highlights": {
+    "point1": "Kəndli qadınlarımızın əl əməyi ilə hazırlanır",
+    "point2": "100% təbii, kimyəvi qatqısız",
+    "point3": "Ənənəvi kənd resepti ilə hazırlanıb",
+    "point4": "Qafqaz dağ yaylalarından toplanıb",
+    "point5": "Süni dad və qoruyucu maddə yoxdur"
+  },
+  "brandCard": {
+    "title": "By Aurum Girls Haqqında",
+    "subtitle": "Qafqaz Dağ Kəndlərinin Qadın İcması",
+    "description": "Biz, dağ kəndlərində yaşayan sənətkar qadınları bir araya gətirən icma layihəsiyik. Hər məhsul əl əməyi ilə, təbii üsullarla hazırlanır və birbaşa sizə çatdırılır.",
+    "cta": "Bizim Hekayəmiz"
+  },
+  "related": {
+    "title": "Bunlar da Xoşunuza Gələ Bilər"
+  }
+}

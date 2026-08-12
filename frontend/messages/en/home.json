@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "title": "By Aurum Girls — Natural Food Products by a Women's Community",
+    "description": "Natural mountain honey, homemade jams, thyme and mountain teas, lovingly made by our rural women. Delivered by post with secure online payment."
+  },
+  "hero": {
+    "badge": "Handmade Natural Products by Our Rural Women",
+    "title": "The Purity of Nature, Crafted with Our Women's Love",
+    "subtitle": "Mountain honey, homemade jams, and fragrant mountain teas, made with 100% natural methods by our rural women living in the foothills of the Caucasus mountains.",
+    "ctaCommunity": "Meet Our Community",
+    "ctaShop": "Browse Products",
+    "badge1": "100% Natural Food",
+    "badge2": "Supporting Women's Work",
+    "badge3": "Azərpoçt Delivery",
+    "badge4": "Secure Online Payment"
+  },
+  "communityIntro": {
+    "imageAlt": "The By Aurum Girls Community",
+    "movementTitle": "Community Movement",
+    "movementText": "Every product directly contributes to the economic independence and family wellbeing of our rural women.",
+    "eyebrow": "Who Are We? · About Our Community",
+    "title": "Natural Foods Made with the Love and Handiwork of a Women's Community",
+    "textBefore": "By Aurum Girls",
+    "textAfter": "is a socio-economic community project bringing together artisan women living in high mountain villages. We preserve the traditional recipes inherited from our ancestors and 100% natural harvesting methods, and deliver them to your table.",
+    "feature1Title": "🌿 100% Natural Harvesting",
+    "feature1Text": "Plants and mountain honey hand-gathered from mountain pastures, free of chemical additives.",
+    "feature2Title": "👩‍🌾 Women's Employment",
+    "feature2Text": "Our rural women earning income and gaining support through their own labor.",
+    "ctaShop": "Go to the Shop & Browse Products",
+    "ctaAbout": "Read Our Full Story"
+  },
+  "giftBanner": {
+    "badge": "Special Offer · 5 Products in One Box",
+    "title": "Special Gift Set (5-in-1)",
+    "description": "Natural mountain honey, homemade jam, thyme, yellow flower tea, and mountain tea — all 5 of our natural village products in a specially crafted handmade kraft box!",
+    "item1Name": "Natural Mountain Honey (500g)",
+    "item1Desc": "Pure strained honey",
+    "item2Name": "Homemade Jam (450g)",
+    "item2Desc": "Wild forest berry jam",
+    "item3Name": "Thyme (100g)",
+    "item3Desc": "Hand-picked mountain thyme",
+    "item4Name": "Yellow Flower / Linden Tea (80g)",
+    "item4Desc": "Soothing herbal tea",
+    "item5Name": "Mountain Tea Blend (120g)",
+    "item5Desc": "Natural mountain tea blend",
+    "priceLabel": "Special Set Price",
+    "addToCart": "Add to Cart",
+    "savingsBadge": "Save 6 ₼!",
+    "imageAlt": "By Aurum Girls Gift Set"
+  },
+  "featured": {
+    "eyebrow": "Shop Catalog",
+    "title": "Our Natural Products",
+    "subtitle": "Get our products individually or as a special gift set.",
+    "viewAll": "All Products",
+    "addToCart": "Add to Cart"
+  },
+  "valuePillars": {
+    "title": "Why By Aurum Girls?",
+    "subtitle": "A platform built on our national values and the hard work of our artisan women",
+    "pillar1Title": "100% Natural Food",
+    "pillar1Desc": "Natural village products made with no additives whatsoever",
+    "pillar2Title": "Women's Labor",
+    "pillar2Desc": "The craftsmanship and economic independence of our rural women",
+    "pillar3Title": "Azərpoçt Delivery",
+    "pillar3Desc": "Reliable postal delivery to every district of Azerbaijan",
+    "pillar4Title": "Secure Online Payment",
+    "pillar4Desc": "Secure bank card (Visa/Mastercard) payment on the site",
+    "pillar5Title": "Gift Sets",
+    "pillar5Desc": "5 products presented together in a specially designed box"
+  },
+  "impact": {
+    "stat1Value": "50+",
+    "stat1Label": "Rural Women Artisans",
+    "stat2Value": "100%",
+    "stat2Label": "Natural & Eco-Friendly Food",
+    "stat3Value": "5 Products",
+    "stat3Label": "Individually or as a Set",
+    "stat4Value": "Azərpoçt",
+    "stat4Label": "Nationwide Delivery"
+  }
+}
