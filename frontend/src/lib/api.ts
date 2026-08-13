@@ -96,3 +96,78 @@ export function resolveImageUrl(path: string): string {
   if (/^https?:\/\//.test(path)) return path;
   return `${API_BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
 }
+
+// --- Admin ---
+
+export type CreateProductInput = {
+  name: string;
+  description?: string;
+  price: number;
+  images?: string[];
+  quantityAvailable?: number;
+};
+
+export type UpdateProductInput = {
+  name?: string;
+  description?: string;
+  price?: number;
+  oldPrice?: number;
+  images?: string[];
+  inStock?: boolean;
+  quantityAvailable?: number;
+};
+
+function authHeaders(token: string): HeadersInit {
+  return { Authorization: `Bearer ${token}` };
+}
+
+export function adminLogin(password: string): Promise<{ token: string }> {
+  return apiFetch<{ token: string }>('/api/admin/login', {
+    method: 'POST',
+    body: JSON.stringify({ password }),
+  });
+}
+
+export function getAllProductsAdmin(token: string): Promise<Product[]> {
+  return apiFetch<Product[]>('/api/admin/products/getall', { headers: authHeaders(token) });
+}
+
+export function getDeletedProductsAdmin(token: string): Promise<Product[]> {
+  return apiFetch<Product[]>('/api/admin/products/getonlydeleted', { headers: authHeaders(token) });
+}
+
+export function createProductAdmin(token: string, input: CreateProductInput): Promise<Product> {
+  return apiFetch<Product>('/api/admin/products', {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(input),
+  });
+}
+
+export function updateProductAdmin(token: string, id: string, input: UpdateProductInput): Promise<Product> {
+  return apiFetch<Product>(`/api/admin/products/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(input),
+  });
+}
+
+export function deactivateProductAdmin(token: string, id: string): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/api/admin/products/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  });
+}
+
+export function listOrdersAdmin(token: string, status?: string): Promise<Order[]> {
+  const query = status ? `?status=${encodeURIComponent(status)}` : '';
+  return apiFetch<Order[]>(`/api/admin/orders${query}`, { headers: authHeaders(token) });
+}
+
+export function updateOrderStatusAdmin(token: string, id: string, status: string): Promise<Order> {
+  return apiFetch<Order>(`/api/admin/orders/${encodeURIComponent(id)}/status`, {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify({ status }),
+  });
+}
