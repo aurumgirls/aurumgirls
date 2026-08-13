@@ -5,11 +5,19 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { CheckoutSummary } from './CheckoutSummary';
 import { DeliveryOptions } from './DeliveryOptions';
-import { PaymentMethods } from './PaymentMethods';
+import { PaymentMethods, type PaymentMethod, type CardDetails, type CardFieldErrors } from './PaymentMethods';
 import { useCartStore } from '@/store/cart-store';
 import { createOrder, ApiError } from '@/lib/api';
 import { cn } from '@/lib/utils';
-import { isValidName, isValidPhone, isValidAddress, isValidZip } from '@/lib/validation';
+import {
+  isValidName,
+  isValidPhone,
+  isValidAddress,
+  isValidZip,
+  isValidCardNumber,
+  isValidCardExpiry,
+  isValidCvv,
+} from '@/lib/validation';
 
 type FormState = {
   firstName: string;
@@ -31,18 +39,28 @@ const EMPTY_FORM: FormState = {
   zip: '',
 };
 
+const EMPTY_CARD: CardDetails = { name: '', number: '', expiry: '', cvv: '' };
+
 export function CheckoutExperience() {
   const t = useTranslations('checkout');
   const { items, clearCart } = useCartStore();
   const [isPlaced, setIsPlaced] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
+  const [card, setCard] = useState<CardDetails>(EMPTY_CARD);
+  const [cardErrors, setCardErrors] = useState<CardFieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const updateField = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
     setFieldErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  };
+
+  const updateCard = (field: keyof CardDetails, value: string) => {
+    setCard((prev) => ({ ...prev, [field]: value }));
+    setCardErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
   };
 
   const validate = (): FieldErrors => {
@@ -56,13 +74,25 @@ export function CheckoutExperience() {
     return errors;
   };
 
+  const validateCard = (): CardFieldErrors => {
+    if (paymentMethod !== 'card') return {};
+    const errors: CardFieldErrors = {};
+    if (!isValidName(card.name)) errors.name = t('errors.cardNameInvalid');
+    if (!isValidCardNumber(card.number)) errors.number = t('errors.cardNumberInvalid');
+    if (!isValidCardExpiry(card.expiry)) errors.expiry = t('errors.cardExpiryInvalid');
+    if (!isValidCvv(card.cvv)) errors.cvv = t('errors.cardCvvInvalid');
+    return errors;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
     const errors = validate();
-    if (Object.keys(errors).length > 0) {
+    const cErrors = validateCard();
+    if (Object.keys(errors).length > 0 || Object.keys(cErrors).length > 0) {
       setFieldErrors(errors);
+      setCardErrors(cErrors);
       return;
     }
 
@@ -159,7 +189,13 @@ export function CheckoutExperience() {
             </div>
 
             <DeliveryOptions />
-            <PaymentMethods />
+            <PaymentMethods
+              method={paymentMethod}
+              onMethodChange={setPaymentMethod}
+              card={card}
+              onCardChange={updateCard}
+              fieldErrors={cardErrors}
+            />
 
             {error && <p className="text-terracotta text-sm mt-4">{error}</p>}
 

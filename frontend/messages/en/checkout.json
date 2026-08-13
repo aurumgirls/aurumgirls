@@ -18,7 +18,11 @@
     "phoneInvalid": "Please enter a valid phone number (e.g. 050 123 45 67).",
     "addressInvalid": "Please enter a valid address (at least 5 characters).",
     "cityInvalid": "Please enter a valid city/region name.",
-    "zipInvalid": "Please enter a valid postal code (e.g. AZ1000)."
+    "zipInvalid": "Please enter a valid postal code (e.g. AZ1000).",
+    "cardNameInvalid": "Please enter a valid name as it appears on the card.",
+    "cardNumberInvalid": "Please enter a valid card number (16 digits).",
+    "cardExpiryInvalid": "Please enter a valid, non-expired expiry date (MM/YY).",
+    "cardCvvInvalid": "Please enter a valid CVV (3-4 digits)."
   },
   "delivery": {
     "title": "Delivery Method",

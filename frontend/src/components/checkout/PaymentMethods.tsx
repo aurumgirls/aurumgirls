@@ -1,13 +1,36 @@
 "use client";
 
-import { useState } from 'react';
 import { CreditCard, Wallet, ShieldCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
-export function PaymentMethods() {
+export type PaymentMethod = 'card' | 'applepay';
+
+export type CardDetails = {
+  name: string;
+  number: string;
+  expiry: string;
+  cvv: string;
+};
+
+export type CardFieldErrors = Partial<Record<keyof CardDetails, string>>;
+
+type PaymentMethodsProps = {
+  method: PaymentMethod;
+  onMethodChange: (method: PaymentMethod) => void;
+  card: CardDetails;
+  onCardChange: (field: keyof CardDetails, value: string) => void;
+  fieldErrors: CardFieldErrors;
+};
+
+export function PaymentMethods({ method, onMethodChange, card, onCardChange, fieldErrors }: PaymentMethodsProps) {
   const t = useTranslations('checkout');
-  const [method, setMethod] = useState('card');
+
+  const inputClass = (field: keyof CardDetails) =>
+    cn(
+      "w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none",
+      fieldErrors[field] ? "border-terracotta focus:border-terracotta" : "border-sand focus:border-terracotta"
+    );
 
   return (
     <div className="space-y-6">
@@ -15,7 +38,7 @@ export function PaymentMethods() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label
-          onClick={() => setMethod('card')}
+          onClick={() => onMethodChange('card')}
           className={cn(
             "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
             method === 'card'
@@ -31,7 +54,7 @@ export function PaymentMethods() {
         </label>
 
         <label
-          onClick={() => setMethod('applepay')}
+          onClick={() => onMethodChange('applepay')}
           className={cn(
             "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
             method === 'applepay'
@@ -51,22 +74,53 @@ export function PaymentMethods() {
         <div className="p-6 rounded-2xl bg-white border border-sand space-y-4">
           <div>
             <label className="block text-xs font-semibold text-forest mb-1">{t('payment.cardNameLabel')}</label>
-            <input type="text" placeholder={t('payment.cardNamePlaceholder')} className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+            <input
+              type="text"
+              value={card.name}
+              onChange={(e) => onCardChange('name', e.target.value)}
+              placeholder={t('payment.cardNamePlaceholder')}
+              className={inputClass('name')}
+            />
+            {fieldErrors.name && <p className="text-terracotta text-xs mt-1">{fieldErrors.name}</p>}
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-forest mb-1">{t('payment.cardNumberLabel')}</label>
-            <input type="text" placeholder="4543 0000 0000 0000" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+            <input
+              type="text"
+              inputMode="numeric"
+              value={card.number}
+              onChange={(e) => onCardChange('number', e.target.value)}
+              placeholder="4543 0000 0000 0000"
+              className={inputClass('number')}
+            />
+            {fieldErrors.number && <p className="text-terracotta text-xs mt-1">{fieldErrors.number}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-forest mb-1">{t('payment.expiryLabel')}</label>
-              <input type="text" placeholder="MM/YY" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+              <input
+                type="text"
+                value={card.expiry}
+                onChange={(e) => onCardChange('expiry', e.target.value)}
+                placeholder="MM/YY"
+                className={inputClass('expiry')}
+              />
+              {fieldErrors.expiry && <p className="text-terracotta text-xs mt-1">{fieldErrors.expiry}</p>}
             </div>
             <div>
               <label className="block text-xs font-semibold text-forest mb-1">{t('payment.cvvLabel')}</label>
-              <input type="password" maxLength={4} placeholder="123" className="w-full px-4 py-2.5 rounded-xl border border-sand text-sm focus:outline-none focus:border-terracotta" />
+              <input
+                type="password"
+                inputMode="numeric"
+                maxLength={4}
+                value={card.cvv}
+                onChange={(e) => onCardChange('cvv', e.target.value)}
+                placeholder="123"
+                className={inputClass('cvv')}
+              />
+              {fieldErrors.cvv && <p className="text-terracotta text-xs mt-1">{fieldErrors.cvv}</p>}
             </div>
           </div>
         </div>

@@ -18,6 +18,13 @@ export const PRICE_REGEX = /^\d+(\.\d{1,2})?$/;
 
 export const NON_NEGATIVE_INT_REGEX = /^\d+$/;
 
+// 13-19 digits, optionally grouped in blocks of 4 separated by spaces.
+export const CARD_NUMBER_REGEX = /^\d{4}(\s?\d{4}){2}\s?\d{1,4}$/;
+
+export const CARD_EXPIRY_REGEX = /^(0[1-9]|1[0-2])\/\d{2}$/;
+
+export const CVV_REGEX = /^\d{3,4}$/;
+
 export function normalizePhone(value: string): string {
   return value.replace(/[\s\-()]/g, '');
 }
@@ -53,4 +60,19 @@ export function isValidPrice(value: string): boolean {
 
 export function isValidNonNegativeInt(value: string): boolean {
   return NON_NEGATIVE_INT_REGEX.test(value.trim());
+}
+
+export function isValidCardNumber(value: string): boolean {
+  return CARD_NUMBER_REGEX.test(value.trim());
+}
+
+export function isValidCardExpiry(value: string): boolean {
+  if (!CARD_EXPIRY_REGEX.test(value.trim())) return false;
+  const [month, year] = value.trim().split('/').map(Number);
+  const expiry = new Date(2000 + year, month, 1); // first day of the month *after* expiry
+  return expiry.getTime() > Date.now();
+}
+
+export function isValidCvv(value: string): boolean {
+  return CVV_REGEX.test(value.trim());
 }

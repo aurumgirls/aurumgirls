@@ -18,7 +18,11 @@
     "phoneInvalid": "Zəhmət olmasa doğru telefon nömrəsi daxil edin (məs. 050 123 45 67).",
     "addressInvalid": "Zəhmət olmasa doğru ünvan daxil edin (ən azı 5 simvol).",
     "cityInvalid": "Zəhmət olmasa doğru şəhər/rayon adı daxil edin.",
-    "zipInvalid": "Zəhmət olmasa doğru poçt indeksi daxil edin (məs. AZ1000)."
+    "zipInvalid": "Zəhmət olmasa doğru poçt indeksi daxil edin (məs. AZ1000).",
+    "cardNameInvalid": "Zəhmət olmasa kart üzərindəki adı doğru daxil edin.",
+    "cardNumberInvalid": "Zəhmət olmasa doğru kart nömrəsi daxil edin (16 rəqəm).",
+    "cardExpiryInvalid": "Zəhmət olmasa doğru bitmə tarixi daxil edin (MM/YY, keçməmiş olmalıdır).",
+    "cardCvvInvalid": "Zəhmət olmasa doğru CVV daxil edin (3-4 rəqəm)."
   },
   "delivery": {
     "title": "Çatdırılma Üsulu",

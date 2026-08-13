@@ -15,6 +15,12 @@
   },
   "cart": "Səbət",
   "toggleMenu": "Menyunu aç/bağla",
+  "error": {
+    "title": "Nəsə səhv getdi",
+    "text": "Səhifəni yükləyərkən problem yarandı. Zəhmət olmasa yenidən cəhd edin.",
+    "retry": "Yenidən Cəhd Et",
+    "backHome": "Ana Səhifəyə Qayıt"
+  },
   "language": {
     "az": "AZ",
     "en": "EN",
@@ -31,9 +37,7 @@
     "aboutLink": "İcma Haqqında",
     "contactHeading": "Çatdırılma & Dəstək",
     "contactLink": "Əlaqə",
-    "deliveryInfo": "Azərpoçt Çatdırılma Haqqında",
-    "onlinePayment": "Saytda Onlayn Ödəniş",
-    "faq": "Tez-tez Verilən Suallar",
+    "faq": "Suallar",
     "copyright": "Bütün hüquqlar qorunur.",
     "deliveryBadge": "📦 Azərpoçt Çatdırılma",
     "paymentBadge": "💳 Visa / Mastercard"
