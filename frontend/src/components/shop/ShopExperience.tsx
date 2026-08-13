@@ -26,12 +26,16 @@ export function ShopExperience() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [products, setProducts] = useState<Product[] | null>(null);
   const [loadError, setLoadError] = useState(false);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
     getProducts()
       .then((data) => {
-        if (!cancelled) setProducts(data);
+        if (!cancelled) {
+          setProducts(data);
+          setLoadError(false);
+        }
       })
       .catch(() => {
         if (!cancelled) setLoadError(true);
@@ -39,7 +43,9 @@ export function ShopExperience() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [retryToken]);
+
+  const handleRetry = () => setRetryToken((n) => n + 1);
 
   const bounds = useMemo(() => {
     if (!products || products.length === 0) return DEFAULT_BOUNDS;
@@ -106,8 +112,14 @@ export function ShopExperience() {
 
       {loadError ? (
         <div className="py-20 text-center bg-white rounded-2xl border border-sand">
-          <h3 className="text-xl font-display text-forest mb-2">{t('empty.title')}</h3>
-          <p className="text-slate">{t('empty.subtitle')}</p>
+          <h3 className="text-xl font-display text-forest mb-2">{t('loadError.title')}</h3>
+          <p className="text-slate mb-6">{t('loadError.subtitle')}</p>
+          <button
+            onClick={handleRetry}
+            className="px-6 py-2 bg-terracotta text-white rounded-full hover:bg-terracotta-light transition-colors"
+          >
+            {t('loadError.retry')}
+          </button>
         </div>
       ) : !products ? (
         <div className="py-20 text-center text-forest">…</div>

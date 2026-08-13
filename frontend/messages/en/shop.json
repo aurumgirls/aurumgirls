@@ -30,6 +30,11 @@
     "subtitle": "Try adjusting your filters or search term.",
     "clearButton": "Clear All Filters"
   },
+  "loadError": {
+    "title": "Couldn't load products",
+    "subtitle": "There was a problem connecting to the server. Please try again.",
+    "retry": "Try Again"
+  },
   "productCard": {
     "addToCart": "Add to cart"
   },

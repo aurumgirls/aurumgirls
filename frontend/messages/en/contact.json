@@ -35,6 +35,12 @@
     "topicWhereToBuy": "Where to Buy",
     "messageLabel": "Your Message",
     "messagePlaceholder": "How can we help you?",
+    "errors": {
+      "nameInvalid": "Please enter a valid name (at least 2 letters).",
+      "emailInvalid": "Please enter a valid email address.",
+      "topicInvalid": "Please select a topic.",
+      "messageInvalid": "Your message must be at least 10 characters."
+    },
     "sendButton": "Send Message",
     "sendingButton": "Sending...",
     "successTitle": "Message Sent!",

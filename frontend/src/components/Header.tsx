@@ -41,7 +41,7 @@ export default function Header() {
   }, []);
 
   const switchLocale = (nextLocale: 'az' | 'en') => {
-    router.replace(pathname, { locale: nextLocale });
+    router.replace(pathname, { locale: nextLocale, scroll: false });
   };
 
   const offeringsLinks = [

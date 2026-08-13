@@ -59,8 +59,6 @@ export default function Footer() {
           <h3 className="font-display text-lg font-semibold mb-4 text-cream">{t('footer.contactHeading')}</h3>
           <ul className="space-y-2.5 text-sm text-cream/80">
             <li><Link href="/contact" className="hover:text-cream transition-colors">{t('footer.contactLink')}</Link></li>
-            <li><Link href="/contact" className="hover:text-cream transition-colors">{t('footer.deliveryInfo')}</Link></li>
-            <li><Link href="/contact" className="hover:text-cream transition-colors">{t('footer.onlinePayment')}</Link></li>
             <li><Link href="/contact" className="hover:text-cream transition-colors">{t('footer.faq')}</Link></li>
           </ul>
         </div>

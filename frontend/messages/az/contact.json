@@ -35,6 +35,12 @@
     "topicWhereToBuy": "Haradan Ala Bilərəm?",
     "messageLabel": "Mesajınız",
     "messagePlaceholder": "Sizə necə kömək edə bilərik?",
+    "errors": {
+      "nameInvalid": "Zəhmət olmasa doğru ad daxil edin (ən azı 2 hərf).",
+      "emailInvalid": "Zəhmət olmasa doğru e-poçt ünvanı daxil edin.",
+      "topicInvalid": "Zəhmət olmasa mövzu seçin.",
+      "messageInvalid": "Mesajınız ən azı 10 simvol olmalıdır."
+    },
     "sendButton": "Mesajı Göndər",
     "sendingButton": "Göndərilir...",
     "successTitle": "Mesaj Göndərildi!",

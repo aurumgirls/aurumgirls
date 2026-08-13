@@ -15,6 +15,12 @@
   },
   "cart": "Cart",
   "toggleMenu": "Toggle menu",
+  "error": {
+    "title": "Something went wrong",
+    "text": "There was a problem loading this page. Please try again.",
+    "retry": "Try Again",
+    "backHome": "Back to Home"
+  },
   "language": {
     "az": "AZ",
     "en": "EN",
@@ -31,9 +37,7 @@
     "aboutLink": "About Our Community",
     "contactHeading": "Delivery & Support",
     "contactLink": "Contact",
-    "deliveryInfo": "About Azərpoçt Delivery",
-    "onlinePayment": "Online Payment",
-    "faq": "Frequently Asked Questions",
+    "faq": "FAQ",
     "copyright": "All rights reserved.",
     "deliveryBadge": "📦 Azərpoçt Delivery",
     "paymentBadge": "💳 Visa / Mastercard"

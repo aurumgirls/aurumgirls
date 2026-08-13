@@ -30,6 +30,11 @@
     "subtitle": "Filtrləri və ya axtarış sözünü dəyişməyi cəhd edin.",
     "clearButton": "Bütün Filtrləri Təmizlə"
   },
+  "loadError": {
+    "title": "Məhsullar yüklənə bilmədi",
+    "subtitle": "Serverlə əlaqədə problem yarandı. Zəhmət olmasa yenidən cəhd edin.",
+    "retry": "Yenidən Cəhd Et"
+  },
   "productCard": {
     "addToCart": "Səbətə əlavə et"
   },
