@@ -6,7 +6,7 @@
   "secureCheckout": "Secure Checkout",
   "title": "Checkout",
   "contactInfo": "Contact Information",
-  "emailPlaceholder": "Email",
+  "phonePlaceholder": "Phone Number",
   "shippingAddress": "Shipping Address",
   "firstNamePlaceholder": "First Name",
   "lastNamePlaceholder": "Last Name",
@@ -32,11 +32,13 @@
     "secureNote": "All your card payments are 100% protected with SSL encryption."
   },
   "placeOrder": "Place Order",
+  "placingOrder": "Placing order...",
+  "orderError": "We couldn't place your order. Please try again.",
   "emptyCart": "Add products to your cart before checking out.",
   "emptyCartCta": "Browse Products",
   "orderSuccess": {
     "title": "Your Order Has Been Placed!",
-    "text": "Thank you! Details about your order will be sent to the email address you provided.",
+    "text": "Thank you! Your order has been recorded and we'll be in touch shortly.",
     "backHome": "Back to Home"
   },
   "footer": {

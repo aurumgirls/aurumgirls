@@ -1,26 +1,23 @@
 "use client";
 
 import { create } from 'zustand';
-import { shopProducts, ShopProduct } from '@/lib/shop-data';
+import type { Product } from '@/lib/api';
 
 export type CartItem = {
-  id: number;
+  id: string;
   name: string;
   slug: string;
-  category?: string;
   price: number;
   quantity: number;
   image?: string;
-  flavorColor: string;
-  protein: string;
 };
 
 type CartStore = {
   items: CartItem[];
   total: number;
-  addItem: (product: ShopProduct, quantity?: number) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  addItem: (product: Product, quantity?: number) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
 };
 
@@ -49,12 +46,9 @@ export const useCartStore = create<CartStore>((set) => ({
             id: product.id,
             name: product.name,
             slug: product.slug,
-            category: product.category,
             price: product.price,
             quantity,
-            image: product.image,
-            flavorColor: product.flavorColor,
-            protein: product.protein,
+            image: product.images[0],
           },
         ];
       }

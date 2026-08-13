@@ -5,12 +5,13 @@ import { Gift, ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import FadeUp from '@/components/motion/FadeUp';
 import { useCartStore } from '@/store/cart-store';
-import { shopProducts } from '@/lib/shop-data';
+import { Link } from '@/i18n/navigation';
+import type { Product } from '@/lib/api';
+import { CURRENCY } from '@/lib/constants';
 
-export function GiftSetBanner() {
+export function GiftSetBanner({ product }: { product: Product | null }) {
   const t = useTranslations('home');
   const { addItem } = useCartStore();
-  const giftSet = shopProducts.find((p) => p.slug === 'hadiyya-seti') || shopProducts[0];
 
   const items = [
     { name: t('giftBanner.item1Name'), desc: t('giftBanner.item1Desc') },
@@ -51,22 +52,32 @@ export function GiftSetBanner() {
               </div>
 
               {/* Price & Action */}
-              <div className="pt-4 flex items-center gap-6">
-                <div>
-                  <span className="text-xs text-cream/70 block">{t('giftBanner.priceLabel')}</span>
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-display text-4xl font-bold text-honey">42 ₼</span>
-                    <span className="text-sm text-cream/50 line-through">48 ₼</span>
+              {product ? (
+                <div className="pt-4 flex items-center gap-6">
+                  <div>
+                    <span className="text-xs text-cream/70 block">{t('giftBanner.priceLabel')}</span>
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-display text-4xl font-bold text-honey">{product.price.toFixed(2)} {CURRENCY}</span>
+                      {product.oldPrice && (
+                        <span className="text-sm text-cream/50 line-through">{product.oldPrice.toFixed(2)} {CURRENCY}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <button
-                  onClick={() => addItem(giftSet)}
-                  className="btn-secondary font-semibold"
-                >
-                  {t('giftBanner.addToCart')} <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+                  <button
+                    onClick={() => addItem(product)}
+                    className="btn-secondary font-semibold"
+                  >
+                    {t('giftBanner.addToCart')} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="pt-4">
+                  <Link href="/shop" className="btn-secondary font-semibold inline-flex">
+                    {t('giftBanner.addToCart')} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
             </div>
           </FadeUp>
 

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { ProductDetail } from '@/lib/product-detail';
-import { Star, Truck, ShieldCheck, Leaf } from 'lucide-react';
+import type { Product } from '@/lib/api';
+import { CURRENCY } from '@/lib/constants';
+import { Truck, ShieldCheck, Leaf } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { QuantitySelector } from './QuantitySelector';
 import { useCartStore } from '@/store/cart-store';
 import { useRouter } from '@/i18n/navigation';
-import { useLocalizedProduct } from '@/lib/shop-i18n';
 
 const HIGHLIGHT_KEYS = [
   'highlights.point1',
@@ -17,12 +17,13 @@ const HIGHLIGHT_KEYS = [
   'highlights.point5',
 ];
 
-export function PurchasePanel({ product }: { product: ProductDetail }) {
+export function PurchasePanel({ product }: { product: Product }) {
   const t = useTranslations('product');
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCartStore();
   const router = useRouter();
-  const text = useLocalizedProduct(product);
+
+  const available = product.inStock && product.quantityAvailable > 0;
 
   const handleAddToCart = () => {
     addItem(product, quantity);
@@ -37,32 +38,14 @@ export function PurchasePanel({ product }: { product: ProductDetail }) {
     <div className="bg-white p-8 rounded-3xl shadow-soft border border-sand">
       {/* Header Info */}
       <div className="mb-6">
-        {product.isNew && (
-          <span className="inline-block bg-terracotta text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
-            {t('purchase.newBadge')}
-          </span>
-        )}
-        <h1 className="font-display text-3xl md:text-4xl text-forest mb-2">{text.name}</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-forest mb-2">{product.name}</h1>
 
-        <div className="flex items-center justify-between mb-4">
-          <div className="font-display text-2xl text-forest font-medium">
-            {product.price.toFixed(2)} {product.currency}
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${i < Math.floor(product.rating) ? "text-honey fill-honey" : "text-sand fill-sand"}`}
-                />
-              ))}
-            </div>
-            <span className="text-slate text-sm">{product.reviews} {t('purchase.reviewsSuffix')}</span>
-          </div>
+        <div className="font-display text-2xl text-forest font-medium mb-4">
+          {product.price.toFixed(2)} {CURRENCY}
         </div>
       </div>
 
-      <p className="text-slate mb-6 text-lg">{text.description}</p>
+      {product.description && <p className="text-slate mb-6 text-lg">{product.description}</p>}
 
       {/* Highlights */}
       <div className="mb-8">
@@ -80,25 +63,33 @@ export function PurchasePanel({ product }: { product: ProductDetail }) {
 
       {/* Actions */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <span className="text-charcoal font-medium">{t('purchase.quantityLabel')}</span>
-          <QuantitySelector quantity={quantity} onChange={setQuantity} max={20} />
-        </div>
+        {available ? (
+          <>
+            <div className="flex items-center justify-between">
+              <span className="text-charcoal font-medium">{t('purchase.quantityLabel')}</span>
+              <QuantitySelector quantity={quantity} onChange={setQuantity} max={Math.min(20, product.quantityAvailable)} />
+            </div>
 
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={handleAddToCart}
-            className="w-full bg-terracotta hover:bg-terracotta-light text-white font-medium py-4 rounded-full transition-colors shadow-sm"
-          >
-            {t('purchase.addToCart')} — {(product.price * quantity).toFixed(2)} {product.currency}
-          </button>
-          <button
-            onClick={handleBuyNow}
-            className="w-full bg-forest hover:bg-forest-light text-cream font-medium py-4 rounded-full transition-colors"
-          >
-            {t('purchase.buyNow')}
-          </button>
-        </div>
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-terracotta hover:bg-terracotta-light text-white font-medium py-4 rounded-full transition-colors shadow-sm"
+              >
+                {t('purchase.addToCart')} — {(product.price * quantity).toFixed(2)} {CURRENCY}
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className="w-full bg-forest hover:bg-forest-light text-cream font-medium py-4 rounded-full transition-colors"
+              >
+                {t('purchase.buyNow')}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="w-full text-center bg-sand/40 text-slate font-medium py-4 rounded-full">
+            {t('purchase.outOfStock')}
+          </div>
+        )}
       </div>
 
       {/* Trust Badges */}

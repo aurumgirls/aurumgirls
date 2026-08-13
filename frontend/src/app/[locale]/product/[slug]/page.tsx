@@ -9,7 +9,7 @@ import { PurchasePanel } from '@/components/product/PurchasePanel';
 import { ProductInfoSection } from '@/components/product/ProductInfoSection';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
 import { BrandCard } from '@/components/product/BrandCard';
-import { getProductBySlug } from '@/lib/product-detail';
+import { getProduct, getProducts } from '@/lib/api';
 
 type ProductPageParams = { locale: string; slug: string };
 
@@ -19,18 +19,14 @@ export async function generateMetadata({
   params: Promise<ProductPageParams>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProduct(slug);
   const t = await getTranslations({ locale, namespace: 'product' });
 
   if (!product) return { title: t('meta.notFoundTitle') };
 
-  const shopT = await getTranslations({ locale, namespace: 'shop' });
-  const name = locale === 'az' ? product.name : shopT(`products.${product.slug}.name`);
-  const description = locale === 'az' ? product.description : shopT(`products.${product.slug}.description`);
-
   return {
-    title: `${name} — ${t('meta.titleSuffix')}`,
-    description,
+    title: `${product.name} — ${t('meta.titleSuffix')}`,
+    description: product.description ?? undefined,
   };
 }
 
@@ -42,20 +38,19 @@ export default async function ProductPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const product = getProductBySlug(slug);
+  const product = await getProduct(slug);
   if (!product) {
     notFound();
   }
 
   const t = await getTranslations('product');
-  const shopT = await getTranslations('shop');
-  const name = locale === 'az' ? product.name : shopT(`products.${product.slug}.name`);
-  const categoryName = shopT(`categories.${product.category}` as 'categories.set' | 'categories.individual');
+
+  const allProducts = await getProducts();
+  const relatedProducts = allProducts.filter((p) => p.id !== product.id).slice(0, 4);
 
   const breadcrumbs = [
     { label: t('breadcrumbs.shop'), href: '/shop' },
-    { label: categoryName, href: `/shop?category=${product.category}` },
-    { label: name },
+    { label: product.name },
   ];
 
   return (
@@ -68,11 +63,7 @@ export default async function ProductPage({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
             {/* Left Column - Gallery */}
             <div className="lg:col-span-7">
-              <Gallery
-                images={product.gallery}
-                productName={name}
-                flavorColor={product.flavorColor}
-              />
+              <Gallery images={product.images} productName={product.name} />
             </div>
 
             {/* Right Column - Info & Purchase */}
@@ -86,7 +77,7 @@ export default async function ProductPage({
             </div>
           </div>
 
-          <RelatedProducts currentProductId={product.id} category={product.category} />
+          <RelatedProducts products={relatedProducts} />
         </div>
       </main>
       <Footer />

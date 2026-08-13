@@ -1,23 +1,15 @@
 "use client";
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useCartStore } from '@/store/cart-store';
-import { FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_RATE, type Coupon } from '@/lib/cart-data';
-import { CouponForm } from './CouponForm';
+import { FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_RATE } from '@/lib/cart-data';
 
 export function OrderSummary() {
   const t = useTranslations('cart');
   const { total } = useCartStore();
-  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
 
   const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING_RATE;
-  const discount = appliedCoupon
-    ? appliedCoupon.kind === 'percent'
-      ? (total * appliedCoupon.value) / 100
-      : appliedCoupon.value
-    : 0;
-  const grandTotal = Math.max(total + shipping - discount, 0);
+  const grandTotal = total + shipping;
 
   return (
     <div className="bg-cream p-6 sm:p-8 rounded-2xl shadow-soft">
@@ -32,15 +24,7 @@ export function OrderSummary() {
           <span>{t('summary.shipping')}</span>
           <span>{shipping === 0 ? t('summary.freeShipping') : `${shipping.toFixed(2)} ₼`}</span>
         </div>
-        {appliedCoupon && (
-          <div className="flex justify-between text-terracotta">
-            <span>{t('summary.discount')}</span>
-            <span>-{discount.toFixed(2)} ₼</span>
-          </div>
-        )}
       </div>
-
-      <CouponForm onApply={setAppliedCoupon} />
 
       <div className="border-t border-sand pt-4 mb-8 mt-6 flex justify-between items-center">
         <span className="font-display text-lg text-forest">{t('summary.total')}</span>

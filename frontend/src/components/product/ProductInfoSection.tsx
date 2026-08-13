@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { ProductDetail } from '@/lib/product-detail';
+import type { Product } from '@/lib/api';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { useLocalizedProduct } from '@/lib/shop-i18n';
 
-export function ProductInfoSection({ product }: { product: ProductDetail }) {
+export function ProductInfoSection({ product }: { product: Product }) {
   const t = useTranslations('product');
-  const text = useLocalizedProduct(product);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     details: true,
     ingredients: false,
@@ -41,8 +39,10 @@ export function ProductInfoSection({ product }: { product: ProductDetail }) {
         )}>
           <div className="text-sm divide-y divide-sand">
             <div className="flex justify-between py-2.5">
-              <span className="text-slate">{t('info.originLabel')}</span>
-              <span className="font-medium text-charcoal">{text.region}</span>
+              <span className="text-slate">{t('info.stockLabel')}</span>
+              <span className="font-medium text-charcoal">
+                {product.inStock ? t('info.inStockValue') : t('info.outOfStockValue')}
+              </span>
             </div>
             <div className="flex justify-between py-2.5">
               <span className="text-slate">{t('info.storageLabel')}</span>

@@ -6,7 +6,7 @@
   "secureCheckout": "Təhlükəsiz Ödəniş",
   "title": "Sifarişin Tamamlanması",
   "contactInfo": "Əlaqə Məlumatı",
-  "emailPlaceholder": "E-poçt",
+  "phonePlaceholder": "Telefon Nömrəsi",
   "shippingAddress": "Çatdırılma Ünvanı",
   "firstNamePlaceholder": "Ad",
   "lastNamePlaceholder": "Soyad",
@@ -32,11 +32,13 @@
     "secureNote": "Bütün kart ödənişləriniz SSL şifrələnməsi ilə 100% qorunur."
   },
   "placeOrder": "Sifarişi Təsdiqlə",
+  "placingOrder": "Göndərilir...",
+  "orderError": "Sifariş göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin.",
   "emptyCart": "Sifarişi tamamlamaq üçün əvvəlcə səbətinizə məhsul əlavə edin.",
   "emptyCartCta": "Məhsullara Bax",
   "orderSuccess": {
     "title": "Sifarişiniz Qəbul Edildi!",
-    "text": "Təşəkkür edirik! Sifarişiniz haqqında məlumat qeyd etdiyiniz e-poçta göndəriləcək.",
+    "text": "Təşəkkür edirik! Sifarişiniz qeydə alındı və tezliklə sizinlə əlaqə saxlanılacaq.",
     "backHome": "Ana Səhifəyə Qayıt"
   },
   "footer": {

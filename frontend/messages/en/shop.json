@@ -7,11 +7,6 @@
     "title": "Our Natural Products",
     "subtitle": "From the foothills of the Caucasus to your table — 100% natural products handcrafted by our rural women."
   },
-  "categories": {
-    "allLabel": "All",
-    "set": "Gift Set",
-    "individual": "Individual Products"
-  },
   "toolbar": {
     "resultsPrefix": "Showing",
     "resultsSuffix": "products",
@@ -36,8 +31,7 @@
     "clearButton": "Clear All Filters"
   },
   "productCard": {
-    "addToCart": "Add to cart",
-    "newBadge": "New"
+    "addToCart": "Add to cart"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -46,43 +40,5 @@
   "pagination": {
     "previous": "Previous page",
     "next": "Next page"
-  },
-  "products": {
-    "hadiyya-seti": {
-      "name": "Gift Set (5-in-1)",
-      "description": "All 5 of our natural village products in a special gift box: Mountain Honey (500g), Homemade Jam (450g), Thyme (100g), Yellow Flower/Linden Tea (80g), Mountain Tea (120g).",
-      "region": "Caucasus Community",
-      "badge": "Full Set (5 Products)"
-    },
-    "dali-bal": {
-      "name": "Natural Mountain Honey (500g)",
-      "description": "100% pure mountain honey gathered from high mountain pastures.",
-      "region": "Caucasus Community",
-      "badge": "100% Natural"
-    },
-    "murebbe": {
-      "name": "Homemade Jam (450g)",
-      "description": "Hand-made jam from wild forest berries.",
-      "region": "Caucasus Community",
-      "badge": "Traditional Recipe"
-    },
-    "keklikotu": {
-      "name": "Thyme (100g)",
-      "description": "Fragrant mountain thyme hand-picked from the Caucasus mountains.",
-      "region": "Caucasus Community",
-      "badge": "Fragrant Mountain Herb"
-    },
-    "sari-cicek": {
-      "name": "Yellow Flower / Linden Tea (80g)",
-      "description": "A natural blend of mountain flowers and linden.",
-      "region": "Caucasus Community",
-      "badge": "Soothing Blend"
-    },
-    "dag-cayi": {
-      "name": "Mountain Tea Blend (120g)",
-      "description": "A special blend of mountain herbs, rich with the aroma of nature.",
-      "region": "Caucasus Community",
-      "badge": "Rich in Antioxidants"
-    }
   }
 }
