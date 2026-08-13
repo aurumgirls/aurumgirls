@@ -2,28 +2,28 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useCartStore, type CartItem } from '@/store/cart-store';
-import { useLocalizedProductName } from '@/lib/shop-i18n';
+import { resolveImageUrl } from '@/lib/api';
+import { FALLBACK_SWATCH } from '@/lib/constants';
 import { FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_RATE } from '@/lib/cart-data';
 
 function SummaryLine({ item }: { item: CartItem }) {
   const t = useTranslations('checkout');
-  const name = useLocalizedProductName(item.slug, item.name);
 
   return (
     <div className="flex gap-4 py-4 border-b border-sand last:border-b-0">
       <div
         className="w-16 h-16 rounded-lg relative overflow-hidden flex items-center justify-center flex-shrink-0"
-        style={{ backgroundColor: item.flavorColor }}
+        style={{ backgroundColor: FALLBACK_SWATCH }}
       >
         {item.image ? (
-          <Image src={item.image} alt={name} fill className="object-contain p-1" unoptimized />
+          <Image src={resolveImageUrl(item.image)} alt={item.name} fill className="object-contain p-1" unoptimized />
         ) : (
-          <span className="font-display text-forest text-[8px] text-center px-1 leading-tight">{name}</span>
+          <span className="font-display text-forest text-[8px] text-center px-1 leading-tight">{item.name}</span>
         )}
       </div>
       <div className="flex-1 flex justify-between">
         <div>
-          <h4 className="font-medium text-forest text-sm">{name}</h4>
+          <h4 className="font-medium text-forest text-sm">{item.name}</h4>
           <span className="text-slate text-xs">{t('summary.qty')}: {item.quantity}</span>
         </div>
         <span className="font-medium text-sm">{(item.price * item.quantity).toFixed(2)} ₼</span>

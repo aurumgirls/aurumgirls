@@ -11,11 +11,10 @@
     "next": "Next image"
   },
   "purchase": {
-    "newBadge": "New",
-    "reviewsSuffix": "reviews",
     "quantityLabel": "Quantity",
     "addToCart": "Add to Cart",
     "buyNow": "Buy It Now",
+    "outOfStock": "Out of Stock",
     "freeShipping": "Free Shipping",
     "freeShippingThreshold": "50 ₼+",
     "shipsFresh": "Ships Fresh",
@@ -24,7 +23,9 @@
   "info": {
     "detailsTitle": "Product Details",
     "ingredientsTitle": "Ingredients",
-    "originLabel": "Origin",
+    "stockLabel": "Stock Status",
+    "inStockValue": "In Stock",
+    "outOfStockValue": "Out of Stock",
     "storageLabel": "Storage",
     "storageValue": "Store in a cool, dry place away from direct sunlight.",
     "shelfLifeLabel": "Shelf Life",

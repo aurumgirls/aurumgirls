@@ -1,21 +1,17 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
-import { shopProducts } from '@/lib/shop-data';
+import type { Product } from '@/lib/api';
 import { ProductCard } from '@/components/shop/ProductCard';
 
 interface RelatedProductsProps {
-  currentProductId: number;
-  category: string;
+  products: Product[];
 }
 
-export function RelatedProducts({ currentProductId, category }: RelatedProductsProps) {
+export function RelatedProducts({ products }: RelatedProductsProps) {
   const t = useTranslations('product');
-  const relatedProducts = shopProducts
-    .filter(p => p.id !== currentProductId && p.category === category)
-    .slice(0, 4);
 
-  if (relatedProducts.length === 0) {
+  if (products.length === 0) {
     return null;
   }
 
@@ -26,7 +22,7 @@ export function RelatedProducts({ currentProductId, category }: RelatedProductsP
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {relatedProducts.map(product => (
+        {products.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>

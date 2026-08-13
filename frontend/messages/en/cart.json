@@ -19,15 +19,7 @@
     "subtotal": "Subtotal",
     "shipping": "Shipping (Azərpoçt)",
     "freeShipping": "Free",
-    "discount": "Discount",
     "total": "Total",
     "checkoutButton": "Proceed to Checkout"
-  },
-  "coupon": {
-    "toggle": "Have a promo code?",
-    "placeholder": "e.g. AURUM10",
-    "apply": "Apply",
-    "invalid": "Invalid promo code.",
-    "success": "Promo code applied successfully!"
   }
 }

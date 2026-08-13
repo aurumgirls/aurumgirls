@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
-import { priceBounds } from '@/lib/shop-data';
 
 export interface FilterState {
   priceRange: [number, number];
@@ -10,20 +9,21 @@ export interface FilterState {
 interface ShopFiltersProps {
   filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
+  bounds: { min: number; max: number };
 }
 
-export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
+export function ShopFilters({ filters, onFilterChange, bounds }: ShopFiltersProps) {
   const t = useTranslations('shop');
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onFilterChange({ ...filters, priceRange: [priceBounds.min, parseInt(e.target.value)] });
+    onFilterChange({ ...filters, priceRange: [bounds.min, parseInt(e.target.value)] });
   };
 
   const clearFilters = () => {
-    onFilterChange({ priceRange: [priceBounds.min, priceBounds.max] });
+    onFilterChange({ priceRange: [bounds.min, bounds.max] });
   };
 
-  const isFiltered = filters.priceRange[1] < priceBounds.max;
+  const isFiltered = filters.priceRange[1] < bounds.max;
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-sand">
@@ -44,14 +44,14 @@ export function ShopFilters({ filters, onFilterChange }: ShopFiltersProps) {
         <div className="space-y-4">
           <input
             type="range"
-            min={priceBounds.min}
-            max={priceBounds.max}
+            min={bounds.min}
+            max={bounds.max}
             value={filters.priceRange[1]}
             onChange={handlePriceChange}
             className="w-full accent-terracotta"
           />
           <div className="flex justify-between text-sm text-slate">
-            <span>{priceBounds.min} ₼</span>
+            <span>{bounds.min} ₼</span>
             <span>{filters.priceRange[1]} ₼</span>
           </div>
         </div>

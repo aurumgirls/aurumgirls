@@ -11,11 +11,10 @@
     "next": "Növbəti şəkil"
   },
   "purchase": {
-    "newBadge": "Yeni",
-    "reviewsSuffix": "rəy",
     "quantityLabel": "Say",
     "addToCart": "Səbətə Əlavə Et",
     "buyNow": "İndi Al",
+    "outOfStock": "Stokda Yoxdur",
     "freeShipping": "Pulsuz Çatdırılma",
     "freeShippingThreshold": "50 ₼+",
     "shipsFresh": "Təzə Göndərilir",
@@ -24,7 +23,9 @@
   "info": {
     "detailsTitle": "Məhsul Məlumatı",
     "ingredientsTitle": "Tərkib",
-    "originLabel": "Mənşə",
+    "stockLabel": "Stok Statusu",
+    "inStockValue": "Stokda Var",
+    "outOfStockValue": "Stokda Yoxdur",
     "storageLabel": "Saxlama Şəraiti",
     "storageValue": "Sərin və quru yerdə, birbaşa günəş işığından uzaqda saxlayın.",
     "shelfLifeLabel": "Son İstifadə Müddəti",

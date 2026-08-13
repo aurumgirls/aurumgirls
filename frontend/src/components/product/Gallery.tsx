@@ -2,18 +2,18 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ProductDetail } from '@/lib/product-detail';
+import { resolveImageUrl } from '@/lib/api';
+import { FALLBACK_SWATCH } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 interface GalleryProps {
-  images: ProductDetail['gallery'];
+  images: string[];
   productName: string;
-  flavorColor: string;
 }
 
-export function Gallery({ images, productName, flavorColor }: GalleryProps) {
+export function Gallery({ images, productName }: GalleryProps) {
   const t = useTranslations('product');
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -27,23 +27,16 @@ export function Gallery({ images, productName, flavorColor }: GalleryProps) {
       {/* Main Image */}
       <div
         className="relative aspect-square w-full rounded-2xl overflow-hidden flex items-center justify-center transition-colors duration-500"
-        style={{ backgroundColor: activeImage?.type === 'swatch' && activeImage.swatch ? activeImage.swatch[0] : flavorColor || '#F5EBE6' }}
+        style={{ backgroundColor: FALLBACK_SWATCH }}
       >
-        {activeImage.src ? (
+        {activeImage ? (
           <Image
-            src={activeImage.src}
+            src={resolveImageUrl(activeImage)}
             alt={productName}
             fill
             unoptimized
             className="object-contain p-8 transition-transform duration-500 hover:scale-105"
             priority
-          />
-        ) : activeImage.type === 'swatch' && activeImage.swatch ? (
-          <div
-            className="w-full h-full"
-            style={{
-              background: `linear-gradient(${activeImage.angle}deg, ${activeImage.swatch[0]} 0%, ${activeImage.swatch[1]} 100%)`
-            }}
           />
         ) : (
           <div className="w-48 h-48 rounded-full bg-white/40 backdrop-blur-sm flex items-center justify-center shadow-soft">
@@ -77,34 +70,23 @@ export function Gallery({ images, productName, flavorColor }: GalleryProps) {
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
           {images.map((img, idx) => (
             <button
-              key={idx}
+              key={img}
               onClick={() => setActiveIndex(idx)}
               className={cn(
-                "relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden transition-all flex items-center justify-center",
+                "relative w-20 h-20 shrink-0 rounded-xl overflow-hidden transition-all flex items-center justify-center",
                 activeIndex === idx
                   ? "border-2 border-terracotta ring-4 ring-terracotta/30"
                   : "border border-transparent opacity-70 hover:opacity-100"
               )}
-              style={{ backgroundColor: img.type === 'swatch' && img.swatch ? img.swatch[0] : flavorColor || '#F5EBE6' }}
+              style={{ backgroundColor: FALLBACK_SWATCH }}
             >
-              {img.src ? (
-                <Image
-                  src={img.src}
-                  alt={productName}
-                  fill
-                  unoptimized
-                  className="object-contain p-2"
-                />
-              ) : img.type === 'swatch' && img.swatch ? (
-                <div
-                  className="w-full h-full"
-                  style={{
-                    background: `linear-gradient(${img.angle}deg, ${img.swatch[0]} 0%, ${img.swatch[1]} 100%)`
-                  }}
-                />
-              ) : (
-                <span className="text-[10px] font-display text-forest text-center leading-tight px-1">{productName}</span>
-              )}
+              <Image
+                src={resolveImageUrl(img)}
+                alt={productName}
+                fill
+                unoptimized
+                className="object-contain p-2"
+              />
             </button>
           ))}
         </div>
