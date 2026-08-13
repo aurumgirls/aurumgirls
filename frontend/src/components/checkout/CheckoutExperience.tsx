@@ -8,6 +8,8 @@ import { DeliveryOptions } from './DeliveryOptions';
 import { PaymentMethods } from './PaymentMethods';
 import { useCartStore } from '@/store/cart-store';
 import { createOrder, ApiError } from '@/lib/api';
+import { cn } from '@/lib/utils';
+import { isValidName, isValidPhone, isValidAddress, isValidZip } from '@/lib/validation';
 
 type FormState = {
   firstName: string;
@@ -17,6 +19,8 @@ type FormState = {
   city: string;
   zip: string;
 };
+
+type FieldErrors = Partial<Record<keyof FormState, string>>;
 
 const EMPTY_FORM: FormState = {
   firstName: '',
@@ -32,18 +36,37 @@ export function CheckoutExperience() {
   const { items, clearCart } = useCartStore();
   const [isPlaced, setIsPlaced] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const updateField = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    setFieldErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  };
+
+  const validate = (): FieldErrors => {
+    const errors: FieldErrors = {};
+    if (!isValidName(form.firstName)) errors.firstName = t('errors.nameInvalid');
+    if (!isValidName(form.lastName)) errors.lastName = t('errors.nameInvalid');
+    if (!isValidPhone(form.phone)) errors.phone = t('errors.phoneInvalid');
+    if (!isValidAddress(form.address)) errors.address = t('errors.addressInvalid');
+    if (!isValidName(form.city)) errors.city = t('errors.cityInvalid');
+    if (!isValidZip(form.zip)) errors.zip = t('errors.zipInvalid');
+    return errors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsSubmitting(true);
 
+    const errors = validate();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
       await createOrder({
         customerName: `${form.firstName} ${form.lastName}`.trim(),
@@ -61,6 +84,12 @@ export function CheckoutExperience() {
       setIsSubmitting(false);
     }
   };
+
+  const inputClass = (field: keyof FormState) =>
+    cn(
+      "w-full px-4 py-3 rounded-xl border focus:outline-none bg-white",
+      fieldErrors[field] ? "border-terracotta focus:border-terracotta" : "border-sand focus:border-terracotta"
+    );
 
   if (isPlaced) {
     return (
@@ -94,22 +123,38 @@ export function CheckoutExperience() {
 
       <div className="flex flex-col lg:flex-row gap-12">
         <div className="w-full lg:w-3/5">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <div className="mb-10">
               <h3 className="text-xl font-display text-forest mb-4">{t('contactInfo')}</h3>
-              <div className="space-y-4">
-                <input type="tel" required value={form.phone} onChange={updateField('phone')} placeholder={t('phonePlaceholder')} className="w-full px-4 py-3 rounded-xl border border-sand focus:outline-none focus:border-terracotta bg-white" />
+              <div className="space-y-1">
+                <input type="tel" value={form.phone} onChange={updateField('phone')} placeholder={t('phonePlaceholder')} className={inputClass('phone')} />
+                {fieldErrors.phone && <p className="text-terracotta text-xs">{fieldErrors.phone}</p>}
               </div>
             </div>
 
             <div className="mb-10">
               <h3 className="text-xl font-display text-forest mb-4">{t('shippingAddress')}</h3>
               <div className="grid grid-cols-2 gap-4">
-                <input type="text" required value={form.firstName} onChange={updateField('firstName')} placeholder={t('firstNamePlaceholder')} className="w-full px-4 py-3 rounded-xl border border-sand focus:outline-none focus:border-terracotta bg-white" />
-                <input type="text" required value={form.lastName} onChange={updateField('lastName')} placeholder={t('lastNamePlaceholder')} className="w-full px-4 py-3 rounded-xl border border-sand focus:outline-none focus:border-terracotta bg-white" />
-                <input type="text" required value={form.address} onChange={updateField('address')} placeholder={t('addressPlaceholder')} className="col-span-2 w-full px-4 py-3 rounded-xl border border-sand focus:outline-none focus:border-terracotta bg-white" />
-                <input type="text" required value={form.city} onChange={updateField('city')} placeholder={t('cityPlaceholder')} className="w-full px-4 py-3 rounded-xl border border-sand focus:outline-none focus:border-terracotta bg-white" />
-                <input type="text" value={form.zip} onChange={updateField('zip')} placeholder={t('zipPlaceholder')} className="w-full px-4 py-3 rounded-xl border border-sand focus:outline-none focus:border-terracotta bg-white" />
+                <div className="space-y-1">
+                  <input type="text" value={form.firstName} onChange={updateField('firstName')} placeholder={t('firstNamePlaceholder')} className={inputClass('firstName')} />
+                  {fieldErrors.firstName && <p className="text-terracotta text-xs">{fieldErrors.firstName}</p>}
+                </div>
+                <div className="space-y-1">
+                  <input type="text" value={form.lastName} onChange={updateField('lastName')} placeholder={t('lastNamePlaceholder')} className={inputClass('lastName')} />
+                  {fieldErrors.lastName && <p className="text-terracotta text-xs">{fieldErrors.lastName}</p>}
+                </div>
+                <div className="col-span-2 space-y-1">
+                  <input type="text" value={form.address} onChange={updateField('address')} placeholder={t('addressPlaceholder')} className={inputClass('address')} />
+                  {fieldErrors.address && <p className="text-terracotta text-xs">{fieldErrors.address}</p>}
+                </div>
+                <div className="space-y-1">
+                  <input type="text" value={form.city} onChange={updateField('city')} placeholder={t('cityPlaceholder')} className={inputClass('city')} />
+                  {fieldErrors.city && <p className="text-terracotta text-xs">{fieldErrors.city}</p>}
+                </div>
+                <div className="space-y-1">
+                  <input type="text" value={form.zip} onChange={updateField('zip')} placeholder={t('zipPlaceholder')} className={inputClass('zip')} />
+                  {fieldErrors.zip && <p className="text-terracotta text-xs">{fieldErrors.zip}</p>}
+                </div>
               </div>
             </div>
 

@@ -13,6 +13,13 @@
   "addressPlaceholder": "Ünvan",
   "cityPlaceholder": "Şəhər / Rayon",
   "zipPlaceholder": "Poçt İndeksi (istəyə görə)",
+  "errors": {
+    "nameInvalid": "Zəhmət olmasa doğru ad daxil edin (ən azı 2 hərf).",
+    "phoneInvalid": "Zəhmət olmasa doğru telefon nömrəsi daxil edin (məs. 050 123 45 67).",
+    "addressInvalid": "Zəhmət olmasa doğru ünvan daxil edin (ən azı 5 simvol).",
+    "cityInvalid": "Zəhmət olmasa doğru şəhər/rayon adı daxil edin.",
+    "zipInvalid": "Zəhmət olmasa doğru poçt indeksi daxil edin (məs. AZ1000)."
+  },
   "delivery": {
     "title": "Çatdırılma Üsulu",
     "standardName": "Azərpoçt Standart Çatdırılma",

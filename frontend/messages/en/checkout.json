@@ -13,6 +13,13 @@
   "addressPlaceholder": "Address",
   "cityPlaceholder": "City / Region",
   "zipPlaceholder": "Postal Code (optional)",
+  "errors": {
+    "nameInvalid": "Please enter a valid name (at least 2 letters).",
+    "phoneInvalid": "Please enter a valid phone number (e.g. 050 123 45 67).",
+    "addressInvalid": "Please enter a valid address (at least 5 characters).",
+    "cityInvalid": "Please enter a valid city/region name.",
+    "zipInvalid": "Please enter a valid postal code (e.g. AZ1000)."
+  },
   "delivery": {
     "title": "Delivery Method",
     "standardName": "Azərpoçt Standard Delivery",
