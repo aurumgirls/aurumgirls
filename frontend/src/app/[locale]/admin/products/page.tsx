@@ -117,13 +117,13 @@ export default function AdminProductsPage() {
 
         {formMode === 'create' && (
           <div className="mb-8">
-            <ProductForm onCancel={() => setFormMode('closed')} onSubmit={handleCreate} />
+            <ProductForm token={token!} onCancel={() => setFormMode('closed')} onSubmit={handleCreate} />
           </div>
         )}
 
         {formMode === 'edit' && editingProduct && (
           <div className="mb-8">
-            <ProductForm product={editingProduct} onCancel={() => { setFormMode('closed'); setEditingProduct(null); }} onSubmit={handleUpdate} />
+            <ProductForm product={editingProduct} token={token!} onCancel={() => { setFormMode('closed'); setEditingProduct(null); }} onSubmit={handleUpdate} />
           </div>
         )}
 

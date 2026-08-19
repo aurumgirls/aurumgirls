@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Backend API
+
+The app talks to the FastAPI backend via `NEXT_PUBLIC_API_URL` (see `src/lib/api.ts`). Set it in `.env.local` for local development:
+
+```
+NEXT_PUBLIC_API_URL=https://aurum-back-production.up.railway.app
+```
+
+When deploying (e.g. Vercel), set the same variable in the hosting platform's environment variable settings — `.env.local` is gitignored and never ships with the repo. Point it at `http://localhost:8000` instead if running the backend locally.
+
 ## Getting Started
 
 First, run the development server:

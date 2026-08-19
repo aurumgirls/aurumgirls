@@ -56,10 +56,11 @@ export class ApiError extends Error {
 }
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const isFormData = options?.body instanceof FormData;
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...options?.headers,
     },
   });
@@ -169,5 +170,22 @@ export function updateOrderStatusAdmin(token: string, id: string, status: string
     method: 'PATCH',
     headers: authHeaders(token),
     body: JSON.stringify({ status }),
+  });
+}
+
+export function uploadImageAdmin(token: string, file: File): Promise<{ url: string }> {
+  const formData = new FormData();
+  formData.append('file', file);
+  return apiFetch<{ url: string }>('/api/admin/upload', {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: formData,
+  });
+}
+
+export function deleteImageAdmin(token: string, filename: string): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/api/admin/upload/${encodeURIComponent(filename)}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
   });
 }
