@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from 'react';
-import type { Product, CreateProductInput, UpdateProductInput } from '@/lib/api';
+import { useRef, useState } from 'react';
+import Image from 'next/image';
+import { X } from 'lucide-react';
+import { uploadImageAdmin, deleteImageAdmin, resolveImageUrl, ApiError, type Product, type CreateProductInput, type UpdateProductInput } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { isValidPrice, isValidNonNegativeInt, isValidImageUrl } from '@/lib/validation';
 
 type ProductFormProps = {
   product?: Product | null;
+  token: string;
   onCancel: () => void;
   onSubmit: (input: CreateProductInput | UpdateProductInput) => Promise<void>;
 };
@@ -17,7 +20,7 @@ type FieldErrors = Partial<Record<FieldKey, string>>;
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 150;
 
-export function ProductForm({ product, onCancel, onSubmit }: ProductFormProps) {
+export function ProductForm({ product, token, onCancel, onSubmit }: ProductFormProps) {
   const isEdit = !!product;
 
   const [name, setName] = useState(product?.name ?? '');
@@ -30,8 +33,39 @@ export function ProductForm({ product, onCancel, onSubmit }: ProductFormProps) {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const validate = (images: string[]): FieldErrors => {
+  const images = imagesText.split('\n').map((s) => s.trim()).filter(Boolean);
+
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setUploadError(null);
+    setIsUploading(true);
+    try {
+      const { url } = await uploadImageAdmin(token, file);
+      setImagesText((prev) => (prev.trim() ? `${prev.trim()}\n${url}` : url));
+      clearFieldError('images');
+    } catch (err) {
+      setUploadError(err instanceof ApiError ? err.message : 'Failed to upload image');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    const removed = images[index];
+    setImagesText(images.filter((_, i) => i !== index).join('\n'));
+    if (removed.startsWith('/static/uploads/')) {
+      deleteImageAdmin(token, removed.split('/').pop()!).catch(() => {});
+    }
+  };
+
+  const validate = (): FieldErrors => {
     const errors: FieldErrors = {};
     const trimmedName = name.trim();
     if (trimmedName.length < MIN_NAME_LENGTH || trimmedName.length > MAX_NAME_LENGTH) {
@@ -49,7 +83,7 @@ export function ProductForm({ product, onCancel, onSubmit }: ProductFormProps) {
       errors.quantityAvailable = 'Quantity must be a whole number, 0 or greater.';
     }
     if (images.some((url) => !isValidImageUrl(url))) {
-      errors.images = 'Each image URL must start with http:// or https://.';
+      errors.images = 'Each image must be a valid URL or an uploaded file.';
     }
     return errors;
   };
@@ -58,8 +92,7 @@ export function ProductForm({ product, onCancel, onSubmit }: ProductFormProps) {
     e.preventDefault();
     setError(null);
 
-    const images = imagesText.split('\n').map((s) => s.trim()).filter(Boolean);
-    const errors = validate(images);
+    const errors = validate();
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
@@ -146,8 +179,39 @@ export function ProductForm({ product, onCancel, onSubmit }: ProductFormProps) {
         )}
 
         <div className="sm:col-span-2">
-          <label className="block text-xs font-semibold text-forest mb-1">Image URLs (one per line)</label>
-          <textarea value={imagesText} onChange={(e) => { setImagesText(e.target.value); clearFieldError('images'); }} rows={3} placeholder="https://.../image1.jpg" className={fieldClass('images')} />
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-xs font-semibold text-forest">Images</label>
+            <button
+              type="button"
+              disabled={isUploading}
+              onClick={() => fileInputRef.current?.click()}
+              className="text-xs font-medium text-terracotta hover:text-terracotta-light disabled:opacity-60"
+            >
+              {isUploading ? 'Uploading...' : '+ Upload image'}
+            </button>
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelected} className="hidden" />
+          </div>
+
+          {images.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {images.map((url, i) => (
+                <div key={`${url}-${i}`} className="relative w-16 h-16 rounded-lg overflow-hidden border border-sand bg-linen">
+                  <Image src={resolveImageUrl(url)} alt="" fill unoptimized className="object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(i)}
+                    className="absolute top-0.5 right-0.5 w-5 h-5 rounded-full bg-charcoal/70 text-white flex items-center justify-center"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {uploadError && <p className="text-terracotta text-xs mb-1">{uploadError}</p>}
+
+          <textarea value={imagesText} onChange={(e) => { setImagesText(e.target.value); clearFieldError('images'); }} rows={3} placeholder="https://.../image1.jpg or paste one URL per line" className={fieldClass('images')} />
           {fieldErrors.images && <p className="text-terracotta text-xs mt-1">{fieldErrors.images}</p>}
         </div>
       </div>
