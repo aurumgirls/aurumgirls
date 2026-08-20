@@ -12,6 +12,7 @@ from app.routers.products import admin_router as products_admin_router
 from app.routers.admin import router as admin_router
 from app.routers.orders import public_router as orders_public_router
 from app.routers.orders import admin_router as orders_admin_router
+from app.routers.upload import router as upload_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -39,7 +40,10 @@ app.include_router(products_admin_router)
 app.include_router(admin_router)
 app.include_router(orders_admin_router)
 app.include_router(orders_public_router)
+app.include_router(upload_router)
 
 @app.get("/")
 def root():
     return {"status": "ok", "service": "By Aurum Girls API"}
+
+handler = app

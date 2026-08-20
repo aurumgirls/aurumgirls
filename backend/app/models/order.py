@@ -12,6 +12,7 @@ class Order(Base):
 
     customer_name = Column(String, nullable=False)
     customer_phone = Column(String, nullable=False)
+    customer_email = Column(String, nullable=False)
     customer_address = Column(String, nullable=False)
     city = Column(String, nullable=False)
     zip_code = Column(String, nullable=True)

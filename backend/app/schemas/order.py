@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, EmailStr
 
 class OrderItemIn(BaseModel):
     product_id: str = Field(alias="productId")
@@ -21,6 +21,7 @@ class OrderItemOut(BaseModel):
 class OrderCreate(BaseModel):
     customer_name: str = Field(alias="customerName")
     customer_phone: str = Field(alias="customerPhone")
+    customer_email: EmailStr = Field(alias="customerEmail")
     customer_address: str = Field(alias="customerAddress")
     city: str
     zip_code: Optional[str] = Field(default=None, alias="zipCode")
@@ -34,6 +35,7 @@ class OrderOut(BaseModel):
     id: str
     customer_name: str = Field(alias="customerName")
     customer_phone: str = Field(alias="customerPhone")
+    customer_email: EmailStr = Field(alias="customerEmail")
     customer_address: str = Field(alias="customerAddress")
     city: str
     zip_code: Optional[str] = Field(default=None, alias="zipCode")

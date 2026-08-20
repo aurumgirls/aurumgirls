@@ -16,7 +16,6 @@ admin_router = APIRouter(prefix="/api/admin/orders", tags=["admin-orders"])
 VALID_STATUSES = {"pending", "paid", "processing", "shipped", "completed", "cancelled"}
 
 # PUBLIC ENDPOINTS
-
 @public_router.post("", response_model=OrderOut, status_code=201)
 def create_order(payload: OrderCreate, db: Session = Depends(get_db)):
     if not payload.items:
