@@ -29,7 +29,7 @@ export default async function ShopPage({
   setRequestLocale(locale);
 
   if (!SHOP_PAGE_ENABLED) {
-    redirect({ href: '/', locale });
+    redirect({ href: '/#products', locale });
   }
 
   const t = await getTranslations('shop');

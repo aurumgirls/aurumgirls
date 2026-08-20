@@ -73,7 +73,7 @@ export function GiftSetBanner({ product }: { product: Product | null }) {
                 </div>
               ) : (
                 <div className="pt-4">
-                  <Link href="/shop" className="btn-secondary font-semibold inline-flex">
+                  <Link href="/#products" className="btn-secondary font-semibold inline-flex">
                     {t('giftBanner.addToCart')} <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>

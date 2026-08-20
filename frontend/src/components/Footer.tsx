@@ -41,8 +41,8 @@ export default function Footer() {
           <ul className="space-y-2.5 text-sm text-cream/80">
             <li><Link href="/telimler" className="hover:text-cream transition-colors">{t('footer.trainings')}</Link></li>
             <li><Link href="/ekoloji-dusarge" className="hover:text-cream transition-colors">{t('footer.ecoCamp')}</Link></li>
-            <li><Link href="/shop?category=set" className="hover:text-cream transition-colors">{t('footer.giftSet')}</Link></li>
-            <li><Link href="/shop?category=individual" className="hover:text-cream transition-colors">{t('footer.individualProducts')}</Link></li>
+            <li><Link href="/#products" className="hover:text-cream transition-colors">{t('footer.giftSet')}</Link></li>
+            <li><Link href="/#products" className="hover:text-cream transition-colors">{t('footer.individualProducts')}</Link></li>
           </ul>
         </div>
 

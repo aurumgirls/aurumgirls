@@ -36,7 +36,8 @@
     "retry": "Try Again"
   },
   "productCard": {
-    "addToCart": "Add to cart"
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of Stock"
   },
   "breadcrumbs": {
     "home": "Home",

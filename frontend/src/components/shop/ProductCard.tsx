@@ -17,6 +17,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const t = useTranslations('shop');
   const { addItem } = useCartStore();
   const image = product.images[0];
+  const available = product.inStock && product.quantityAvailable > 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -51,13 +52,19 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <div className="mt-auto pt-4 border-t border-sand flex items-center justify-between">
             <span className="font-display text-forest text-lg font-medium">{product.price.toFixed(2)} {CURRENCY}</span>
-            <button
-              onClick={handleAddToCart}
-              className="bg-cream hover:bg-terracotta text-terracotta hover:text-white border border-terracotta rounded-full w-8 h-8 flex items-center justify-center transition-colors shadow-sm"
-              aria-label={`${t('productCard.addToCart')}: ${product.name}`}
-            >
-              <Plus className="w-4 h-4" />
-            </button>
+            {available ? (
+              <button
+                onClick={handleAddToCart}
+                className="bg-cream hover:bg-terracotta text-terracotta hover:text-white border border-terracotta rounded-full w-8 h-8 flex items-center justify-center transition-colors shadow-sm"
+                aria-label={`${t('productCard.addToCart')}: ${product.name}`}
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+            ) : (
+              <span className="text-xs font-medium text-slate bg-sand/40 rounded-full px-3 py-1.5">
+                {t('productCard.outOfStock')}
+              </span>
+            )}
           </div>
         </div>
       </div>

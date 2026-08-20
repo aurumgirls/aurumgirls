@@ -4,7 +4,7 @@ import Image from 'next/image';
 import type { Product } from '@/lib/api';
 import { resolveImageUrl } from '@/lib/api';
 import { CURRENCY, FALLBACK_SWATCH } from '@/lib/constants';
-import { ShoppingBag, ArrowRight } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import FadeUp from '@/components/motion/FadeUp';
@@ -14,6 +14,7 @@ function FeaturedProductCard({ product }: { product: Product }) {
   const t = useTranslations('home');
   const { addItem } = useCartStore();
   const image = product.images[0];
+  const available = product.inStock && product.quantityAvailable > 0;
 
   return (
     <div className="bg-white rounded-3xl overflow-hidden border border-sand shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col h-full group">
@@ -58,13 +59,19 @@ function FeaturedProductCard({ product }: { product: Product }) {
             {product.price} {CURRENCY}
           </span>
 
-          <button
-            onClick={() => addItem(product)}
-            className="btn-primary text-xs py-2.5 px-4"
-          >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>{t('featured.addToCart')}</span>
-          </button>
+          {available ? (
+            <button
+              onClick={() => addItem(product)}
+              className="btn-primary text-xs py-2.5 px-4"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>{t('featured.addToCart')}</span>
+            </button>
+          ) : (
+            <span className="text-xs font-medium text-slate bg-sand/40 rounded-full py-2.5 px-4">
+              {t('featured.outOfStock')}
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -77,7 +84,7 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
   if (products.length === 0) return null;
 
   return (
-    <section className="py-20 lg:py-28 bg-cream">
+    <section id="products" className="py-20 lg:py-28 bg-cream scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
@@ -85,9 +92,6 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
             <h2 className="font-display text-3xl md:text-4xl font-bold text-forest">{t('featured.title')}</h2>
             <p className="text-slate text-base mt-2">{t('featured.subtitle')}</p>
           </div>
-          <Link href="/shop" className="btn-outline shrink-0 inline-flex items-center gap-2">
-            {t('featured.viewAll')} <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

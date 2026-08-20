@@ -152,7 +152,7 @@ export function CheckoutExperience() {
     return (
       <div className="max-w-xl mx-auto text-center py-16 md:py-24">
         <p className="text-slate mb-8">{t('emptyCart')}</p>
-        <Link href="/shop" className="btn-primary inline-flex">
+        <Link href="/#products" className="btn-primary inline-flex">
           {t('emptyCartCta')}
         </Link>
       </div>

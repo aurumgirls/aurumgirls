@@ -18,7 +18,7 @@ export function CartExperience() {
         </div>
         <h2 className="text-2xl font-display text-forest mb-3">{t('empty.title')}</h2>
         <p className="text-slate mb-8">{t('empty.subtitle')}</p>
-        <Link href="/shop" className="btn-primary inline-flex">
+        <Link href="/#products" className="btn-primary inline-flex">
           {t('empty.cta')}
         </Link>
       </div>

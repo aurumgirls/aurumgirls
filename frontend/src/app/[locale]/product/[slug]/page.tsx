@@ -49,7 +49,7 @@ export default async function ProductPage({
   const relatedProducts = allProducts.filter((p) => p.id !== product.id).slice(0, 4);
 
   const breadcrumbs = [
-    { label: t('breadcrumbs.shop'), href: '/shop' },
+    { label: t('breadcrumbs.shop'), href: '/#products' },
     { label: product.name },
   ];
 
