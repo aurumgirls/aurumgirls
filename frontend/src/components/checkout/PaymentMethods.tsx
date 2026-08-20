@@ -3,6 +3,7 @@
 import { CreditCard, Wallet, ShieldCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
+import { CARD_PAYMENTS_ENABLED } from '@/lib/constants';
 
 export type PaymentMethod = 'card' | 'applepay';
 
@@ -36,22 +37,24 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
     <div className="space-y-6">
       <h3 className="font-display text-xl text-forest font-semibold mb-4">{t('payment.title')}</h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <label
-          onClick={() => onMethodChange('card')}
-          className={cn(
-            "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
-            method === 'card'
-              ? "border-terracotta bg-cream shadow-soft"
-              : "border-sand bg-white hover:border-forest/40"
-          )}
-        >
-          <CreditCard className="w-6 h-6 text-terracotta shrink-0" />
-          <div>
-            <p className="font-semibold text-forest text-sm">{t('payment.cardTitle')}</p>
-            <p className="text-xs text-slate">{t('payment.cardSubtitle')}</p>
-          </div>
-        </label>
+      <div className={cn("grid grid-cols-1 gap-4", CARD_PAYMENTS_ENABLED && "sm:grid-cols-2")}>
+        {CARD_PAYMENTS_ENABLED && (
+          <label
+            onClick={() => onMethodChange('card')}
+            className={cn(
+              "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
+              method === 'card'
+                ? "border-terracotta bg-cream shadow-soft"
+                : "border-sand bg-white hover:border-forest/40"
+            )}
+          >
+            <CreditCard className="w-6 h-6 text-terracotta shrink-0" />
+            <div>
+              <p className="font-semibold text-forest text-sm">{t('payment.cardTitle')}</p>
+              <p className="text-xs text-slate">{t('payment.cardSubtitle')}</p>
+            </div>
+          </label>
+        )}
 
         <label
           onClick={() => onMethodChange('applepay')}
@@ -70,7 +73,7 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
         </label>
       </div>
 
-      {method === 'card' && (
+      {CARD_PAYMENTS_ENABLED && method === 'card' && (
         <div className="p-6 rounded-2xl bg-white border border-sand space-y-4">
           <div>
             <label className="block text-xs font-semibold text-forest mb-1">{t('payment.cardNameLabel')}</label>

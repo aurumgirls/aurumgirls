@@ -4,6 +4,8 @@ import { Metadata } from 'next';
 import { ShopExperience } from '@/components/shop/ShopExperience';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { redirect } from '@/i18n/navigation';
+import { SHOP_PAGE_ENABLED } from '@/lib/constants';
 
 export async function generateMetadata({
   params,
@@ -25,6 +27,11 @@ export default async function ShopPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+
+  if (!SHOP_PAGE_ENABLED) {
+    redirect({ href: '/', locale });
+  }
+
   const t = await getTranslations('shop');
 
   return (

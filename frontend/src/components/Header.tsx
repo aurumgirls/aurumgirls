@@ -6,6 +6,7 @@ import { Menu, X, ShoppingBag, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useCartStore } from '@/store/cart-store';
+import { SHOP_PAGE_ENABLED } from '@/lib/constants';
 
 export default function Header() {
   const t = useTranslations('common');
@@ -47,7 +48,7 @@ export default function Header() {
   const offeringsLinks = [
     { href: '/telimler' as const, label: t('nav.trainings') },
     { href: '/ekoloji-dusarge' as const, label: t('nav.ecoCamp') },
-    { href: '/shop' as const, label: t('nav.products') },
+    ...(SHOP_PAGE_ENABLED ? [{ href: '/shop' as const, label: t('nav.products') }] : []),
   ];
 
   return (

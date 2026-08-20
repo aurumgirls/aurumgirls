@@ -7,6 +7,7 @@
   "title": "Sifarişin Tamamlanması",
   "contactInfo": "Əlaqə Məlumatı",
   "phonePlaceholder": "Telefon Nömrəsi",
+  "emailPlaceholder": "E-poçt Ünvanı",
   "shippingAddress": "Çatdırılma Ünvanı",
   "firstNamePlaceholder": "Ad",
   "lastNamePlaceholder": "Soyad",
@@ -16,6 +17,7 @@
   "errors": {
     "nameInvalid": "Zəhmət olmasa doğru ad daxil edin (ən azı 2 hərf).",
     "phoneInvalid": "Zəhmət olmasa doğru telefon nömrəsi daxil edin (məs. 050 123 45 67).",
+    "emailInvalid": "Zəhmət olmasa doğru e-poçt ünvanı daxil edin.",
     "addressInvalid": "Zəhmət olmasa doğru ünvan daxil edin (ən azı 5 simvol).",
     "cityInvalid": "Zəhmət olmasa doğru şəhər/rayon adı daxil edin.",
     "zipInvalid": "Zəhmət olmasa doğru poçt indeksi daxil edin (məs. AZ1000).",
@@ -40,7 +42,7 @@
     "cardNumberLabel": "Kart Nömrəsi",
     "expiryLabel": "Bitmə Tarixi",
     "cvvLabel": "CVV / CVC",
-    "secureNote": "Bütün kart ödənişləriniz SSL şifrələnməsi ilə 100% qorunur."
+    "secureNote": "Bütün ödənişləriniz şifrələnmiş bağlantı ilə 100% qorunur."
   },
   "placeOrder": "Sifarişi Təsdiqlə",
   "placingOrder": "Göndərilir...",
