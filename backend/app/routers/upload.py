@@ -16,6 +16,12 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("", dependencies=[Depends(verify_admin)])
 async def upload_image(file: UploadFile = File(...)):
+    """
+    Admin-only image upload used when adding/editing a product. Saves the
+    file under a random UUID filename (so nothing collides and the original
+    filename is never exposed), and returns the public /static/... URL to
+    store on the product.
+    """
     ext = os.path.splitext(file.filename)[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail="Only .jpg, .jpeg, .png, .webp files are allowed")
@@ -36,7 +42,10 @@ async def upload_image(file: UploadFile = File(...)):
 
 @router.delete("/{filename}", dependencies=[Depends(verify_admin)])
 def delete_image(filename: str):
-    # защита от выхода за пределы папки uploads (directory traversal)
+    """
+    Admin-only image deletion. Rejects any filename containing a path
+    separator or "..", to prevent directory traversal outside UPLOAD_DIR.
+    """
     if "/" in filename or "\\" in filename or ".." in filename:
         raise HTTPException(status_code=400, detail="Invalid filename")
 

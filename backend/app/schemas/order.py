@@ -2,7 +2,9 @@ from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field, EmailStr
 
+
 class OrderItemIn(BaseModel):
+    """One line item as sent by the frontend when placing an order."""
     product_id: str = Field(alias="productId")
     quantity: int
 
@@ -10,6 +12,7 @@ class OrderItemIn(BaseModel):
 
 
 class OrderItemOut(BaseModel):
+    """One line item as returned to the frontend, including the price/name snapshot."""
     product_id: str = Field(alias="productId")
     product_name: str = Field(alias="productName")
     price: float
@@ -19,6 +22,10 @@ class OrderItemOut(BaseModel):
 
 
 class OrderCreate(BaseModel):
+    """
+    Request body for POST /api/orders. EmailStr on customer_email validates
+    the format before it ever reaches the database or the confirmation-email step.
+    """
     customer_name: str = Field(alias="customerName")
     customer_phone: str = Field(alias="customerPhone")
     customer_email: EmailStr = Field(alias="customerEmail")
@@ -32,6 +39,7 @@ class OrderCreate(BaseModel):
 
 
 class OrderOut(BaseModel):
+    """Full order response shape, including all line items, for the frontend/admin panel."""
     id: str
     customer_name: str = Field(alias="customerName")
     customer_phone: str = Field(alias="customerPhone")
@@ -50,4 +58,5 @@ class OrderOut(BaseModel):
 
 
 class OrderStatusUpdate(BaseModel):
+    """Request body for PATCH /api/admin/orders/{id}/status."""
     status: str

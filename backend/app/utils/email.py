@@ -11,6 +11,12 @@ EMAIL_FROM = os.getenv("EMAIL_FROM", SMTP_USER)
 
 
 def send_order_confirmation_email(to_email: str, order):
+    """
+    Sends a plain-text order confirmation to the customer after an order is
+    created. Called from routers/orders.py right after the order is committed
+    to the database. Failures are logged, not raised — a broken email
+    shouldn't fail the whole order-creation request.
+    """
     items_lines = "\n".join(
         f"- {item.product_name} x{item.quantity} — {item.price} AZN"
         for item in order.items
@@ -45,4 +51,6 @@ By Aurum Girls
             server.login(SMTP_USER, SMTP_PASSWORD)
             server.send_message(msg)
     except Exception as e:
+        # Intentionally swallowed: a failed email shouldn't roll back or
+        # error out an otherwise-successful order.
         print(f"[EMAIL ERROR] Failed to send order confirmation: {e}")

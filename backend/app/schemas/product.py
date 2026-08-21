@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class ProductBase(BaseModel):
+    """Shared fields between creating and reading a product."""
     name: str
     description: Optional[str] = None
     price: float
@@ -14,10 +15,16 @@ class ProductBase(BaseModel):
 
 
 class ProductCreate(ProductBase):
+    """Request body for POST /api/admin/products (creating a new product)."""
     pass
 
 
 class ProductUpdate(BaseModel):
+    """
+    Request body for PATCH /api/admin/products/{id}.
+    Every field is optional — only the fields actually sent are updated
+    (see update_data = payload.model_dump(exclude_unset=True) in the router).
+    """
     name: Optional[str] = None
     description: Optional[str] = None
     price: Optional[float] = None
@@ -30,6 +37,11 @@ class ProductUpdate(BaseModel):
 
 
 class ProductOut(ProductBase):
+    """
+    Response shape returned to the frontend. Uses camelCase aliases
+    (oldPrice, inStock, createdAt, updatedAt) to match what the Next.js
+    frontend expects, while the Python/DB side stays snake_case.
+    """
     id: str
     slug: str
     old_price: Optional[float] = Field(default=None, alias="oldPrice")

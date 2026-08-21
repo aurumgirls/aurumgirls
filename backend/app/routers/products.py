@@ -14,14 +14,16 @@ admin_router = APIRouter(prefix="/api/admin/products", tags=["admin-products"])
 
 # OPEN ENDPOINTS
 
-# Endpoint For getting all products which is active
+
 @public_router.get("", response_model=List[ProductOut])
 def list_products(db: Session = Depends(get_db)):
+    """Returns all active (in_stock) products for the public shop page, newest first."""
     return db.query(Product).filter(Product.in_stock == True).order_by(Product.created_at.desc()).all()
 
-# Endpoint For getting the product with this slug
+
 @public_router.get("/{slug}", response_model=ProductOut)
 def get_product(slug: str, db: Session = Depends(get_db)):
+    """Returns a single product by its slug, for the public product detail page."""
     product = db.query(Product).filter(Product.slug == slug).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product Not Found")
@@ -30,21 +32,27 @@ def get_product(slug: str, db: Session = Depends(get_db)):
 
 # ADMIN ENDPOINTS
 
-# Endpoint for getting only Deactivated Products
+
 @admin_router.get("/getonlydeleted", response_model=List[ProductOut], dependencies=[Depends(verify_admin)])
 def get_deleted_products(db: Session = Depends(get_db)):
+    """Returns only deactivated (in_stock == False) products, for the admin panel."""
     products = db.query(Product).filter(Product.in_stock == False).order_by(Product.created_at.desc()).all()
     return products
 
-# Endpoint For getting both type of products: Activated And Deactivated
+
 @admin_router.get("/getall", response_model=List[ProductOut], dependencies=[Depends(verify_admin)])
 def get_all(db: Session = Depends(get_db)):
+    """Returns every product regardless of active/deactivated state, for the admin panel."""
     products = db.query(Product).order_by(Product.created_at.desc()).all()
     return products
 
-# Endpoint For Creating a new product
+
 @admin_router.post("", response_model=ProductOut, status_code=201, dependencies=[Depends(verify_admin)])
 def create_product(payload: ProductCreate, db: Session = Depends(get_db)):
+    """
+    Creates a new product. Generates a unique slug from the name — if the
+    base slug already exists, appends -2, -3, etc. until it's unique.
+    """
     base_slug = slugify(payload.name)
     slug = base_slug
     counter = 1
@@ -58,9 +66,13 @@ def create_product(payload: ProductCreate, db: Session = Depends(get_db)):
     db.refresh(product)
     return product
 
-# Endpoint For Change something in product
+
 @admin_router.patch("/{product_id}", response_model=ProductOut, dependencies=[Depends(verify_admin)])
 def update_product(product_id: str, payload: ProductUpdate, db: Session = Depends(get_db)):
+    """
+    Partially updates a product — only fields actually present in the request
+    body are changed (exclude_unset=True), everything else stays as-is.
+    """
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -73,9 +85,15 @@ def update_product(product_id: str, payload: ProductUpdate, db: Session = Depend
     db.refresh(product)
     return product
 
-# Endpoint For Deactivate the product
+
 @admin_router.delete("/{product_id}", dependencies=[Depends(verify_admin)])
 def deactivate_product(product_id: str, db: Session = Depends(get_db)):
+    """
+    "Deletes" a product by deactivating it (soft delete) — sets in_stock to
+    False and quantity_available to 0, rather than removing the row. This
+    keeps historical OrderItem snapshots and past orders intact even after
+    a product is taken off the shop.
+    """
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
