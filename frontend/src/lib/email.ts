@@ -48,24 +48,18 @@ export type ContactEmailInput = {
 };
 
 export async function sendContactEmail(input: ContactEmailInput): Promise<boolean> {
-  const contactTemplateId = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID || TEMPLATE_ID;
-  if (!SERVICE_ID || !contactTemplateId || !PUBLIC_KEY) {
-    console.warn('EmailJS environment variables (NEXT_PUBLIC_EMAILJS_SERVICE_ID, NEXT_PUBLIC_EMAILJS_PUBLIC_KEY, or NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID) are not configured.');
-    return false;
-  }
-
-  await emailjs.send(
-    SERVICE_ID,
-    contactTemplateId,
-    {
-      from_name: input.name,
-      from_email: input.email,
-      reply_to: input.email,
-      topic: input.topic,
-      message: input.message,
+  const res = await fetch('/api/contact', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    { publicKey: PUBLIC_KEY }
-  );
+    body: JSON.stringify(input),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => null);
+    throw new Error(data?.message || `Failed to send email (${res.status})`);
+  }
 
   return true;
 }
