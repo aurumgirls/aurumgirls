@@ -5,6 +5,7 @@ import { Send } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { isValidName, isValidEmail } from '@/lib/validation';
+import { sendContactEmail } from '@/lib/email';
 
 type FormState = {
   name: string;
@@ -22,12 +23,14 @@ export default function ContactForm() {
   const t = useTranslations('contact');
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const updateField = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
     setFieldErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
+    if (submitError) setSubmitError(null);
   };
 
   const validate = (): FieldErrors => {
@@ -39,7 +42,7 @@ export default function ContactForm() {
     return errors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const errors = validate();
@@ -49,13 +52,23 @@ export default function ContactForm() {
     }
 
     setIsSubmitting(true);
-    // Mock API call — the backend has no contact/message endpoint.
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setSubmitError(null);
+
+    try {
+      await sendContactEmail({
+        name: form.name,
+        email: form.email,
+        topic: form.topic,
+        message: form.message,
+      });
       setIsSuccess(true);
       setForm(EMPTY_FORM);
-      setTimeout(() => setIsSuccess(false), 3000);
-    }, 1500);
+    } catch (err) {
+      console.error('Contact email send error:', err);
+      setSubmitError(t('form.errors.sendFailed'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const fieldClass = (field: keyof FormState) =>
@@ -67,6 +80,12 @@ export default function ContactForm() {
   return (
     <div className="bg-white p-8 md:p-10 rounded-3xl shadow-soft border border-sand">
       <h3 className="text-2xl font-display text-forest mb-6">{t('form.title')}</h3>
+
+      {submitError && (
+        <div className="mb-6 p-4 bg-terracotta/10 border border-terracotta/30 text-terracotta rounded-xl text-sm">
+          {submitError}
+        </div>
+      )}
 
       {isSuccess ? (
         <div className="bg-green-50 text-forest p-6 rounded-2xl flex flex-col items-center justify-center text-center py-12">

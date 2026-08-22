@@ -39,7 +39,8 @@
       "nameInvalid": "Please enter a valid name (at least 2 letters).",
       "emailInvalid": "Please enter a valid email address.",
       "topicInvalid": "Please select a topic.",
-      "messageInvalid": "Your message must be at least 10 characters."
+      "messageInvalid": "Your message must be at least 10 characters.",
+      "sendFailed": "Failed to send message. Please try again later."
     },
     "sendButton": "Send Message",
     "sendingButton": "Sending...",
