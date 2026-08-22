@@ -42,7 +42,7 @@ export default function Footer() {
             <li><Link href="/telimler" className="hover:text-cream transition-colors">{t('footer.trainings')}</Link></li>
             <li><Link href="/ekoloji-dusarge" className="hover:text-cream transition-colors">{t('footer.ecoCamp')}</Link></li>
             <li><Link href="/#products" className="hover:text-cream transition-colors">{t('footer.giftSet')}</Link></li>
-            <li><Link href="/#products" className="hover:text-cream transition-colors">{t('footer.individualProducts')}</Link></li>
+            <li><Link href="/shop" className="hover:text-cream transition-colors">{t('footer.individualProducts')}</Link></li>
           </ul>
         </div>
 

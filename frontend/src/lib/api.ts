@@ -58,6 +58,7 @@ export class ApiError extends Error {
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const isFormData = options?.body instanceof FormData;
   const res = await fetch(`${API_BASE_URL}${path}`, {
+    cache: 'no-store',
     ...options,
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
