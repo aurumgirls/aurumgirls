@@ -13,6 +13,8 @@ import { getProduct, getProducts } from '@/lib/api';
 
 type ProductPageParams = { locale: string; slug: string };
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({
   params,
 }: {

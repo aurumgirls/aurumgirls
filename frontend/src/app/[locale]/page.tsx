@@ -10,6 +10,8 @@ import ValuePillars from '@/components/ValuePillars';
 import ImpactStats from '@/components/ImpactStats';
 import { getProducts } from '@/lib/api';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({
   params,
 }: {
