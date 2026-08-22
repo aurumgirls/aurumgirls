@@ -38,7 +38,9 @@ export default function ContactForm() {
     const errors: FieldErrors = {};
     if (!isValidName(form.name)) errors.name = t('form.errors.nameInvalid');
     if (!isValidEmail(form.email)) errors.email = t('form.errors.emailInvalid');
-    if (form.phone.trim() !== '' && !isValidPhone(form.phone)) errors.phone = t('form.errors.phoneInvalid');
+    if (!isValidPhone(form.phone)) {
+      errors.phone = t.has('form.errors.phoneInvalid') ? t('form.errors.phoneInvalid') : 'Zəhmət olmasa doğru telefon nömrəsi daxil edin.';
+    }
     if (!form.topic) errors.topic = t('form.errors.topicInvalid');
     if (form.message.trim().length < MIN_MESSAGE_LENGTH) errors.message = t('form.errors.messageInvalid');
     return errors;
@@ -60,7 +62,7 @@ export default function ContactForm() {
       await sendContactEmail({
         name: form.name,
         email: form.email,
-        phone: form.phone.trim() || undefined,
+        phone: form.phone.trim(),
         topic: form.topic,
         message: form.message,
       });
@@ -128,14 +130,16 @@ export default function ContactForm() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="phone" className="text-sm font-medium text-forest">{t('form.phoneLabel')}</label>
+            <label htmlFor="phone" className="text-sm font-medium text-forest">
+              {t.has('form.phoneLabel') ? t('form.phoneLabel') : 'Telefon Nömrəsi'}
+            </label>
             <input
               type="tel"
               id="phone"
               value={form.phone}
               onChange={updateField('phone')}
               className={fieldClass('phone')}
-              placeholder={t('form.phonePlaceholder')}
+              placeholder={t.has('form.phonePlaceholder') ? t('form.phonePlaceholder') : '+994 50 123 45 67'}
             />
             {fieldErrors.phone && <p className="text-terracotta text-xs">{fieldErrors.phone}</p>}
           </div>

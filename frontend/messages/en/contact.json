@@ -26,7 +26,7 @@
     "namePlaceholder": "Full Name",
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
-    "phoneLabel": "Phone Number (Optional)",
+    "phoneLabel": "Phone Number",
     "phonePlaceholder": "+994 50 123 45 67",
     "topicLabel": "What is this regarding?",
     "topicPlaceholder": "Select a topic...",
