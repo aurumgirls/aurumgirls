@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, X } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
@@ -13,11 +13,13 @@ interface SearchBarProps {
 export function SearchBar({ initialValue = '', onSearch, className = '' }: SearchBarProps) {
   const t = useTranslations('shop');
   const [query, setQuery] = useState(initialValue);
+  const [prevInitialValue, setPrevInitialValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
+  if (initialValue !== prevInitialValue) {
+    setPrevInitialValue(initialValue);
     setQuery(initialValue);
-  }, [initialValue]);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

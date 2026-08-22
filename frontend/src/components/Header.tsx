@@ -47,7 +47,7 @@ export default function Header() {
   const offeringsLinks = [
     { href: '/telimler' as const, label: t('nav.trainings') },
     { href: '/ekoloji-dusarge' as const, label: t('nav.ecoCamp') },
-    { href: '/#products' as const, label: t('nav.products') },
+    { href: '/shop' as const, label: t('nav.products') },
   ];
 
   return (
