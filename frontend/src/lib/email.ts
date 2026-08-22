@@ -43,6 +43,7 @@ export function sendOrderConfirmationEmail(input: OrderConfirmationInput): void 
 export type ContactEmailInput = {
   name: string;
   email: string;
+  phone?: string;
   topic: string;
   message: string;
 };

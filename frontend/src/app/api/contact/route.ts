@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, topic, message } = body;
+    const { name, email, phone, topic, message } = body;
 
     if (!name || !email || !topic || !message) {
       return NextResponse.json(
@@ -32,17 +32,21 @@ export async function POST(request: Request) {
       },
     });
 
+    const phoneStr = phone ? `Phone: ${phone}\n` : '';
+    const phoneHtml = phone ? `<p style="margin: 12px 0;"><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>` : '';
+
     const mailOptions = {
       from: `"${name} (By Aurum Girls Contact)" <${gmailUser}>`,
       to: 'xelilovafidan61@gmail.com',
       replyTo: email,
       subject: `[Contact Form] ${topic} — ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\nMessage:\n${message}`,
+      text: `Name: ${name}\nEmail: ${email}\n${phoneStr}Topic: ${topic}\n\nMessage:\n${message}`,
       html: `
         <div style="font-family: sans-serif; padding: 24px; color: #1f2937; max-width: 600px; border: 1px solid #e5e7eb; border-radius: 16px;">
           <h2 style="color: #2E4B3D; margin-top: 0; border-bottom: 2px solid #D96B43; padding-bottom: 12px;">New Contact Inquiry</h2>
           <p style="margin: 12px 0;"><strong>Name:</strong> ${name}</p>
           <p style="margin: 12px 0;"><strong>User Email:</strong> <a href="mailto:${email}">${email}</a></p>
+          ${phoneHtml}
           <p style="margin: 12px 0;"><strong>Topic:</strong> ${topic}</p>
           <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
           <p style="margin: 8px 0;"><strong>Message:</strong></p>

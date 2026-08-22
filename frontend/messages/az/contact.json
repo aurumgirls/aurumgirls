@@ -26,6 +26,8 @@
     "namePlaceholder": "Ad Soyad",
     "emailLabel": "E-poçt Ünvanı",
     "emailPlaceholder": "e-poçt@nümunə.com",
+    "phoneLabel": "Telefon Nömrəsi (İstəyə bağlı)",
+    "phonePlaceholder": "+994 50 123 45 67",
     "topicLabel": "Mövzu Nədir?",
     "topicPlaceholder": "Mövzu seçin...",
     "topicGeneral": "Ümumi Sual",
@@ -38,6 +40,7 @@
     "errors": {
       "nameInvalid": "Zəhmət olmasa doğru ad daxil edin (ən azı 2 hərf).",
       "emailInvalid": "Zəhmət olmasa doğru e-poçt ünvanı daxil edin.",
+      "phoneInvalid": "Zəhmət olmasa doğru telefon nömrəsi daxil edin (məs. +994 50 123 45 67).",
       "topicInvalid": "Zəhmət olmasa mövzu seçin.",
       "messageInvalid": "Mesajınız ən azı 10 simvol olmalıdır.",
       "sendFailed": "Mesaj göndərilmədi. Lütfən bir az sonra yenidən cəhd edin."

@@ -26,6 +26,8 @@
     "namePlaceholder": "Full Name",
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
+    "phoneLabel": "Phone Number (Optional)",
+    "phonePlaceholder": "+994 50 123 45 67",
     "topicLabel": "What is this regarding?",
     "topicPlaceholder": "Select a topic...",
     "topicGeneral": "General Inquiry",
@@ -38,6 +40,7 @@
     "errors": {
       "nameInvalid": "Please enter a valid name (at least 2 letters).",
       "emailInvalid": "Please enter a valid email address.",
+      "phoneInvalid": "Please enter a valid phone number (e.g. +994 50 123 45 67).",
       "topicInvalid": "Please select a topic.",
       "messageInvalid": "Your message must be at least 10 characters.",
       "sendFailed": "Failed to send message. Please try again later."
