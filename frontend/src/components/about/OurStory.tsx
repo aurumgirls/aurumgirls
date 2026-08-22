@@ -16,6 +16,8 @@ export default function OurStory() {
             <p>{t('story.paragraph1')}</p>
             <p>{t('story.paragraph2')}</p>
             <p>{t('story.paragraph3')}</p>
+            <p>{t('story.paragraph4')}</p>
+            <p>{t('story.paragraph5')}</p>
           </div>
         </div>
       </div>

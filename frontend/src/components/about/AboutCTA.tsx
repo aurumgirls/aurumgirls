@@ -16,7 +16,7 @@ export default function AboutCTA() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/shop"
+            href="/#products"
             className="inline-flex items-center justify-center bg-terracotta hover:bg-terracotta-light text-cream px-8 py-4 rounded-full font-medium transition-colors duration-300"
           >
             {t('cta.shopButton')}

@@ -12,7 +12,8 @@ export const AZ_ZIP_REGEX = /^(AZ\s?)?\d{4}$/i;
 
 export const ADDRESS_REGEX = /^.{5,120}$/;
 
-export const IMAGE_URL_REGEX = /^https?:\/\/\S+\.\S+$/i;
+// Accepts a full URL or a backend-relative path (e.g. "/static/uploads/xyz.jpg" from the upload endpoint).
+export const IMAGE_URL_REGEX = /^(https?:\/\/\S+\.\S+|\/\S+)$/i;
 
 export const PRICE_REGEX = /^\d+(\.\d{1,2})?$/;
 

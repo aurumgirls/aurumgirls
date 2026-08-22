@@ -62,7 +62,7 @@ export default async function TelimlerPage({
               <Link href="/contact" className="btn-primary w-full sm:w-auto">
                 {t('ctaText')} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/shop" className="btn-outline w-full sm:w-auto">
+              <Link href="/#products" className="btn-outline w-full sm:w-auto">
                 {t('secondaryCtaText')}
               </Link>
             </div>

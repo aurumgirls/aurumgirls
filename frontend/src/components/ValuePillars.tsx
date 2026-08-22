@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaf, Heart, Truck, CreditCard, Gift } from 'lucide-react';
+import { Leaf, Heart, Truck, Wallet, Gift } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import FadeUp from '@/components/motion/FadeUp';
 
@@ -11,7 +11,7 @@ export default function ValuePillars() {
     { icon: Leaf, titleKey: 'pillar1Title', descKey: 'pillar1Desc' },
     { icon: Heart, titleKey: 'pillar2Title', descKey: 'pillar2Desc' },
     { icon: Truck, titleKey: 'pillar3Title', descKey: 'pillar3Desc' },
-    { icon: CreditCard, titleKey: 'pillar4Title', descKey: 'pillar4Desc' },
+    { icon: Wallet, titleKey: 'pillar4Title', descKey: 'pillar4Desc' },
     { icon: Gift, titleKey: 'pillar5Title', descKey: 'pillar5Desc' },
   ];
 

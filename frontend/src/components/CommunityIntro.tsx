@@ -65,7 +65,7 @@ export function CommunityIntro() {
               </div>
 
               <div className="pt-2 flex flex-col sm:flex-row gap-4 items-center">
-                <Link href="/shop" className="btn-primary w-full sm:w-auto">
+                <Link href="/#products" className="btn-primary w-full sm:w-auto">
                   {t('communityIntro.ctaShop')} <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link href="/about" className="text-forest hover:text-terracotta text-sm font-semibold underline underline-offset-4">

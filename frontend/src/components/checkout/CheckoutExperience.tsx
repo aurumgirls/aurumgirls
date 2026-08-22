@@ -12,17 +12,20 @@ import { cn } from '@/lib/utils';
 import {
   isValidName,
   isValidPhone,
+  isValidEmail,
   isValidAddress,
   isValidZip,
   isValidCardNumber,
   isValidCardExpiry,
   isValidCvv,
 } from '@/lib/validation';
+import { sendOrderConfirmationEmail } from '@/lib/email';
 
 type FormState = {
   firstName: string;
   lastName: string;
   phone: string;
+  email: string;
   address: string;
   city: string;
   zip: string;
@@ -34,6 +37,7 @@ const EMPTY_FORM: FormState = {
   firstName: '',
   lastName: '',
   phone: '',
+  email: '',
   address: '',
   city: '',
   zip: '',
@@ -47,7 +51,7 @@ export function CheckoutExperience() {
   const [isPlaced, setIsPlaced] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('applepay');
   const [card, setCard] = useState<CardDetails>(EMPTY_CARD);
   const [cardErrors, setCardErrors] = useState<CardFieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,6 +72,7 @@ export function CheckoutExperience() {
     if (!isValidName(form.firstName)) errors.firstName = t('errors.nameInvalid');
     if (!isValidName(form.lastName)) errors.lastName = t('errors.nameInvalid');
     if (!isValidPhone(form.phone)) errors.phone = t('errors.phoneInvalid');
+    if (!isValidEmail(form.email)) errors.email = t('errors.emailInvalid');
     if (!isValidAddress(form.address)) errors.address = t('errors.addressInvalid');
     if (!isValidName(form.city)) errors.city = t('errors.cityInvalid');
     if (!isValidZip(form.zip)) errors.zip = t('errors.zipInvalid');
@@ -98,13 +103,20 @@ export function CheckoutExperience() {
 
     setIsSubmitting(true);
     try {
-      await createOrder({
+      const order = await createOrder({
         customerName: `${form.firstName} ${form.lastName}`.trim(),
         customerPhone: form.phone,
         customerAddress: form.address,
         city: form.city,
         zipCode: form.zip || undefined,
         items: items.map((item) => ({ productId: item.id, quantity: item.quantity })),
+      });
+      sendOrderConfirmationEmail({
+        toEmail: form.email,
+        toName: `${form.firstName} ${form.lastName}`.trim(),
+        orderId: order.id,
+        totalPrice: order.totalPrice,
+        items: items.map((item) => ({ name: item.name, quantity: item.quantity, price: item.price })),
       });
       clearCart();
       setIsPlaced(true);
@@ -140,7 +152,7 @@ export function CheckoutExperience() {
     return (
       <div className="max-w-xl mx-auto text-center py-16 md:py-24">
         <p className="text-slate mb-8">{t('emptyCart')}</p>
-        <Link href="/shop" className="btn-primary inline-flex">
+        <Link href="/#products" className="btn-primary inline-flex">
           {t('emptyCartCta')}
         </Link>
       </div>
@@ -156,9 +168,15 @@ export function CheckoutExperience() {
           <form onSubmit={handleSubmit} noValidate>
             <div className="mb-10">
               <h3 className="text-xl font-display text-forest mb-4">{t('contactInfo')}</h3>
-              <div className="space-y-1">
-                <input type="tel" value={form.phone} onChange={updateField('phone')} placeholder={t('phonePlaceholder')} className={inputClass('phone')} />
-                {fieldErrors.phone && <p className="text-terracotta text-xs">{fieldErrors.phone}</p>}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <input type="tel" value={form.phone} onChange={updateField('phone')} placeholder={t('phonePlaceholder')} className={inputClass('phone')} />
+                  {fieldErrors.phone && <p className="text-terracotta text-xs">{fieldErrors.phone}</p>}
+                </div>
+                <div className="space-y-1">
+                  <input type="email" value={form.email} onChange={updateField('email')} placeholder={t('emailPlaceholder')} className={inputClass('email')} />
+                  {fieldErrors.email && <p className="text-terracotta text-xs">{fieldErrors.email}</p>}
+                </div>
               </div>
             </div>
 

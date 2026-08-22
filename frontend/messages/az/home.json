@@ -52,8 +52,8 @@
     "eyebrow": "Mağaza Kataloqu",
     "title": "Təbii Məhsullarımız",
     "subtitle": "Məhsullarımızı tək-tək və ya xüsusi hədiyyə seti şəklində əldə edə bilərsiniz.",
-    "viewAll": "Bütün Məhsullar",
-    "addToCart": "Səbətə Əlavə Et"
+    "addToCart": "Səbətə Əlavə Et",
+    "outOfStock": "Stokda Yoxdur"
   },
   "valuePillars": {
     "title": "Niyə By Aurum Girls?",
@@ -65,7 +65,7 @@
     "pillar3Title": "Azərpoçt Çatdırılma",
     "pillar3Desc": "Bütün Azərbaycan rayonlarına etibarlı poçt vasitəsilə çatdırılma",
     "pillar4Title": "Saytda Onlayn Ödəniş",
-    "pillar4Desc": "Sayt üzərindən təhlükəsiz bank kartı (Visa/Mastercard) ödənişi",
+    "pillar4Desc": "Apple Pay və Google Pay ilə sürətli və təhlükəsiz ödəniş",
     "pillar5Title": "Hədiyyə Setləri",
     "pillar5Desc": "5 məhsul bir yerdə xüsusi dizaynlı qutuda təqdim olunur"
   },

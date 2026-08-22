@@ -52,8 +52,8 @@
     "eyebrow": "Shop Catalog",
     "title": "Our Natural Products",
     "subtitle": "Get our products individually or as a special gift set.",
-    "viewAll": "All Products",
-    "addToCart": "Add to Cart"
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of Stock"
   },
   "valuePillars": {
     "title": "Why By Aurum Girls?",
@@ -65,7 +65,7 @@
     "pillar3Title": "Azərpoçt Delivery",
     "pillar3Desc": "Reliable postal delivery to every district of Azerbaijan",
     "pillar4Title": "Secure Online Payment",
-    "pillar4Desc": "Secure bank card (Visa/Mastercard) payment on the site",
+    "pillar4Desc": "Fast, secure payment with Apple Pay and Google Pay",
     "pillar5Title": "Gift Sets",
     "pillar5Desc": "5 products presented together in a specially designed box"
   },

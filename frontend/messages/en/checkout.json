@@ -7,6 +7,7 @@
   "title": "Checkout",
   "contactInfo": "Contact Information",
   "phonePlaceholder": "Phone Number",
+  "emailPlaceholder": "Email Address",
   "shippingAddress": "Shipping Address",
   "firstNamePlaceholder": "First Name",
   "lastNamePlaceholder": "Last Name",
@@ -16,6 +17,7 @@
   "errors": {
     "nameInvalid": "Please enter a valid name (at least 2 letters).",
     "phoneInvalid": "Please enter a valid phone number (e.g. 050 123 45 67).",
+    "emailInvalid": "Please enter a valid email address.",
     "addressInvalid": "Please enter a valid address (at least 5 characters).",
     "cityInvalid": "Please enter a valid city/region name.",
     "zipInvalid": "Please enter a valid postal code (e.g. AZ1000).",
@@ -40,7 +42,7 @@
     "cardNumberLabel": "Card Number",
     "expiryLabel": "Expiry Date",
     "cvvLabel": "CVV / CVC",
-    "secureNote": "All your card payments are 100% protected with SSL encryption."
+    "secureNote": "All your payments are 100% protected with an encrypted connection."
   },
   "placeOrder": "Place Order",
   "placingOrder": "Placing order...",

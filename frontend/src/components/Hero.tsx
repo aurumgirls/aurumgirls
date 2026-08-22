@@ -49,7 +49,7 @@ export default function Hero() {
             <Link href="/#icma" className="btn-primary w-full sm:w-auto">
               {t('hero.ctaCommunity')} <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link href="/shop" className="btn-outline w-full sm:w-auto">
+            <Link href="/#products" className="btn-outline w-full sm:w-auto">
               {t('hero.ctaShop')}
             </Link>
           </div>

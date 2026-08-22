@@ -36,7 +36,8 @@
     "retry": "Yenidən Cəhd Et"
   },
   "productCard": {
-    "addToCart": "Səbətə əlavə et"
+    "addToCart": "Səbətə əlavə et",
+    "outOfStock": "Stokda Yoxdur"
   },
   "breadcrumbs": {
     "home": "Ana Səhifə",
