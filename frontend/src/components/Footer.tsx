@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { InstagramIcon, FacebookIcon, TikTokIcon, PinterestIcon } from './SocialIcons';
+import { InstagramIcon } from './SocialIcons';
 
 export default function Footer() {
   const t = useTranslations('common');
@@ -28,10 +28,7 @@ export default function Footer() {
             {t('footer.brandDescription')}
           </p>
           <div className="flex space-x-4 pt-2">
-            <a href="#" className="hover:text-terracotta transition-colors"><InstagramIcon className="w-5 h-5" /></a>
-            <a href="#" className="hover:text-terracotta transition-colors"><FacebookIcon className="w-5 h-5" /></a>
-            <a href="#" className="hover:text-terracotta transition-colors"><TikTokIcon className="w-5 h-5" /></a>
-            <a href="#" className="hover:text-terracotta transition-colors"><PinterestIcon className="w-5 h-5" /></a>
+            <a href="https://instagram.com/aurum_girls" target="_blank" rel="noopener noreferrer" className="hover:text-terracotta transition-colors"><InstagramIcon className="w-5 h-5" /></a>
           </div>
         </div>
 
