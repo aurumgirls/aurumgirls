@@ -1,95 +1,29 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session, joinedload
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.order import Order
-from app.models.order_item import OrderItem
-from app.models.product import Product
 from app.schemas.order import OrderCreate, OrderOut, OrderStatusUpdate
 from app.utils.auth import verify_admin
-from app.utils.email import send_order_confirmation_email
+from app.services import order_service
 
 public_router = APIRouter(prefix="/api/orders", tags=["orders"])
 admin_router = APIRouter(prefix="/api/admin/orders", tags=["admin-orders"])
-
-VALID_STATUSES = {"pending", "paid", "processing", "shipped", "completed", "cancelled"}
 
 # PUBLIC ENDPOINTS
 
 
 @public_router.post("", response_model=OrderOut, status_code=201)
 def create_order(payload: OrderCreate, db: Session = Depends(get_db)):
-    """
-    Creates a new order from the cart contents.
-    For each item: looks up the product, checks stock, snapshots its current
-    name/price onto the OrderItem, and decrements the product's stock.
-    If stock hits zero, the product is automatically marked out of stock
-    (in_stock = False), which hides it from the public product list.
-    Sends a confirmation email to the customer once the order is saved.
-    """
-    if not payload.items:
-        raise HTTPException(status_code=400, detail="Order must contain at least one item")
-
-    total_price = 0.0
-    order_items = []
-
-    for item in payload.items:
-        product = db.query(Product).filter(Product.id == item.product_id).first()
-        if not product:
-            raise HTTPException(status_code=404, detail=f"Product {item.product_id} not found")
-        if not product.in_stock or product.quantity_available < item.quantity:
-            raise HTTPException(status_code=400, detail=f"Not enough stock for {product.name}")
-
-        # Snapshot name/price now, so this order stays accurate even if the
-        # product is later renamed, repriced, or deleted.
-        order_items.append(OrderItem(
-            product_id=product.id,
-            product_name=product.name,
-            price=product.price,
-            quantity=item.quantity,
-        ))
-
-        total_price += product.price * item.quantity
-
-        product.quantity_available -= item.quantity
-        if product.quantity_available <= 0:
-            product.in_stock = False
-
-    order = Order(
-        customer_name=payload.customer_name,
-        customer_phone=payload.customer_phone,
-        customer_email=payload.customer_email,
-        customer_address=payload.customer_address,
-        city=payload.city,
-        zip_code=payload.zip_code,
-        comment=payload.comment,
-        total_price=total_price,
-        status="pending",
-        items=order_items,
-    )
-    db.add(order)
-    db.commit()
-    db.refresh(order)
-
-    # Failure to send is logged inside send_order_confirmation_email and does
-    # not roll back or fail this request — the order is already saved.
-    send_order_confirmation_email(order.customer_email, order)
-
-    return order
+    """Creates a new order from the cart. See order_service.create_order for the logic."""
+    return order_service.create_order(payload, db)
 
 
 @public_router.get("/{order_id}", response_model=OrderOut)
 def get_order(order_id: str, db: Session = Depends(get_db)):
-    """
-    Fetches a single order by id. Public (no auth) so a customer can check
-    their own order status via the link sent in the confirmation email.
-    """
-    order = db.query(Order).options(joinedload(Order.items)).filter(Order.id == order_id).first()
-    if not order:
-        raise HTTPException(status_code=404, detail="Order not found")
-    return order
+    """Fetches a single order by id — public so a customer can check their own order."""
+    return order_service.get_order_or_404(order_id, db)
 
 
 # ADMIN ENDPOINTS
@@ -97,27 +31,11 @@ def get_order(order_id: str, db: Session = Depends(get_db)):
 
 @admin_router.get("", response_model=List[OrderOut], dependencies=[Depends(verify_admin)])
 def list_orders(status: Optional[str] = None, db: Session = Depends(get_db)):
-    """Lists all orders for the admin panel, optionally filtered by status, newest first."""
-    query = db.query(Order).options(joinedload(Order.items))
-    if status:
-        query = query.filter(Order.status == status)
-    return query.order_by(Order.created_at.desc()).all()
+    """Lists orders for the admin panel, optionally filtered by status."""
+    return order_service.list_orders(status, db)
 
 
 @admin_router.patch("/{order_id}/status", response_model=OrderOut, dependencies=[Depends(verify_admin)])
 def update_order_status(order_id: str, payload: OrderStatusUpdate, db: Session = Depends(get_db)):
-    """
-    Updates an order's status (e.g. pending -> paid -> processing -> shipped -> completed).
-    Rejects any status not in VALID_STATUSES.
-    """
-    if payload.status not in VALID_STATUSES:
-        raise HTTPException(status_code=400, detail=f"Invalid status. Allowed: {sorted(VALID_STATUSES)}")
-
-    order = db.query(Order).options(joinedload(Order.items)).filter(Order.id == order_id).first()
-    if not order:
-        raise HTTPException(status_code=404, detail="Order not found")
-
-    order.status = payload.status
-    db.commit()
-    db.refresh(order)
-    return order
+    """Updates an order's status (pending -> paid -> processing -> shipped -> completed)."""
+    return order_service.update_order_status(order_id, payload.status, db)

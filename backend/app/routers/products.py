@@ -1,13 +1,12 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductOut, ProductUpdate
-from app.utils.slug import slugify
 from app.utils.auth import verify_admin
+from app.services import product_service
 
 public_router = APIRouter(prefix="/api/products", tags=["products"])
 admin_router = APIRouter(prefix="/api/admin/products", tags=["admin-products"])
@@ -17,17 +16,14 @@ admin_router = APIRouter(prefix="/api/admin/products", tags=["admin-products"])
 
 @public_router.get("", response_model=List[ProductOut])
 def list_products(db: Session = Depends(get_db)):
-    """Returns all active (in_stock) products for the public shop page, newest first."""
-    return db.query(Product).filter(Product.in_stock == True).order_by(Product.created_at.desc()).all()
+    """Public shop listing — active products only."""
+    return product_service.list_active_products(db)
 
 
 @public_router.get("/{slug}", response_model=ProductOut)
 def get_product(slug: str, db: Session = Depends(get_db)):
-    """Returns a single product by its slug, for the public product detail page."""
-    product = db.query(Product).filter(Product.slug == slug).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product Not Found")
-    return product
+    """Public product detail page, looked up by slug."""
+    return product_service.get_product_by_slug_or_404(slug, db)
 
 
 # ADMIN ENDPOINTS
@@ -35,73 +31,30 @@ def get_product(slug: str, db: Session = Depends(get_db)):
 
 @admin_router.get("/getonlydeleted", response_model=List[ProductOut], dependencies=[Depends(verify_admin)])
 def get_deleted_products(db: Session = Depends(get_db)):
-    """Returns only deactivated (in_stock == False) products, for the admin panel."""
-    products = db.query(Product).filter(Product.in_stock == False).order_by(Product.created_at.desc()).all()
-    return products
+    """Admin panel: deactivated products only."""
+    return product_service.list_deleted_products(db)
 
 
 @admin_router.get("/getall", response_model=List[ProductOut], dependencies=[Depends(verify_admin)])
 def get_all(db: Session = Depends(get_db)):
-    """Returns every product regardless of active/deactivated state, for the admin panel."""
-    products = db.query(Product).order_by(Product.created_at.desc()).all()
-    return products
+    """Admin panel: every product regardless of state."""
+    return product_service.list_all_products(db)
 
 
 @admin_router.post("", response_model=ProductOut, status_code=201, dependencies=[Depends(verify_admin)])
 def create_product(payload: ProductCreate, db: Session = Depends(get_db)):
-    """
-    Creates a new product. Generates a unique slug from the name — if the
-    base slug already exists, appends -2, -3, etc. until it's unique.
-    """
-    base_slug = slugify(payload.name)
-    slug = base_slug
-    counter = 1
-    while db.query(Product).filter(Product.slug == slug).first():
-        counter += 1
-        slug = f"{base_slug}-{counter}"
-
-    product = Product(slug=slug, **payload.model_dump())
-    db.add(product)
-    db.commit()
-    db.refresh(product)
-    return product
+    """Creates a new product with an auto-generated unique slug."""
+    return product_service.create_product(payload, db)
 
 
 @admin_router.patch("/{product_id}", response_model=ProductOut, dependencies=[Depends(verify_admin)])
 def update_product(product_id: str, payload: ProductUpdate, db: Session = Depends(get_db)):
-    """
-    Partially updates a product — only fields actually present in the request
-    body are changed (exclude_unset=True), everything else stays as-is.
-    """
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    update_data = payload.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(product, field, value)
-
-    db.commit()
-    db.refresh(product)
-    return product
+    """Partially updates a product — only fields present in the request body change."""
+    return product_service.update_product(product_id, payload, db)
 
 
 @admin_router.delete("/{product_id}", dependencies=[Depends(verify_admin)])
 def deactivate_product(product_id: str, db: Session = Depends(get_db)):
-    """
-    "Deletes" a product by deactivating it (soft delete) — sets in_stock to
-    False and quantity_available to 0, rather than removing the row. This
-    keeps historical OrderItem snapshots and past orders intact even after
-    a product is taken off the shop.
-    """
-    product = db.query(Product).filter(Product.id == product_id).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    if product.in_stock == 0:
-        raise HTTPException(status_code=400, detail="Product already deleted")
-
-    product.in_stock = False
-    product.quantity_available = 0
-    db.commit()
+    """Soft-deletes a product (marks it out of stock rather than removing the row)."""
+    product_service.deactivate_product(product_id, db)
     return {"message": "Product Succefully Deleted"}

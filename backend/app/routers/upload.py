@@ -1,57 +1,20 @@
-import os
-import uuid
-
-from fastapi import APIRouter, Depends, File, UploadFile, HTTPException
+from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.utils.auth import verify_admin
+from app.services import upload_service
 
 router = APIRouter(prefix="/api/admin/upload", tags=["upload"])
-
-UPLOAD_DIR = "static/uploads"
-ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
-MAX_FILE_SIZE_MB = 5
-
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 @router.post("", dependencies=[Depends(verify_admin)])
 async def upload_image(file: UploadFile = File(...)):
-    """
-    Admin-only image upload used when adding/editing a product. Saves the
-    file under a random UUID filename (so nothing collides and the original
-    filename is never exposed), and returns the public /static/... URL to
-    store on the product.
-    """
-    ext = os.path.splitext(file.filename)[1].lower()
-    if ext not in ALLOWED_EXTENSIONS:
-        raise HTTPException(status_code=400, detail="Only .jpg, .jpeg, .png, .webp files are allowed")
-
-    contents = await file.read()
-    if len(contents) > MAX_FILE_SIZE_MB * 1024 * 1024:
-        raise HTTPException(status_code=400, detail=f"File exceeds {MAX_FILE_SIZE_MB}MB limit")
-
-    filename = f"{uuid.uuid4().hex}{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
-
-    with open(filepath, "wb") as f:
-        f.write(contents)
-
-    url = f"/static/uploads/{filename}"
+    """Admin-only image upload used when adding/editing a product."""
+    url = await upload_service.save_uploaded_image(file)
     return {"url": url}
 
 
 @router.delete("/{filename}", dependencies=[Depends(verify_admin)])
 def delete_image(filename: str):
-    """
-    Admin-only image deletion. Rejects any filename containing a path
-    separator or "..", to prevent directory traversal outside UPLOAD_DIR.
-    """
-    if "/" in filename or "\\" in filename or ".." in filename:
-        raise HTTPException(status_code=400, detail="Invalid filename")
-
-    filepath = os.path.join(UPLOAD_DIR, filename)
-    if not os.path.exists(filepath):
-        raise HTTPException(status_code=404, detail="File not found")
-
-    os.remove(filepath)
+    """Admin-only image deletion."""
+    upload_service.delete_uploaded_image(filename)
     return {"message": "File successfully deleted"}
