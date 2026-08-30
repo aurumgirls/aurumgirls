@@ -1,17 +1,17 @@
 "use client";
 
 import Image from 'next/image';
-import { Gift, ArrowRight } from 'lucide-react';
+import { Check, Gift, ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import FadeUp from '@/components/motion/FadeUp';
-import { useCartStore } from '@/store/cart-store';
+import { useAddToCart } from '@/components/cart/useAddToCart';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/lib/api';
 import { CURRENCY } from '@/lib/constants';
 
 export function GiftSetBanner({ product }: { product: Product | null }) {
   const t = useTranslations('home');
-  const { addItem } = useCartStore();
+  const { add, justAdded } = useAddToCart();
 
   const items = [
     { name: t('giftBanner.item1Name'), desc: t('giftBanner.item1Desc') },
@@ -33,7 +33,7 @@ export function GiftSetBanner({ product }: { product: Product | null }) {
                 <span>{t('giftBanner.badge')}</span>
               </div>
 
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-cream leading-tight">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-cream leading-tight text-balance">
                 {t('giftBanner.title')}
               </h2>
 
@@ -57,18 +57,19 @@ export function GiftSetBanner({ product }: { product: Product | null }) {
                   <div>
                     <span className="text-xs text-cream/70 block">{t('giftBanner.priceLabel')}</span>
                     <div className="flex items-baseline gap-3">
-                      <span className="font-display text-4xl font-bold text-honey">{product.price.toFixed(2)} {CURRENCY}</span>
+                      <span className="font-display text-4xl font-bold text-honey tabular-nums">{product.price.toFixed(2)} {CURRENCY}</span>
                       {product.oldPrice && (
-                        <span className="text-sm text-cream/50 line-through">{product.oldPrice.toFixed(2)} {CURRENCY}</span>
+                        <span className="text-sm text-cream/50 line-through tabular-nums">{product.oldPrice.toFixed(2)} {CURRENCY}</span>
                       )}
                     </div>
                   </div>
 
                   <button
-                    onClick={() => addItem(product)}
+                    onClick={() => add(product)}
                     className="btn-secondary font-semibold"
                   >
-                    {t('giftBanner.addToCart')} <ArrowRight className="w-4 h-4" />
+                    {t('giftBanner.addToCart')}
+                    {justAdded ? <Check className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
                   </button>
                 </div>
               ) : (
@@ -89,7 +90,7 @@ export function GiftSetBanner({ product }: { product: Product | null }) {
                 alt={t('giftBanner.imageAlt')}
                 fill
                 unoptimized
-                className="object-contain p-12 group-hover:scale-105 transition-transform duration-500"
+                className="object-contain p-12 transition-transform duration-500 ease-organic group-hover:scale-105"
               />
               <div className="absolute top-4 right-4 bg-terracotta text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
                 {t('giftBanner.savingsBadge')}

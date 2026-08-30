@@ -3,6 +3,7 @@
 import { SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { PopIn } from '@/components/motion/PopIn';
 
 interface ShopToolbarProps {
   resultCount: number;
@@ -30,8 +31,15 @@ export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFi
         setIsOpen(false);
       }
     };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const currentLabel = sortOptions.find(o => o.value === currentSort)?.label ?? t('toolbar.sortLabel');
@@ -45,7 +53,9 @@ export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFi
       <div className="flex items-center gap-3 w-full sm:w-auto">
         <button
           onClick={onToggleFilters}
-          className={`lg:hidden flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
+          aria-expanded={isFiltersOpen}
+          aria-controls="shop-filters"
+          className={`lg:hidden flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium transition-[background-color,color,border-color,transform] duration-200 ease-organic active:scale-95 ${
             isFiltersOpen
               ? 'bg-forest text-white border-forest'
               : 'bg-white text-charcoal border-sand hover:bg-linen'
@@ -58,17 +68,25 @@ export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFi
         <div className="relative w-full sm:w-auto" ref={dropdownRef}>
           <button
             onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-haspopup="listbox"
             className="w-full sm:w-auto flex items-center justify-between gap-2 px-4 py-2 bg-white border border-sand rounded-full text-sm font-medium text-charcoal hover:bg-linen transition-colors"
           >
             <span>{currentLabel}</span>
-            <ChevronDown className="w-4 h-4 text-slate" />
+            <ChevronDown className={`w-4 h-4 text-slate transition-transform duration-200 ease-organic ${isOpen ? 'rotate-180' : ''}`} />
           </button>
 
-          {isOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-sand rounded-xl shadow-soft-lg z-20 py-2 overflow-hidden">
+          <PopIn
+            show={isOpen}
+            origin="top right"
+            className="absolute right-0 mt-2 w-48 bg-white border border-sand rounded-xl shadow-soft-lg z-20 py-2 overflow-hidden"
+          >
+            <div role="listbox">
               {sortOptions.map(option => (
                 <button
                   key={option.value}
+                  role="option"
+                  aria-selected={currentSort === option.value}
                   onClick={() => {
                     onSortChange(option.value);
                     setIsOpen(false);
@@ -81,7 +99,7 @@ export function ShopToolbar({ resultCount, currentSort, onSortChange, onToggleFi
                 </button>
               ))}
             </div>
-          )}
+          </PopIn>
         </div>
       </div>
     </div>

@@ -25,20 +25,20 @@ export function QuantitySelector({ quantity, onChange, max = 99 }: QuantitySelec
       <button
         onClick={decrease}
         disabled={quantity <= 1}
-        className="w-10 h-10 flex items-center justify-center rounded-full text-forest hover:bg-linen disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
+        className="w-10 h-10 flex items-center justify-center rounded-full text-forest hover:bg-linen disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-[background-color,transform] duration-200 ease-organic active:scale-90 disabled:active:scale-100"
         aria-label={t('item.decrease')}
       >
         <Minus className="w-4 h-4" />
       </button>
 
-      <span className="w-10 text-center font-medium text-charcoal">
+      <span aria-live="polite" className="w-10 text-center font-medium text-charcoal tabular-nums">
         {quantity}
       </span>
 
       <button
         onClick={increase}
         disabled={quantity >= max}
-        className="w-10 h-10 flex items-center justify-center rounded-full text-forest hover:bg-linen disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
+        className="w-10 h-10 flex items-center justify-center rounded-full text-forest hover:bg-linen disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-[background-color,transform] duration-200 ease-organic active:scale-90 disabled:active:scale-100"
         aria-label={t('item.increase')}
       >
         <Plus className="w-4 h-4" />

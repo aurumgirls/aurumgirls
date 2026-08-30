@@ -10,12 +10,34 @@ import { ShopToolbar } from './ShopToolbar';
 import { ShopFilters, FilterState } from './ShopFilters';
 import { ProductCard } from './ProductCard';
 import { Pagination } from './Pagination';
-import FadeUp from '@/components/motion/FadeUp';
-import { StaggerGroup } from '@/components/motion/Stagger';
+import { StaggerGroup, StaggerItem } from '@/components/motion/Stagger';
+import { ProductGridSkeleton } from './ProductCardSkeleton';
 import { getProducts, type Product } from '@/lib/api';
+import { cn } from '@/lib/utils';
 
 const ITEMS_PER_PAGE = 12;
 const DEFAULT_BOUNDS = { min: 0, max: 100 };
+
+/**
+ * Mirrors Tailwind's `lg` breakpoint (1024px). Needed because the mobile
+ * filter disclosure must be `inert` only while collapsed *and* narrower than
+ * `lg` — on desktop the panel is permanently expanded via CSS and must stay
+ * focusable regardless of the mobile toggle's state. Defaults to false so a
+ * pre-hydration render never marks real desktop content inert.
+ */
+function useIsBelowLg() {
+  const [isBelowLg, setIsBelowLg] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 1023.98px)');
+    const update = () => setIsBelowLg(query.matches);
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  return isBelowLg;
+}
 
 export function ShopExperience() {
   const t = useTranslations('shop');
@@ -24,6 +46,7 @@ export function ShopExperience() {
   const searchParams = useSearchParams();
 
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const isBelowLg = useIsBelowLg();
   const [products, setProducts] = useState<Product[] | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [retryToken, setRetryToken] = useState(0);
@@ -122,12 +145,37 @@ export function ShopExperience() {
           </button>
         </div>
       ) : !products ? (
-        <div className="py-20 text-center text-forest">…</div>
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          <div className="hidden lg:block lg:w-64 shrink-0">
+            <div className="h-64 rounded-2xl bg-white border border-sand animate-pulse" />
+          </div>
+          <div className="flex-1 w-full">
+            <ProductGridSkeleton />
+          </div>
+        </div>
       ) : (
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          <aside className={`lg:w-64 shrink-0 lg:block ${isFiltersOpen ? 'block' : 'hidden'}`}>
-            <div className="sticky top-24">
-              <ShopFilters filters={filters} onFilterChange={setFilters} bounds={bounds} />
+          <aside id="shop-filters" className="w-full lg:w-64 shrink-0">
+            {/* grid-rows 0fr/1fr so the mobile panel actually opens and closes
+                instead of snapping; lg: overrides pin it permanently expanded
+                on desktop, where overflow must stay visible for `sticky` to work. */}
+            <div
+              className={cn(
+                'grid transition-[grid-template-rows,opacity] duration-300 ease-organic lg:grid-rows-[1fr] lg:opacity-100',
+                isFiltersOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+              )}
+              inert={isBelowLg && !isFiltersOpen}
+            >
+              <div className="overflow-hidden lg:overflow-visible">
+                <div className="lg:sticky lg:top-24">
+                  <ShopFilters
+                    filters={filters}
+                    onFilterChange={setFilters}
+                    bounds={bounds}
+                    onClose={() => setIsFiltersOpen(false)}
+                  />
+                </div>
+              </div>
             </div>
           </aside>
 
@@ -156,11 +204,18 @@ export function ShopExperience() {
               </div>
             ) : (
               <>
-                <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <StaggerGroup
+                  /* Re-key on the query so a filter, sort or page change
+                     replays the reveal instead of swapping content silently. */
+                  key={`${currentSearch}-${currentSort}-${currentPage}-${priceMax}`}
+                  className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                  staggerDelay={0.06}
+                  amount={0.05}
+                >
                   {paginatedProducts.map(product => (
-                    <FadeUp key={product.id}>
+                    <StaggerItem key={product.id} className="h-full">
                       <ProductCard product={product} />
-                    </FadeUp>
+                    </StaggerItem>
                   ))}
                 </StaggerGroup>
 

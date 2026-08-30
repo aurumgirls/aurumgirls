@@ -45,7 +45,7 @@ export function CommunityIntro() {
                 <span>{t('communityIntro.eyebrow')}</span>
               </div>
 
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-forest leading-tight">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-forest leading-tight text-balance">
                 {t('communityIntro.title')}
               </h2>
 

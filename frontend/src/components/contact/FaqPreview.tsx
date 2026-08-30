@@ -26,25 +26,32 @@ export default function FaqPreview() {
         {faqs.map((faq, idx) => (
           <div
             key={idx}
-            className="border border-sand rounded-2xl overflow-hidden transition-all duration-300 hover:border-terracotta/30"
+            className="border border-sand rounded-2xl overflow-hidden transition-colors duration-300 ease-organic hover:border-terracotta/30"
           >
             <button
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+              aria-expanded={openIndex === idx}
+              aria-controls={`faq-panel-${idx}`}
+              className="w-full flex items-center justify-between p-6 text-left transition-colors duration-200 ease-organic hover:bg-linen/60"
             >
               <span className="font-medium text-forest pr-8">{faq.question}</span>
-              <span className={`text-terracotta transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`}>
+              <span className={`text-terracotta transition-transform duration-300 ease-organic ${openIndex === idx ? 'rotate-180' : ''}`}>
                 <ChevronDown size={20} />
               </span>
             </button>
 
+            {/* grid-rows 0fr/1fr instead of a fixed max-height: a long answer
+                used to be clipped at 12rem with no way to read the rest. */}
             <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                openIndex === idx ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+              id={`faq-panel-${idx}`}
+              className={`grid transition-[grid-template-rows,opacity] duration-300 ease-organic ${
+                openIndex === idx ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
               }`}
             >
-              <div className="p-6 pt-0 text-slate">
-                {faq.answer}
+              <div className="overflow-hidden">
+                <div className="p-6 pt-0 text-slate">
+                  {faq.answer}
+                </div>
               </div>
             </div>
           </div>

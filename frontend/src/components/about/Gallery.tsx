@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { StaggerGroup, StaggerItem } from '@/components/motion/Stagger';
 
 export default function Gallery() {
   const t = useTranslations('about');
@@ -21,11 +22,11 @@ export default function Gallery() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-display text-forest mb-4">{t('gallery.title')}</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <StaggerGroup className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6" staggerDelay={0.07}>
           {items.map((item, idx) => (
-            <div
+            <StaggerItem
               key={idx}
-              className={`relative aspect-square rounded-2xl overflow-hidden shadow-soft transition-transform hover:scale-[1.02] duration-300 ${item.image ? '' : item.color}`}
+              className={`relative aspect-square rounded-2xl overflow-hidden shadow-soft transition-[transform,box-shadow] duration-300 ease-organic hover:scale-[1.02] hover:shadow-card-hover ${item.image ? '' : item.color}`}
             >
               {item.image ? (
                 <>
@@ -48,9 +49,9 @@ export default function Gallery() {
                   </h3>
                 </div>
               )}
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

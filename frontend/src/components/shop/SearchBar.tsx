@@ -44,7 +44,7 @@ export function SearchBar({ initialValue = '', onSearch, className = '' }: Searc
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('search.placeholder')}
-          className="w-full bg-white border border-sand rounded-full py-3 pl-12 pr-12 text-charcoal placeholder:text-slate focus:outline-none focus:ring-2 focus:ring-forest/20 focus:border-forest transition-all"
+          className="w-full bg-white border border-sand rounded-full py-3 pl-12 pr-12 text-charcoal placeholder:text-slate focus:outline-none focus:ring-2 focus:ring-forest/25 focus:border-forest transition-[border-color,box-shadow] duration-200 ease-organic"
         />
         {query && (
           <button

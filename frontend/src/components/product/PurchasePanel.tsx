@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import type { Product } from '@/lib/api';
 import { CURRENCY } from '@/lib/constants';
-import { Truck, ShieldCheck, Leaf } from 'lucide-react';
+import { Truck, ShieldCheck, Leaf, Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { QuantitySelector } from './QuantitySelector';
-import { useCartStore } from '@/store/cart-store';
+import { useAddToCart } from '@/components/cart/useAddToCart';
 import { useRouter } from '@/i18n/navigation';
 
 const HIGHLIGHT_KEYS = [
@@ -20,13 +20,13 @@ const HIGHLIGHT_KEYS = [
 export function PurchasePanel({ product }: { product: Product }) {
   const t = useTranslations('product');
   const [quantity, setQuantity] = useState(1);
-  const { addItem } = useCartStore();
+  const { add, justAdded } = useAddToCart();
   const router = useRouter();
 
   const available = product.inStock && product.quantityAvailable > 0;
 
   const handleAddToCart = () => {
-    addItem(product, quantity);
+    add(product, quantity);
   };
 
   const handleBuyNow = () => {
@@ -38,7 +38,7 @@ export function PurchasePanel({ product }: { product: Product }) {
     <div className="bg-white p-8 rounded-3xl shadow-soft border border-sand">
       {/* Header Info */}
       <div className="mb-6">
-        <h1 className="font-display text-3xl md:text-4xl text-forest mb-2">{product.name}</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-forest mb-2 text-balance">{product.name}</h1>
 
         <div className="font-display text-2xl text-forest font-medium mb-4">
           {product.price.toFixed(2)} {CURRENCY}
@@ -52,7 +52,7 @@ export function PurchasePanel({ product }: { product: Product }) {
         <ul className="space-y-2">
           {HIGHLIGHT_KEYS.map((key) => (
             <li key={key} className="flex items-center text-charcoal font-medium">
-              <Leaf className="w-5 h-5 text-forest-light mr-3 flex-shrink-0" />
+              <Leaf className="w-5 h-5 text-forest-light mr-3 shrink-0" />
               {t(key)}
             </li>
           ))}
@@ -73,13 +73,16 @@ export function PurchasePanel({ product }: { product: Product }) {
             <div className="flex flex-col gap-3">
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-terracotta hover:bg-terracotta-light text-white font-medium py-4 rounded-full transition-colors shadow-sm"
+                className="w-full bg-terracotta hover:bg-terracotta-light text-white font-medium py-4 rounded-full transition-[background-color,transform,box-shadow] duration-200 ease-organic hover:shadow-soft active:scale-[0.99] shadow-sm flex items-center justify-center gap-2"
               >
-                {t('purchase.addToCart')} — {(product.price * quantity).toFixed(2)} {CURRENCY}
+                {justAdded && <Check className="w-4 h-4" aria-hidden="true" />}
+                <span className="tabular-nums">
+                  {t('purchase.addToCart')} — {(product.price * quantity).toFixed(2)} {CURRENCY}
+                </span>
               </button>
               <button
                 onClick={handleBuyNow}
-                className="w-full bg-forest hover:bg-forest-light text-cream font-medium py-4 rounded-full transition-colors"
+                className="w-full bg-forest hover:bg-forest-light text-cream font-medium py-4 rounded-full transition-[background-color,transform] duration-200 ease-organic active:scale-[0.99]"
               >
                 {t('purchase.buyNow')}
               </button>

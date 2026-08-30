@@ -22,6 +22,10 @@
   --sh-soft: 0 10px 40px -10px rgba(46, 125, 50, .08);
   --sh-soft-lg: 0 20px 50px -15px rgba(46, 125, 50, .12);
   --sh-card-hover: 0 16px 48px -12px rgba(46, 125, 50, .14);
+
+  /* Motion language. --e-organic is the single easing curve used across CSS and
+     JS (see components/motion/*), so transitions stay consistent everywhere. */
+  --e-organic: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
@@ -38,6 +42,15 @@
 
   --font-display: var(--font-playfair);
   --font-body: var(--font-outfit);
+
+  /* Registering these is what makes `shadow-soft` / `shadow-soft-lg` /
+     `shadow-card-hover` real utilities — the raw --sh-* vars alone generate
+     nothing in Tailwind v4. */
+  --shadow-soft: var(--sh-soft);
+  --shadow-soft-lg: var(--sh-soft-lg);
+  --shadow-card-hover: var(--sh-card-hover);
+
+  --ease-organic: var(--e-organic);
 }
 
 html {
@@ -58,60 +71,122 @@ html {
     line-height: 1.1;
     color: var(--aurum-green);
   }
+
+  /* Keyboard focus was previously erased by `focus:outline-none` with no
+     replacement. Focus-visible keeps pointer users clean while restoring a
+     clear indicator for keyboard navigation. */
+  :focus-visible {
+    outline: 2px solid var(--aurum-green);
+    outline-offset: 2px;
+    border-radius: var(--r-xs);
+  }
+
+  /* Every interactive element already has a deliberate :active press state
+     (scale, color) — the browser's default 300ms tap delay and gray tap
+     flash would fight that feedback rather than support it. */
+  button, a, [role="button"], summary {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  border-radius: 999px;
-  background: var(--aurum-green);
-  color: white;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 14px -4px rgba(46, 125, 50, 0.4);
-}
-.btn-primary:hover {
-  background: var(--aurum-green-light);
-  transform: translateY(-1px);
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  border-radius: 999px;
-  background: var(--aurum-red);
-  color: white;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  transition: all 0.3s ease;
-}
-.btn-secondary:hover {
-  background: var(--aurum-red-light);
-  transform: translateY(-1px);
-}
-
+.btn-primary,
+.btn-secondary,
 .btn-outline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.8125rem 1.75rem;
   border-radius: 999px;
-  border: 2px solid var(--aurum-green);
-  color: var(--aurum-green);
   font-weight: 600;
   font-size: 0.9375rem;
-  transition: all 0.3s ease;
+  /* Explicit property list rather than `all`: avoids repainting unrelated
+     properties and keeps hover/press timing predictable. */
+  transition-property: background-color, border-color, color, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: var(--e-organic);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-outline:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+.btn-primary {
+  padding: 0.875rem 2rem;
+  background: var(--aurum-green);
+  color: white;
+  box-shadow: 0 4px 14px -4px rgba(46, 125, 50, 0.4);
+}
+.btn-primary:hover {
+  background: var(--aurum-green-light);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px -6px rgba(46, 125, 50, 0.45);
+}
+
+.btn-secondary {
+  padding: 0.875rem 2rem;
+  background: var(--aurum-red);
+  color: white;
+  box-shadow: 0 4px 14px -4px rgba(211, 47, 47, 0.35);
+}
+.btn-secondary:hover {
+  background: var(--aurum-red-light);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px -6px rgba(211, 47, 47, 0.4);
+}
+.btn-secondary:focus-visible {
+  outline-color: var(--aurum-red);
+}
+
+.btn-outline {
+  padding: 0.8125rem 1.75rem;
+  border: 2px solid var(--aurum-green);
+  color: var(--aurum-green);
   background: transparent;
 }
 .btn-outline:hover {
   background: var(--aurum-green);
   color: white;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-outline:disabled {
+  opacity: 0.6;
+  transform: none;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-outline:hover,
+  .btn-primary:active,
+  .btn-secondary:active,
+  .btn-outline:active {
+    transform: none;
+  }
 }

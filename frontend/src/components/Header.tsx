@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Menu, X, ShoppingBag, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useCartStore } from '@/store/cart-store';
+import { PopIn } from '@/components/motion/PopIn';
 
 export default function Header() {
   const t = useTranslations('common');
@@ -21,6 +23,7 @@ export default function Header() {
 
   const { items } = useCartStore();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +54,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 transition-all duration-300">
+    <header className="sticky top-0 z-50">
       {/* Announcement Bar */}
       <div className="bg-forest text-cream text-xs py-2 px-4 text-center font-medium tracking-wide">
         <span>{t('announcement')}</span>
@@ -59,7 +62,7 @@ export default function Header() {
 
       {/* Main Navigation */}
       <nav
-        className={`transition-all duration-300 border-b border-sand ${
+        className={`transition-[background-color,padding,box-shadow] duration-300 ease-organic border-b border-sand ${
           isScrolled ? 'bg-cream/95 backdrop-blur-md shadow-soft py-3' : 'bg-cream py-4'
         }`}
       >
@@ -67,8 +70,9 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-forest hover:text-terracotta focus:outline-none"
+            className="lg:hidden p-2 text-forest hover:text-terracotta transition-colors"
             aria-label={t('toggleMenu')}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -92,20 +96,22 @@ export default function Header() {
                 <ChevronDown className={`w-4 h-4 transition-transform ${isOfferingsOpen ? 'rotate-180' : ''}`} />
               </button>
 
-              {isOfferingsOpen && (
-                <div className="absolute left-0 mt-3 w-56 bg-cream border border-sand rounded-2xl shadow-soft-lg py-2 z-20">
-                  {offeringsLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsOfferingsOpen(false)}
-                      className="block px-5 py-2.5 text-sm text-forest hover:bg-linen hover:text-terracotta transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              <PopIn
+                show={isOfferingsOpen}
+                origin="top left"
+                className="absolute left-0 mt-3 w-56 bg-cream border border-sand rounded-2xl shadow-soft-lg py-2 z-20"
+              >
+                {offeringsLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOfferingsOpen(false)}
+                    className="block px-5 py-2.5 text-sm text-forest hover:bg-linen hover:text-terracotta transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </PopIn>
             </div>
 
             <Link href="/contact" className="hover:text-terracotta transition-colors">
@@ -157,87 +163,120 @@ export default function Header() {
               aria-label={t('cart')}
             >
               <ShoppingBag size={22} />
-              {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-terracotta text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-cream">
-                  {cartCount}
-                </span>
-              )}
+              {/* Keyed on the count so each change re-mounts and pops the badge —
+                  the only confirmation that an add-to-cart landed. */}
+              <AnimatePresence>
+                {cartCount > 0 && (
+                  <motion.span
+                    key={cartCount}
+                    initial={prefersReducedMotion ? { opacity: 0 } : { scale: 0.4, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={prefersReducedMotion ? { opacity: 0 } : { scale: 0.4, opacity: 0 }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0.15, ease: 'easeOut' }
+                        : { type: 'spring', stiffness: 520, damping: 22 }
+                    }
+                    className="absolute top-0 right-0 bg-terracotta text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-cream"
+                  >
+                    {cartCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </Link>
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden bg-cream border-t border-sand px-4 pt-4 pb-6 space-y-4 shadow-soft-lg animate-in slide-in-from-top">
-            <Link
-              href="/"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-forest hover:text-terracotta font-medium text-base py-1"
-            >
-              {t('nav.home')}
-            </Link>
-            <Link
-              href="/about"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-forest hover:text-terracotta font-medium text-base py-1"
-            >
-              {t('nav.about')}
-            </Link>
-
-            <div>
-              <button
-                onClick={() => setIsMobileOfferingsOpen((open) => !open)}
-                className="w-full flex items-center justify-between text-forest hover:text-terracotta font-medium text-base py-1"
-                aria-expanded={isMobileOfferingsOpen}
+        {/* Mobile Navigation Drawer. Always mounted and grid-rows-animated (not
+            conditionally rendered) so it can actually transition open/closed —
+            it previously relied on `animate-in slide-in-from-top`, classes from
+            the tailwindcss-animate plugin, which isn't installed, so the drawer
+            has never animated. `inert` keeps it out of the tab order and out of
+            the a11y tree while collapsed, since it stays in the DOM. */}
+        <div
+          className={`lg:hidden grid transition-[grid-template-rows,opacity] duration-300 ease-organic ${
+            isMobileMenuOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          }`}
+          inert={!isMobileMenuOpen}
+        >
+          <div className="overflow-hidden">
+            <div className="bg-cream border-t border-sand px-4 pt-4 pb-6 space-y-4 shadow-soft-lg">
+              <Link
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-forest hover:text-terracotta font-medium text-base py-1"
               >
-                {t('nav.offerings')}
-                <ChevronDown className={`w-4 h-4 transition-transform ${isMobileOfferingsOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {isMobileOfferingsOpen && (
-                <div className="pl-4 mt-2 space-y-2 border-l-2 border-sand">
-                  {offeringsLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block text-forest/90 hover:text-terracotta font-medium text-sm py-1"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+                {t('nav.home')}
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-forest hover:text-terracotta font-medium text-base py-1"
+              >
+                {t('nav.about')}
+              </Link>
+
+              <div>
+                <button
+                  onClick={() => setIsMobileOfferingsOpen((open) => !open)}
+                  className="w-full flex items-center justify-between text-forest hover:text-terracotta font-medium text-base py-1"
+                  aria-expanded={isMobileOfferingsOpen}
+                >
+                  {t('nav.offerings')}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ease-organic ${isMobileOfferingsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <div
+                  className={`grid transition-[grid-template-rows,opacity] duration-200 ease-organic ${
+                    isMobileOfferingsOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="pl-4 mt-2 space-y-2 border-l-2 border-sand">
+                      {offeringsLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block text-forest/90 hover:text-terracotta font-medium text-sm py-1"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
+              </div>
 
-            <Link
-              href="/contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-forest hover:text-terracotta font-medium text-base py-1"
-            >
-              {t('nav.contact')}
-            </Link>
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-forest hover:text-terracotta font-medium text-base py-1"
+              >
+                {t('nav.contact')}
+              </Link>
 
-            <div className="flex items-center gap-2 pt-2 border-t border-sand text-sm font-semibold">
-              <span className="text-slate">{t('language.label')}:</span>
-              <button
-                onClick={() => switchLocale('az')}
-                className={`px-3 py-1 rounded-full transition-colors ${
-                  locale === 'az' ? 'bg-forest text-cream' : 'text-forest bg-linen'
-                }`}
-              >
-                {t('language.az')}
-              </button>
-              <button
-                onClick={() => switchLocale('en')}
-                className={`px-3 py-1 rounded-full transition-colors ${
-                  locale === 'en' ? 'bg-forest text-cream' : 'text-forest bg-linen'
-                }`}
-              >
-                {t('language.en')}
-              </button>
+              <div className="flex items-center gap-2 pt-2 border-t border-sand text-sm font-semibold">
+                <span className="text-slate">{t('language.label')}:</span>
+                <button
+                  onClick={() => switchLocale('az')}
+                  className={`px-3 py-1 rounded-full transition-colors duration-200 ease-organic ${
+                    locale === 'az' ? 'bg-forest text-cream' : 'text-forest bg-linen'
+                  }`}
+                >
+                  {t('language.az')}
+                </button>
+                <button
+                  onClick={() => switchLocale('en')}
+                  className={`px-3 py-1 rounded-full transition-colors duration-200 ease-organic ${
+                    locale === 'en' ? 'bg-forest text-cream' : 'text-forest bg-linen'
+                  }`}
+                >
+                  {t('language.en')}
+                </button>
+              </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );
