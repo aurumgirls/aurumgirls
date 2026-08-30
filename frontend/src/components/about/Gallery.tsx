@@ -10,7 +10,7 @@ export default function Gallery() {
   const items = [
     { titleKey: 'gallery.item1', image: '/images/gallery-mountain-pastures.jpg', color: 'bg-[#C5E1A5]' },
     { titleKey: 'gallery.item2', image: '/images/gallery-straining-honey.jpg', color: 'bg-[#FFE082]' },
-    { titleKey: 'gallery.item3', image: null, color: 'bg-[#F7C5C2]' },
+    { titleKey: 'gallery.item3', image: '/images/gallery-cooking-jam.jpg', color: 'bg-[#F7C5C2]' },
     { titleKey: 'gallery.item4', image: '/images/gallery-hand-harvesting.jpg', color: 'bg-[#A5D6A7]' },
     { titleKey: 'gallery.item5', image: '/images/gallery-packaging.jpg', color: 'bg-[#F7F3E9]' },
     { titleKey: 'gallery.item6', image: '/images/gallery-community-gatherings.jpg', color: 'bg-[#F9C7A1]' },
