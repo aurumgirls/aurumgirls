@@ -133,6 +133,7 @@ export function CheckoutExperience() {
       const order = await createOrder({
         customerName: `${form.firstName} ${form.lastName}`.trim(),
         customerPhone: form.phone,
+        customerEmail: form.email,
         customerAddress: form.address,
         city: form.city,
         zipCode: form.zip || undefined,
