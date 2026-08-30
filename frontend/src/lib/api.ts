@@ -25,6 +25,7 @@ export type Order = {
   id: string;
   customerName: string;
   customerPhone: string;
+  customerEmail: string | null;
   customerAddress: string;
   city: string;
   zipCode: string | null;
@@ -39,6 +40,7 @@ export type Order = {
 export type CreateOrderInput = {
   customerName: string;
   customerPhone: string;
+  customerEmail: string;
   customerAddress: string;
   city: string;
   zipCode?: string;
