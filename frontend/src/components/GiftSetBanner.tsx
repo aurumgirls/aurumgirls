@@ -86,11 +86,11 @@ export function GiftSetBanner({ product }: { product: Product | null }) {
           <FadeUp delay={0.2}>
             <div className="relative aspect-square max-w-md mx-auto rounded-3xl overflow-hidden border-4 border-cream/20 shadow-soft-lg group bg-forest-light/30 flex items-center justify-center">
               <Image
-                src="/images/logo-white.png"
+                src="/images/gift-set-box.jpg"
                 alt={t('giftBanner.imageAlt')}
                 fill
                 unoptimized
-                className="object-contain p-12 transition-transform duration-500 ease-organic group-hover:scale-105"
+                className="object-cover transition-transform duration-500 ease-organic group-hover:scale-105"
               />
               <div className="absolute top-4 right-4 bg-terracotta text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
                 {t('giftBanner.savingsBadge')}
