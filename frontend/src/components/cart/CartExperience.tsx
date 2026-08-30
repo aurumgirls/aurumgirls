@@ -1,5 +1,5 @@
 "use client";
-import { ShoppingBag } from 'lucide-react';
+import { ArrowLeft, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { CartItemRow } from './CartItemRow';
@@ -29,6 +29,13 @@ export function CartExperience() {
     <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
       <div className="flex flex-col lg:flex-row gap-12">
         <div className="w-full lg:w-2/3">
+          <Link
+            href="/#products"
+            className="inline-flex items-center gap-2 text-sm font-medium text-forest hover:text-terracotta transition-colors mb-6"
+          >
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+            {t('empty.cta')}
+          </Link>
           <div className="border-t border-sand">
             {items.map((item) => (
               <CartItemRow key={item.id} item={item} />

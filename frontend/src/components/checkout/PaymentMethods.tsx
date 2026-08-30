@@ -29,25 +29,35 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
 
   const inputClass = (field: keyof CardDetails) =>
     cn(
-      "w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none",
-      fieldErrors[field] ? "border-terracotta focus:border-terracotta" : "border-sand focus:border-terracotta"
+      "w-full px-4 py-2.5 rounded-xl border text-sm bg-white transition-[border-color,box-shadow] duration-200 ease-organic",
+      "focus:outline-none focus:border-forest focus:ring-2 focus:ring-forest/25",
+      fieldErrors[field] ? "border-terracotta" : "border-sand"
     );
 
   return (
     <div className="space-y-6">
       <h3 className="font-display text-xl text-forest font-semibold mb-4">{t('payment.title')}</h3>
 
-      <div className={cn("grid grid-cols-1 gap-4", CARD_PAYMENTS_ENABLED && "sm:grid-cols-2")}>
+      <div role="radiogroup" aria-label={t('payment.title')} className={cn("grid grid-cols-1 gap-4", CARD_PAYMENTS_ENABLED && "sm:grid-cols-2")}>
         {CARD_PAYMENTS_ENABLED && (
           <label
-            onClick={() => onMethodChange('card')}
             className={cn(
-              "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
+              "p-5 rounded-2xl border cursor-pointer flex items-center gap-4",
+              "transition-[border-color,background-color,box-shadow] duration-200 ease-organic",
+              "focus-within:ring-2 focus-within:ring-forest/40",
               method === 'card'
                 ? "border-terracotta bg-cream shadow-soft"
                 : "border-sand bg-white hover:border-forest/40"
             )}
           >
+            <input
+              type="radio"
+              name="payment-method"
+              value="card"
+              checked={method === 'card'}
+              onChange={() => onMethodChange('card')}
+              className="sr-only"
+            />
             <CreditCard className="w-6 h-6 text-terracotta shrink-0" />
             <div>
               <p className="font-semibold text-forest text-sm">{t('payment.cardTitle')}</p>
@@ -57,14 +67,23 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
         )}
 
         <label
-          onClick={() => onMethodChange('applepay')}
           className={cn(
-            "p-5 rounded-2xl border cursor-pointer transition-all flex items-center gap-4",
+            "p-5 rounded-2xl border cursor-pointer flex items-center gap-4",
+            "transition-[border-color,background-color,box-shadow] duration-200 ease-organic",
+            "focus-within:ring-2 focus-within:ring-forest/40",
             method === 'applepay'
               ? "border-terracotta bg-cream shadow-soft"
               : "border-sand bg-white hover:border-forest/40"
           )}
         >
+          <input
+            type="radio"
+            name="payment-method"
+            value="applepay"
+            checked={method === 'applepay'}
+            onChange={() => onMethodChange('applepay')}
+            className="sr-only"
+          />
           <Wallet className="w-6 h-6 text-forest shrink-0" />
           <div>
             <p className="font-semibold text-forest text-sm">{t('payment.walletTitle')}</p>
@@ -79,6 +98,8 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
             <label className="block text-xs font-semibold text-forest mb-1">{t('payment.cardNameLabel')}</label>
             <input
               type="text"
+              name="cc-name"
+              autoComplete="cc-name"
               value={card.name}
               onChange={(e) => onCardChange('name', e.target.value)}
               placeholder={t('payment.cardNamePlaceholder')}
@@ -92,6 +113,9 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
             <input
               type="text"
               inputMode="numeric"
+              name="cc-number"
+              autoComplete="cc-number"
+              spellCheck={false}
               value={card.number}
               onChange={(e) => onCardChange('number', e.target.value)}
               placeholder="4543 0000 0000 0000"
@@ -105,6 +129,9 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
               <label className="block text-xs font-semibold text-forest mb-1">{t('payment.expiryLabel')}</label>
               <input
                 type="text"
+                name="cc-exp"
+                autoComplete="cc-exp"
+                spellCheck={false}
                 value={card.expiry}
                 onChange={(e) => onCardChange('expiry', e.target.value)}
                 placeholder="MM/YY"
@@ -118,6 +145,9 @@ export function PaymentMethods({ method, onMethodChange, card, onCardChange, fie
                 type="password"
                 inputMode="numeric"
                 maxLength={4}
+                name="cc-csc"
+                autoComplete="cc-csc"
+                spellCheck={false}
                 value={card.cvv}
                 onChange={(e) => onCardChange('cvv', e.target.value)}
                 placeholder="123"

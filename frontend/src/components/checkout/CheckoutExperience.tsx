@@ -1,6 +1,7 @@
 "use client";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
+import FadeUp from '@/components/motion/FadeUp';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { CheckoutSummary } from './CheckoutSummary';
@@ -47,7 +48,7 @@ const EMPTY_CARD: CardDetails = { name: '', number: '', expiry: '', cvv: '' };
 
 export function CheckoutExperience() {
   const t = useTranslations('checkout');
-  const { items, clearCart } = useCartStore();
+  const { items, total, clearCart } = useCartStore();
   const [isPlaced, setIsPlaced] = useState(false);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -56,6 +57,17 @@ export function CheckoutExperience() {
   const [cardErrors, setCardErrors] = useState<CardFieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Individual top-level refs, not an object literal keyed by field name —
+  // the React Compiler's ref lint rule flags `ref={someObject.someKey}` as an
+  // unsafe render-time ref access even though each value is a plain useRef.
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const cityRef = useRef<HTMLInputElement>(null);
+  const zipRef = useRef<HTMLInputElement>(null);
 
   const updateField = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -98,6 +110,21 @@ export function CheckoutExperience() {
     if (Object.keys(errors).length > 0 || Object.keys(cErrors).length > 0) {
       setFieldErrors(errors);
       setCardErrors(cErrors);
+      // Built here, inside the handler, rather than stored on the component —
+      // reading `.current` is only safe outside of render.
+      const refsByField: Record<keyof FormState, React.RefObject<HTMLInputElement | null>> = {
+        phone: phoneRef,
+        email: emailRef,
+        firstName: firstNameRef,
+        lastName: lastNameRef,
+        address: addressRef,
+        city: cityRef,
+        zip: zipRef,
+      };
+      const firstInvalidField = (
+        ['phone', 'email', 'firstName', 'lastName', 'address', 'city', 'zip'] as const
+      ).find((field) => errors[field]);
+      if (firstInvalidField) refsByField[firstInvalidField].current?.focus();
       return;
     }
 
@@ -129,13 +156,14 @@ export function CheckoutExperience() {
 
   const inputClass = (field: keyof FormState) =>
     cn(
-      "w-full px-4 py-3 rounded-xl border focus:outline-none bg-white",
-      fieldErrors[field] ? "border-terracotta focus:border-terracotta" : "border-sand focus:border-terracotta"
+      "w-full px-4 py-3 rounded-xl border bg-white transition-[border-color,box-shadow] duration-200 ease-organic",
+      "focus:outline-none focus:border-forest focus:ring-2 focus:ring-forest/25",
+      fieldErrors[field] ? "border-terracotta" : "border-sand"
     );
 
   if (isPlaced) {
     return (
-      <div className="max-w-xl mx-auto text-center py-16 md:py-24">
+      <FadeUp trigger="mount" duration={0.5} y={16} className="max-w-xl mx-auto text-center py-16 md:py-24">
         <div className="w-20 h-20 mx-auto rounded-full bg-forest/10 text-forest flex items-center justify-center mb-6">
           <CheckCircle2 size={36} />
         </div>
@@ -144,7 +172,7 @@ export function CheckoutExperience() {
         <Link href="/" className="btn-primary inline-flex">
           {t('orderSuccess.backHome')}
         </Link>
-      </div>
+      </FadeUp>
     );
   }
 
@@ -170,43 +198,71 @@ export function CheckoutExperience() {
               <h3 className="text-xl font-display text-forest mb-4">{t('contactInfo')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <input type="tel" value={form.phone} onChange={updateField('phone')} placeholder={t('phonePlaceholder')} className={inputClass('phone')} />
-                  {fieldErrors.phone && <p className="text-terracotta text-xs">{fieldErrors.phone}</p>}
+                  <input type="tel" value={form.phone} ref={phoneRef} name="tel" spellCheck={false} autoComplete="tel" onChange={updateField('phone')} placeholder={t('phonePlaceholder')} className={inputClass('phone')} aria-invalid={!!fieldErrors.phone} aria-describedby={fieldErrors.phone ? 'phone-error' : undefined} />
+                  {fieldErrors.phone && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="phone-error" role="alert" className="text-terracotta text-xs">{fieldErrors.phone}</p>
+                  </FadeUp>
+                )}
                 </div>
                 <div className="space-y-1">
-                  <input type="email" value={form.email} onChange={updateField('email')} placeholder={t('emailPlaceholder')} className={inputClass('email')} />
-                  {fieldErrors.email && <p className="text-terracotta text-xs">{fieldErrors.email}</p>}
+                  <input type="email" value={form.email} ref={emailRef} name="email" spellCheck={false} autoComplete="email" onChange={updateField('email')} placeholder={t('emailPlaceholder')} className={inputClass('email')} aria-invalid={!!fieldErrors.email} aria-describedby={fieldErrors.email ? 'email-error' : undefined} />
+                  {fieldErrors.email && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="email-error" role="alert" className="text-terracotta text-xs">{fieldErrors.email}</p>
+                  </FadeUp>
+                )}
                 </div>
               </div>
             </div>
 
             <div className="mb-10">
               <h3 className="text-xl font-display text-forest mb-4">{t('shippingAddress')}</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <input type="text" value={form.firstName} onChange={updateField('firstName')} placeholder={t('firstNamePlaceholder')} className={inputClass('firstName')} />
-                  {fieldErrors.firstName && <p className="text-terracotta text-xs">{fieldErrors.firstName}</p>}
+                  <input type="text" value={form.firstName} ref={firstNameRef} name="firstName" autoComplete="given-name" onChange={updateField('firstName')} placeholder={t('firstNamePlaceholder')} className={inputClass('firstName')} aria-invalid={!!fieldErrors.firstName} aria-describedby={fieldErrors.firstName ? 'firstName-error' : undefined} />
+                  {fieldErrors.firstName && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="firstName-error" role="alert" className="text-terracotta text-xs">{fieldErrors.firstName}</p>
+                  </FadeUp>
+                )}
                 </div>
                 <div className="space-y-1">
-                  <input type="text" value={form.lastName} onChange={updateField('lastName')} placeholder={t('lastNamePlaceholder')} className={inputClass('lastName')} />
-                  {fieldErrors.lastName && <p className="text-terracotta text-xs">{fieldErrors.lastName}</p>}
+                  <input type="text" value={form.lastName} ref={lastNameRef} name="lastName" autoComplete="family-name" onChange={updateField('lastName')} placeholder={t('lastNamePlaceholder')} className={inputClass('lastName')} aria-invalid={!!fieldErrors.lastName} aria-describedby={fieldErrors.lastName ? 'lastName-error' : undefined} />
+                  {fieldErrors.lastName && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="lastName-error" role="alert" className="text-terracotta text-xs">{fieldErrors.lastName}</p>
+                  </FadeUp>
+                )}
                 </div>
-                <div className="col-span-2 space-y-1">
-                  <input type="text" value={form.address} onChange={updateField('address')} placeholder={t('addressPlaceholder')} className={inputClass('address')} />
-                  {fieldErrors.address && <p className="text-terracotta text-xs">{fieldErrors.address}</p>}
+                <div className="sm:col-span-2 space-y-1">
+                  <input type="text" value={form.address} ref={addressRef} name="address" autoComplete="street-address" onChange={updateField('address')} placeholder={t('addressPlaceholder')} className={inputClass('address')} aria-invalid={!!fieldErrors.address} aria-describedby={fieldErrors.address ? 'address-error' : undefined} />
+                  {fieldErrors.address && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="address-error" role="alert" className="text-terracotta text-xs">{fieldErrors.address}</p>
+                  </FadeUp>
+                )}
                 </div>
                 <div className="space-y-1">
-                  <input type="text" value={form.city} onChange={updateField('city')} placeholder={t('cityPlaceholder')} className={inputClass('city')} />
-                  {fieldErrors.city && <p className="text-terracotta text-xs">{fieldErrors.city}</p>}
+                  <input type="text" value={form.city} ref={cityRef} name="city" autoComplete="address-level2" onChange={updateField('city')} placeholder={t('cityPlaceholder')} className={inputClass('city')} aria-invalid={!!fieldErrors.city} aria-describedby={fieldErrors.city ? 'city-error' : undefined} />
+                  {fieldErrors.city && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="city-error" role="alert" className="text-terracotta text-xs">{fieldErrors.city}</p>
+                  </FadeUp>
+                )}
                 </div>
                 <div className="space-y-1">
-                  <input type="text" value={form.zip} onChange={updateField('zip')} placeholder={t('zipPlaceholder')} className={inputClass('zip')} />
-                  {fieldErrors.zip && <p className="text-terracotta text-xs">{fieldErrors.zip}</p>}
+                  <input type="text" value={form.zip} ref={zipRef} name="zip" autoComplete="postal-code" onChange={updateField('zip')} placeholder={t('zipPlaceholder')} className={inputClass('zip')} aria-invalid={!!fieldErrors.zip} aria-describedby={fieldErrors.zip ? 'zip-error' : undefined} />
+                  {fieldErrors.zip && (
+                  <FadeUp trigger="mount" duration={0.15} y={4}>
+                    <p id="zip-error" role="alert" className="text-terracotta text-xs">{fieldErrors.zip}</p>
+                  </FadeUp>
+                )}
                 </div>
               </div>
             </div>
 
-            <DeliveryOptions />
+            <DeliveryOptions subtotal={total} />
             <PaymentMethods
               method={paymentMethod}
               onMethodChange={setPaymentMethod}
@@ -215,13 +271,20 @@ export function CheckoutExperience() {
               fieldErrors={cardErrors}
             />
 
-            {error && <p className="text-terracotta text-sm mt-4">{error}</p>}
+            {error && <p role="alert" className="text-terracotta text-sm mt-4">{error}</p>}
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-terracotta hover:bg-terracotta-light disabled:opacity-60 text-cream rounded-full font-medium transition-colors text-lg mt-6"
+              aria-busy={isSubmitting}
+              className="w-full py-4 bg-terracotta hover:bg-terracotta-light disabled:opacity-60 disabled:cursor-not-allowed text-cream rounded-full font-medium transition-[background-color,transform] duration-200 ease-organic active:scale-[0.99] disabled:active:scale-100 text-lg mt-6 flex items-center justify-center gap-2"
             >
+              {isSubmitting && (
+                <span
+                  aria-hidden="true"
+                  className="w-4 h-4 rounded-full border-2 border-cream/40 border-t-cream animate-spin"
+                />
+              )}
               {isSubmitting ? t('placingOrder') : t('placeOrder')}
             </button>
           </form>

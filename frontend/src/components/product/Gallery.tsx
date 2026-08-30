@@ -22,8 +22,24 @@ export function Gallery({ images, productName }: GalleryProps) {
 
   const activeImage = images[activeIndex];
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (images.length < 2) return;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevImage();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      nextImage();
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className="flex flex-col gap-4"
+      onKeyDown={handleKeyDown}
+      role="group"
+      aria-label={productName}
+    >
       {/* Main Image */}
       <div
         className="relative aspect-square w-full rounded-2xl overflow-hidden flex items-center justify-center transition-colors duration-500"
@@ -49,14 +65,14 @@ export function Gallery({ images, productName }: GalleryProps) {
           <>
             <button
               onClick={prevImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-forest flex items-center justify-center shadow-soft backdrop-blur-sm transition-all z-10"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-forest flex items-center justify-center shadow-soft backdrop-blur-sm transition-[background-color,transform] duration-200 ease-organic hover:scale-105 active:scale-95 z-10"
               aria-label={t('gallery.previous')}
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-forest flex items-center justify-center shadow-soft backdrop-blur-sm transition-all z-10"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-forest flex items-center justify-center shadow-soft backdrop-blur-sm transition-[background-color,transform] duration-200 ease-organic hover:scale-105 active:scale-95 z-10"
               aria-label={t('gallery.next')}
             >
               <ChevronRight className="w-6 h-6" />
@@ -72,8 +88,11 @@ export function Gallery({ images, productName }: GalleryProps) {
             <button
               key={img}
               onClick={() => setActiveIndex(idx)}
+              aria-label={`${productName} ${idx + 1}`}
+              aria-current={activeIndex === idx}
               className={cn(
-                "relative w-20 h-20 shrink-0 rounded-xl overflow-hidden transition-all flex items-center justify-center",
+                "relative w-20 h-20 shrink-0 rounded-xl overflow-hidden flex items-center justify-center",
+                "transition-[opacity,border-color,box-shadow,transform] duration-200 ease-organic active:scale-95",
                 activeIndex === idx
                   ? "border-2 border-terracotta ring-4 ring-terracotta/30"
                   : "border border-transparent opacity-70 hover:opacity-100"

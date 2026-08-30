@@ -10,7 +10,7 @@ export function BrandCard() {
   return (
     <div className="bg-cream rounded-3xl p-6 border border-sand">
       <div className="flex items-start gap-4">
-        <div className="w-16 h-16 rounded-full bg-forest text-cream flex items-center justify-center flex-shrink-0">
+        <div className="w-16 h-16 rounded-full bg-forest text-cream flex items-center justify-center shrink-0">
           <Heart className="w-8 h-8" />
         </div>
 

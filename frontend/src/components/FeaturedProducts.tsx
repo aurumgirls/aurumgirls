@@ -1,23 +1,25 @@
 "use client";
 
 import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { Product } from '@/lib/api';
 import { resolveImageUrl } from '@/lib/api';
 import { CURRENCY, FALLBACK_SWATCH } from '@/lib/constants';
-import { ShoppingBag } from 'lucide-react';
+import { Check, ShoppingBag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import FadeUp from '@/components/motion/FadeUp';
-import { useCartStore } from '@/store/cart-store';
+import { StaggerGroup, StaggerItem } from '@/components/motion/Stagger';
+import { EASE_ORGANIC } from '@/components/motion/useReveal';
+import { useAddToCart } from '@/components/cart/useAddToCart';
 
 function FeaturedProductCard({ product }: { product: Product }) {
   const t = useTranslations('home');
-  const { addItem } = useCartStore();
+  const { add, justAdded } = useAddToCart();
   const image = product.images[0];
   const available = product.inStock && product.quantityAvailable > 0;
 
   return (
-    <div className="bg-white rounded-3xl overflow-hidden border border-sand shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col h-full group">
+    <div className="bg-white rounded-3xl overflow-hidden border border-sand shadow-soft transition-[transform,box-shadow] duration-300 ease-organic hover:-translate-y-1 hover:shadow-card-hover flex flex-col h-full group">
       {/* Product Image / Gradient */}
       <div
         className="relative aspect-square w-full flex items-center justify-center overflow-hidden"
@@ -29,7 +31,7 @@ function FeaturedProductCard({ product }: { product: Product }) {
             alt={product.name}
             fill
             unoptimized
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover transition-transform duration-500 ease-organic group-hover:scale-105"
           />
         ) : (
           <div className="w-32 h-32 rounded-full bg-forest/10 flex items-center justify-center p-4 text-center">
@@ -39,10 +41,10 @@ function FeaturedProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-1 justify-between">
+      <div className="p-6 flex flex-col flex-1 justify-between min-w-0">
         <div>
           <Link href={`/product/${product.slug}`} className="block">
-            <h3 className="font-display text-xl font-bold text-forest mb-2 group-hover:text-terracotta transition-colors">
+            <h3 className="font-display text-xl font-bold text-forest mb-2 truncate transition-colors duration-200 ease-organic group-hover:text-terracotta">
               {product.name}
             </h3>
           </Link>
@@ -56,15 +58,31 @@ function FeaturedProductCard({ product }: { product: Product }) {
 
         <div className="flex items-center justify-between pt-4 border-t border-sand/60 mt-2">
           <span className="font-display text-2xl font-bold text-forest">
-            {product.price} {CURRENCY}
+            {product.price.toFixed(2)} {CURRENCY}
           </span>
 
           {available ? (
             <button
-              onClick={() => addItem(product)}
+              onClick={() => add(product)}
+              aria-label={`${t('featured.addToCart')}: ${product.name}`}
               className="btn-primary text-xs py-2.5 px-4"
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
+              {/* Icon swaps to a check on success: confirms the click without
+                  needing new copy in messages/. */}
+              <span className="relative grid h-3.5 w-3.5 place-items-center">
+                <AnimatePresence initial={false} mode="wait">
+                  <motion.span
+                    key={justAdded ? 'added' : 'idle'}
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.5, opacity: 0 }}
+                    transition={{ duration: 0.15, ease: EASE_ORGANIC }}
+                    className="absolute inset-0 grid place-items-center"
+                  >
+                    {justAdded ? <Check className="w-3.5 h-3.5" /> : <ShoppingBag className="w-3.5 h-3.5" />}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
               <span>{t('featured.addToCart')}</span>
             </button>
           ) : (
@@ -89,18 +107,21 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
             <span className="text-xs font-semibold text-terracotta tracking-wider uppercase block mb-2">{t('featured.eyebrow')}</span>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-forest">{t('featured.title')}</h2>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-forest text-balance">{t('featured.title')}</h2>
             <p className="text-slate text-base mt-2">{t('featured.subtitle')}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, idx) => (
-            <FadeUp key={product.id} delay={0.1 * idx}>
+        <StaggerGroup
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          staggerDelay={0.1}
+        >
+          {products.map((product) => (
+            <StaggerItem key={product.id} className="h-full">
               <FeaturedProductCard product={product} />
-            </FadeUp>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

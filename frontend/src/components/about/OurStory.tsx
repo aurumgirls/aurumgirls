@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from 'next-intl';
+import FadeUp from '@/components/motion/FadeUp';
 
 export default function OurStory() {
   const t = useTranslations('about');
@@ -8,7 +9,7 @@ export default function OurStory() {
   return (
     <section className="py-20 lg:py-32 bg-cream">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
+        <FadeUp className="max-w-3xl mx-auto text-center space-y-8">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display text-forest">
             {t('story.title')}
           </h2>
@@ -19,7 +20,7 @@ export default function OurStory() {
             <p>{t('story.paragraph4')}</p>
             <p>{t('story.paragraph5')}</p>
           </div>
-        </div>
+        </FadeUp>
       </div>
     </section>
   );

@@ -10,7 +10,7 @@ export default function Hero() {
   const t = useTranslations('home');
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center bg-cream overflow-hidden py-20 lg:py-32">
+    <section className="relative min-h-[85svh] flex items-center justify-center bg-cream overflow-hidden py-20 lg:py-32">
       {/* Background Image / Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -25,26 +25,26 @@ export default function Hero() {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center max-w-4xl">
-        <FadeUp delay={0.1}>
+        <FadeUp delay={0} duration={0.6} trigger="mount">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-forest/10 text-forest text-xs sm:text-sm font-semibold mb-6">
             <Heart className="w-4 h-4 text-terracotta fill-terracotta" />
             <span>{t('hero.badge')}</span>
           </div>
         </FadeUp>
 
-        <FadeUp delay={0.2}>
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-forest mb-6 leading-tight">
+        <FadeUp delay={0.06} duration={0.6} trigger="mount">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-forest mb-6 leading-tight text-balance">
             {t('hero.title')}
           </h1>
         </FadeUp>
 
-        <FadeUp delay={0.3}>
+        <FadeUp delay={0.12} duration={0.6} trigger="mount">
           <p className="text-slate text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
             {t('hero.subtitle')}
           </p>
         </FadeUp>
 
-        <FadeUp delay={0.4}>
+        <FadeUp delay={0.18} duration={0.6} trigger="mount">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
             <Link href="/#icma" className="btn-primary w-full sm:w-auto">
               {t('hero.ctaCommunity')} <ArrowRight className="w-4 h-4" />
@@ -56,7 +56,7 @@ export default function Hero() {
         </FadeUp>
 
         {/* Feature Badges */}
-        <FadeUp delay={0.5}>
+        <FadeUp delay={0.24} duration={0.6} trigger="mount">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-sand/80 max-w-3xl mx-auto">
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-forest">
               <span className="w-2 h-2 rounded-full bg-terracotta" />

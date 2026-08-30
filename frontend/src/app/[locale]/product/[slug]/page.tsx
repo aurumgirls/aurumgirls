@@ -64,7 +64,7 @@ export default async function ProductPage({
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
             {/* Left Column - Gallery */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 lg:sticky lg:top-24 lg:self-start">
               <Gallery images={product.images} productName={product.name} />
             </div>
 

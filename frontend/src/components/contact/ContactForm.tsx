@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Send } from 'lucide-react';
+import FadeUp from '@/components/motion/FadeUp';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { isValidName, isValidEmail, isValidPhone } from '@/lib/validation';
@@ -28,6 +29,15 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Individual top-level refs, not an object literal keyed by field name —
+  // the React Compiler's ref lint rule flags `ref={someObject.someKey}` as an
+  // unsafe render-time ref access even though each value is a plain useRef.
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const topicRef = useRef<HTMLSelectElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
   const updateField = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
     setFieldErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
@@ -52,6 +62,19 @@ export default function ContactForm() {
     const errors = validate();
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
+      // Built here, inside the handler, rather than stored on the component —
+      // reading `.current` is only safe outside of render.
+      const refsByField: Record<keyof FormState, React.RefObject<HTMLElement | null>> = {
+        name: nameRef,
+        email: emailRef,
+        phone: phoneRef,
+        topic: topicRef,
+        message: messageRef,
+      };
+      const firstInvalidField = (['name', 'email', 'phone', 'topic', 'message'] as const).find(
+        (field) => errors[field]
+      );
+      if (firstInvalidField) refsByField[firstInvalidField].current?.focus();
       return;
     }
 
@@ -78,7 +101,7 @@ export default function ContactForm() {
 
   const fieldClass = (field: keyof FormState) =>
     cn(
-      "w-full px-4 py-3 bg-linen border rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent transition-all",
+      "w-full px-4 py-3 bg-linen border rounded-xl focus:outline-none focus:ring-2 focus:ring-terracotta focus:border-transparent transition-[border-color,box-shadow] duration-200 ease-organic",
       fieldErrors[field] ? "border-terracotta" : "border-sand"
     );
 
@@ -93,9 +116,9 @@ export default function ContactForm() {
       )}
 
       {isSuccess ? (
-        <div className="bg-green-50 text-forest p-6 rounded-2xl flex flex-col items-center justify-center text-center py-12">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <Send className="text-green-600" size={24} />
+        <div className="bg-forest/5 text-forest p-6 rounded-2xl flex flex-col items-center justify-center text-center py-12">
+          <div className="w-16 h-16 bg-forest/10 rounded-full flex items-center justify-center mb-4">
+            <Send className="text-forest" size={24} />
           </div>
           <h4 className="text-xl font-display mb-2">{t('form.successTitle')}</h4>
           <p>{t('form.successText')}</p>
@@ -106,26 +129,41 @@ export default function ContactForm() {
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-forest">{t('form.nameLabel')}</label>
               <input
+                ref={nameRef}
                 type="text"
                 id="name"
+                name="name"
+                autoComplete="name"
                 value={form.name}
                 onChange={updateField('name')}
                 className={fieldClass('name')}
                 placeholder={t('form.namePlaceholder')}
               />
-              {fieldErrors.name && <p className="text-terracotta text-xs">{fieldErrors.name}</p>}
+              {fieldErrors.name && (
+                <FadeUp trigger="mount" duration={0.15} y={4}>
+                  <p role="alert" className="text-terracotta text-xs">{fieldErrors.name}</p>
+                </FadeUp>
+              )}
             </div>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-forest">{t('form.emailLabel')}</label>
               <input
+                ref={emailRef}
                 type="email"
                 id="email"
+                name="email"
+                autoComplete="email"
+                spellCheck={false}
                 value={form.email}
                 onChange={updateField('email')}
                 className={fieldClass('email')}
                 placeholder={t('form.emailPlaceholder')}
               />
-              {fieldErrors.email && <p className="text-terracotta text-xs">{fieldErrors.email}</p>}
+              {fieldErrors.email && (
+                <FadeUp trigger="mount" duration={0.15} y={4}>
+                  <p role="alert" className="text-terracotta text-xs">{fieldErrors.email}</p>
+                </FadeUp>
+              )}
             </div>
           </div>
 
@@ -134,20 +172,31 @@ export default function ContactForm() {
               {t.has('form.phoneLabel') ? t('form.phoneLabel') : 'Telefon Nömrəsi'}
             </label>
             <input
+              ref={phoneRef}
               type="tel"
               id="phone"
+              name="tel"
+              autoComplete="tel"
+              spellCheck={false}
               value={form.phone}
               onChange={updateField('phone')}
               className={fieldClass('phone')}
               placeholder={t.has('form.phonePlaceholder') ? t('form.phonePlaceholder') : '+994 50 123 45 67'}
             />
-            {fieldErrors.phone && <p className="text-terracotta text-xs">{fieldErrors.phone}</p>}
+            {fieldErrors.phone && (
+              <FadeUp trigger="mount" duration={0.15} y={4}>
+                <p role="alert" className="text-terracotta text-xs">{fieldErrors.phone}</p>
+              </FadeUp>
+            )}
           </div>
 
           <div className="space-y-2">
             <label htmlFor="topic" className="text-sm font-medium text-forest">{t('form.topicLabel')}</label>
             <select
+              ref={topicRef}
               id="topic"
+              name="topic"
+              autoComplete="off"
               value={form.topic}
               onChange={updateField('topic')}
               className={cn(fieldClass('topic'), "appearance-none")}
@@ -159,20 +208,31 @@ export default function ContactForm() {
               <option value="quality">{t('form.topicQuality')}</option>
               <option value="where-to-buy">{t('form.topicWhereToBuy')}</option>
             </select>
-            {fieldErrors.topic && <p className="text-terracotta text-xs">{fieldErrors.topic}</p>}
+            {fieldErrors.topic && (
+              <FadeUp trigger="mount" duration={0.15} y={4}>
+                <p role="alert" className="text-terracotta text-xs">{fieldErrors.topic}</p>
+              </FadeUp>
+            )}
           </div>
 
           <div className="space-y-2">
             <label htmlFor="message" className="text-sm font-medium text-forest">{t('form.messageLabel')}</label>
             <textarea
+              ref={messageRef}
               id="message"
+              name="message"
+              autoComplete="off"
               value={form.message}
               onChange={updateField('message')}
               rows={5}
               className={cn(fieldClass('message'), "resize-none")}
               placeholder={t('form.messagePlaceholder')}
             ></textarea>
-            {fieldErrors.message && <p className="text-terracotta text-xs">{fieldErrors.message}</p>}
+            {fieldErrors.message && (
+              <FadeUp trigger="mount" duration={0.15} y={4}>
+                <p role="alert" className="text-terracotta text-xs">{fieldErrors.message}</p>
+              </FadeUp>
+            )}
           </div>
 
           <button
