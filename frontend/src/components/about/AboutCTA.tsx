@@ -11,7 +11,7 @@ export default function AboutCTA() {
   return (
     <section className="py-20 lg:py-32 bg-forest text-cream text-center">
       <FadeUp className="container mx-auto px-4 md:px-6 max-w-3xl flex flex-col items-center">
-        <h2 className="text-4xl md:text-5xl font-display mb-6">{t('cta.title')}</h2>
+        <h2 className="text-4xl md:text-5xl font-display mb-6 text-cream">{t('cta.title')}</h2>
         <p className="text-xl text-linen/90 mb-10">
           {t('cta.subtitle')}
         </p>
