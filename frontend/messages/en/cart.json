@@ -17,7 +17,7 @@
   "summary": {
     "title": "Order Summary",
     "subtotal": "Subtotal",
-    "shipping": "Shipping (Azərpoçt)",
+    "shipping": "Shipping",
     "freeShipping": "Free",
     "total": "Total",
     "checkoutButton": "Proceed to Checkout"
