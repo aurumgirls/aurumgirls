@@ -25,7 +25,7 @@ export type Order = {
   id: string;
   customerName: string;
   customerPhone: string;
-  customerEmail: string;
+  customerEmail: string | null;
   customerAddress: string;
   city: string;
   zipCode: string | null;
