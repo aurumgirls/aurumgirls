@@ -66,7 +66,6 @@ export default function Footer() {
         <div className="container mx-auto px-4 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-cream/70">
           <p>© {new Date().getFullYear()} By Aurum Girls. {t('footer.copyright')}</p>
           <div className="flex items-center gap-3">
-            <span className="bg-forest-light px-3 py-1 rounded text-cream font-medium">{t('footer.deliveryBadge')}</span>
             <span className="bg-forest-light px-3 py-1 rounded text-cream font-medium">{t('footer.paymentBadge')}</span>
           </div>
         </div>

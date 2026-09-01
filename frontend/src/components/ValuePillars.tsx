@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaf, Heart, Truck, Wallet, Gift } from 'lucide-react';
+import { Leaf, Heart, Wallet, Gift } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { StaggerGroup, StaggerItem } from '@/components/motion/Stagger';
 
@@ -10,7 +10,6 @@ export default function ValuePillars() {
   const pillars = [
     { icon: Leaf, titleKey: 'pillar1Title', descKey: 'pillar1Desc' },
     { icon: Heart, titleKey: 'pillar2Title', descKey: 'pillar2Desc' },
-    { icon: Truck, titleKey: 'pillar3Title', descKey: 'pillar3Desc' },
     { icon: Wallet, titleKey: 'pillar4Title', descKey: 'pillar4Desc' },
     { icon: Gift, titleKey: 'pillar5Title', descKey: 'pillar5Desc' },
   ];
@@ -24,7 +23,7 @@ export default function ValuePillars() {
         </div>
 
         <StaggerGroup
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           staggerDelay={0.08}
         >
           {pillars.map((item, idx) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { ArrowRight, Heart, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowRight, Heart, ShieldCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import FadeUp from '@/components/motion/FadeUp';
@@ -57,7 +57,7 @@ export default function Hero() {
 
         {/* Feature Badges */}
         <FadeUp delay={0.24} duration={0.6} trigger="mount">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-sand/80 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-sand/80 max-w-3xl mx-auto">
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-forest">
               <span className="w-2 h-2 rounded-full bg-terracotta" />
               <span>{t('hero.badge1')}</span>
@@ -65,10 +65,6 @@ export default function Hero() {
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-forest">
               <span className="w-2 h-2 rounded-full bg-honey" />
               <span>{t('hero.badge2')}</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-forest">
-              <Truck className="w-4 h-4 text-forest" />
-              <span>{t('hero.badge3')}</span>
             </div>
             <div className="flex items-center justify-center gap-2 text-xs font-semibold text-forest">
               <ShieldCheck className="w-4 h-4 text-forest" />
