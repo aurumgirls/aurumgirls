@@ -38,7 +38,17 @@ def create_order(payload: OrderCreate, db: Session) -> Order:
     order_items = []
 
     for item in payload.items:
-        product = db.query(Product).filter(Product.id == item.product_id).first()
+        # with_for_update() locks this product row until the transaction
+        # commits, so two orders for the last unit of the same product
+        # arriving at nearly the same time can't both read "1 in stock" and
+        # both succeed (overselling). The second request simply waits for
+        # the first to finish, then sees the updated (now 0) quantity.
+        product = (
+            db.query(Product)
+            .filter(Product.id == item.product_id)
+            .with_for_update()
+            .first()
+        )
         if not product:
             raise HTTPException(status_code=404, detail=f"Product {item.product_id} not found")
         if not product.in_stock or product.quantity_available < item.quantity:

@@ -6,7 +6,10 @@ from pydantic import BaseModel, ConfigDict, Field, EmailStr
 class OrderItemIn(BaseModel):
     """One line item as sent by the frontend when placing an order."""
     product_id: str = Field(alias="productId")
-    quantity: int
+    # gt=0: without this, a negative/zero quantity was only caught by the DB
+    # CheckConstraint later, which surfaces as an ugly 500 instead of a clean
+    # 400 with a real message.
+    quantity: int = Field(gt=0)
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -26,8 +29,8 @@ class OrderCreate(BaseModel):
     Request body for POST /api/orders. EmailStr on customer_email validates
     the format before it ever reaches the database or the confirmation-email step.
     """
-    customer_name: str = Field(alias="customerName")
-    customer_phone: str = Field(alias="customerPhone")
+    customer_name: str = Field(alias="customerName", min_length=2, max_length=100)
+    customer_phone: str = Field(alias="customerPhone", min_length=7, max_length=20)
     customer_email: EmailStr = Field(alias="customerEmail")
     customer_address: str = Field(alias="customerAddress")
     city: str

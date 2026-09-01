@@ -23,15 +23,17 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="By Aurum Girls API")
 
-# CORS: currently open to all origins ("*"). This is fine while we don't have
-# a production domain yet, but should be locked down to the real frontend
-# domain(s) once we have one, since allow_credentials=True + "*" is a common
-# security smell (though browsers block credentialed "*" requests by default,
-# it's still best practice to be explicit).
+# CORS: origins still open to "*" since we don't have a production domain
+# yet — narrow this to the real frontend domain once we have one.
+# allow_credentials=False because we authenticate with a Bearer token sent
+# in the Authorization header, not cookies — credentials=True is only needed
+# for cookie-based auth, and combining it with allow_origins=["*"] is a
+# known security smell (browsers reject that combination anyway, but it's
+# best to not rely on the browser to save us).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

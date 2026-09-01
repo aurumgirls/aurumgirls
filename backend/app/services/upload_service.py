@@ -20,9 +20,16 @@ async def save_uploaded_image(file: UploadFile) -> str:
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail="Only .jpg, .jpeg, .png, .webp files are allowed")
 
-    contents = await file.read()
-    if len(contents) > MAX_FILE_SIZE_MB * 1024 * 1024:
-        raise HTTPException(status_code=400, detail=f"File exceeds {MAX_FILE_SIZE_MB}MB limit")
+    # Read in 1MB chunks and abort as soon as we exceed the limit, instead of
+    # reading the whole file into memory first — a single oversized upload
+    # (or a deliberately huge one) could otherwise exhaust RAM on a small VPS
+    # before we ever get to check its size.
+    max_bytes = MAX_FILE_SIZE_MB * 1024 * 1024
+    contents = bytearray()
+    while chunk := await file.read(1024 * 1024):
+        contents.extend(chunk)
+        if len(contents) > max_bytes:
+            raise HTTPException(status_code=400, detail=f"File exceeds {MAX_FILE_SIZE_MB}MB limit")
 
     filename = f"{uuid.uuid4().hex}{ext}"
     filepath = os.path.join(UPLOAD_DIR, filename)

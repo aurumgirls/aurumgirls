@@ -57,4 +57,4 @@ def update_product(product_id: str, payload: ProductUpdate, db: Session = Depend
 def deactivate_product(product_id: str, db: Session = Depends(get_db)):
     """Soft-deletes a product (marks it out of stock rather than removing the row)."""
     product_service.deactivate_product(product_id, db)
-    return {"message": "Product Succefully Deleted"}
+    return {"message": "Product successfully deleted"}

@@ -1,7 +1,10 @@
 import os
+import logging
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+logger = logging.getLogger(__name__)
 
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
@@ -52,5 +55,6 @@ By Aurum Girls
             server.send_message(msg)
     except Exception as e:
         # Intentionally swallowed: a failed email shouldn't roll back or
-        # error out an otherwise-successful order.
-        print(f"[EMAIL ERROR] Failed to send order confirmation: {e}")
+        # error out an otherwise-successful order. logger.error (not print)
+        # so this shows up properly in production log aggregation later.
+        logger.error(f"Failed to send order confirmation to {to_email}: {e}")
