@@ -94,6 +94,13 @@ export function createOrder(input: CreateOrderInput): Promise<Order> {
   });
 }
 
+export function logLanguageChange(locale: string): Promise<{ message: string; locale: string; receivedAt: string }> {
+  return apiFetch('/api/analytics/language-change', {
+    method: 'POST',
+    body: JSON.stringify({ locale }),
+  });
+}
+
 export function resolveImageUrl(path: string): string {
   if (/^https?:\/\//.test(path)) return path;
   return `${API_BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;

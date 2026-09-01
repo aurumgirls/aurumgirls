@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Menu, X, ShoppingBag, ChevronDown } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { logLanguageChange } from '@/lib/api';
 import { useCartStore } from '@/store/cart-store';
 import { PopIn } from '@/components/motion/PopIn';
 
@@ -45,6 +46,7 @@ export default function Header() {
 
   const switchLocale = (nextLocale: 'az' | 'en') => {
     router.replace(pathname, { locale: nextLocale, scroll: false });
+    logLanguageChange(nextLocale).catch(() => {});
   };
 
   const offeringsLinks = [
