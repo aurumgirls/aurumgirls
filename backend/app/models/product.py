@@ -15,6 +15,10 @@ class Product(Base):
         # a negative stock count.
         CheckConstraint("price > 0", name="check_price_positive"),
         CheckConstraint("quantity_available >= 0", name="check_quantity_non_negative"),
+        # NULL passes a CHECK constraint (it's "unknown", not "false"), so this
+        # still allows old_price to be left unset while rejecting old_price <= 0
+        # whenever it IS set.
+        CheckConstraint("old_price IS NULL OR old_price > 0", name="check_old_price_positive"),
     )
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -23,7 +27,7 @@ class Product(Base):
     slug = Column(String, unique=True, index=True, nullable=False)
 
     name = Column(String(200), nullable=False)
-    description = Column(String, nullable=True)
+    description = Column(String(2000), nullable=True)
 
     price = Column(Float, nullable=False)
     # Optional "was" price, shown as a strikethrough when the product is discounted.

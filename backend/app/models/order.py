@@ -17,22 +17,25 @@ class Order(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
 
     # Contact/shipping details entered at checkout.
-    customer_name = Column(String, nullable=False)
-    customer_phone = Column(String, nullable=False)
+    # Lengths mirror the limits enforced in schemas/order.py (OrderCreate) —
+    # keeping them in sync means a value that passes schema validation is
+    # also guaranteed to fit the column, and vice versa.
+    customer_name = Column(String(100), nullable=False)
+    customer_phone = Column(String(20), nullable=False)
     customer_email = Column(String, nullable=False)
-    customer_address = Column(String, nullable=False)
-    city = Column(String, nullable=False)
-    zip_code = Column(String, nullable=True)
-    comment = Column(String, nullable=True)
+    customer_address = Column(String(255), nullable=False)
+    city = Column(String(100), nullable=False)
+    zip_code = Column(String(20), nullable=True)
+    comment = Column(String(500), nullable=True)
 
     # Computed once at order creation (sum of item price * quantity); not
     # recalculated later even if product prices change afterward.
     total_price = Column(Float, nullable=False)
 
     # One of: pending, paid, processing, shipped, completed, cancelled
-    # (see VALID_STATUSES in routers/orders.py — keep that set in sync with
-    # whatever statuses the frontend/admin panel actually use).
-    status = Column(String, nullable=False, default="pending")
+    # (see VALID_STATUSES in services/order_service.py — keep that set in
+    # sync with whatever statuses the frontend/admin panel actually use).
+    status = Column(String(20), nullable=False, default="pending")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

@@ -24,7 +24,8 @@ class OrderItem(Base):
     order_id = Column(String, ForeignKey("orders.id"), nullable=False)
     product_id = Column(String, ForeignKey("products.id"), nullable=False)
 
-    product_name = Column(String, nullable=False)  # snapshot of the product name at order time
+    # 200 matches Product.name's limit — this is a snapshot copy of that field.
+    product_name = Column(String(200), nullable=False)
     price = Column(Float, nullable=False)  # snapshot of the product price at order time
     quantity = Column(Integer, nullable=False)
 

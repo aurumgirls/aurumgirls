@@ -5,14 +5,14 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class ProductBase(BaseModel):
     """Shared fields between creating and reading a product."""
-    # max_length matches the DB column's String(200) limit; price/quantity
-    # bounds mirror the CheckConstraints on the Product model — validating
-    # here means a bad value gets a clean 400 instead of only being caught
-    # by the DB and surfacing as a 500.
+    # max_length values mirror the DB column limits; price/quantity bounds
+    # mirror the CheckConstraints on the Product model — validating here
+    # means a bad value gets a clean 400 instead of only being caught by
+    # the DB and surfacing as a 500.
     name: str = Field(max_length=200)
-    description: Optional[str] = None
+    description: Optional[str] = Field(default=None, max_length=2000)
     price: float = Field(gt=0)
-    images: List[str] = []
+    images: List[str] = Field(default=[], max_length=10)
     quantity_available: int = Field(default=0, ge=0, alias="quantityAvailable")
 
     model_config = ConfigDict(populate_by_name=True)
@@ -30,10 +30,10 @@ class ProductUpdate(BaseModel):
     (see update_data = payload.model_dump(exclude_unset=True) in the router).
     """
     name: Optional[str] = Field(default=None, max_length=200)
-    description: Optional[str] = None
+    description: Optional[str] = Field(default=None, max_length=2000)
     price: Optional[float] = Field(default=None, gt=0)
-    old_price: Optional[float] = Field(default=None, alias="oldPrice")
-    images: Optional[List[str]] = None
+    old_price: Optional[float] = Field(default=None, gt=0, alias="oldPrice")
+    images: Optional[List[str]] = Field(default=None, max_length=10)
     in_stock: Optional[bool] = Field(default=None, alias="inStock")
     quantity_available: Optional[int] = Field(default=None, ge=0, alias="quantityAvailable")
 

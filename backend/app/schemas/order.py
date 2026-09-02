@@ -32,10 +32,10 @@ class OrderCreate(BaseModel):
     customer_name: str = Field(alias="customerName", min_length=2, max_length=100)
     customer_phone: str = Field(alias="customerPhone", min_length=7, max_length=20)
     customer_email: EmailStr = Field(alias="customerEmail")
-    customer_address: str = Field(alias="customerAddress")
-    city: str
-    zip_code: Optional[str] = Field(default=None, alias="zipCode")
-    comment: Optional[str] = None
+    customer_address: str = Field(alias="customerAddress", min_length=5, max_length=255)
+    city: str = Field(max_length=100)
+    zip_code: Optional[str] = Field(default=None, max_length=20, alias="zipCode")
+    comment: Optional[str] = Field(default=None, max_length=500)
     items: List[OrderItemIn]
 
     model_config = ConfigDict(populate_by_name=True)
