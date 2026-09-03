@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session, joinedload
 
 from app.models.order import Order
@@ -23,7 +23,7 @@ def get_order_or_404(order_id: str, db: Session) -> Order:
     return order
 
 
-def create_order(payload: OrderCreate, db: Session) -> Order:
+def create_order(payload: OrderCreate, db: Session, background_tasks: BackgroundTasks) -> Order:
     """
     Core order-creation logic: validates stock, snapshots each item's
     name/price, decrements product stock, creates the Order + OrderItem rows,
@@ -83,11 +83,12 @@ def create_order(payload: OrderCreate, db: Session) -> Order:
     db.commit()
     db.refresh(order)
 
-    # Email failure is logged inside send_order_confirmation_email and never
-    # raised — the order is already saved and should not be rolled back
-    # just because the email didn't go out.
-    send_order_confirmation_email(order.customer_email, order)
-
+    # Sent via BackgroundTasks so the client gets its response immediately
+    # instead of waiting on the SMTP round-trip. Email failure is logged
+    # inside send_order_confirmation_email and never raised — the order is
+    # already saved and should not be rolled back just because the email
+    # didn't go out.
+    background_tasks.add_task(send_order_confirmation_email, order.customer_email, order)
     return order
 
 

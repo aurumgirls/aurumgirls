@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -15,9 +15,9 @@ admin_router = APIRouter(prefix="/api/admin/orders", tags=["admin-orders"])
 
 
 @public_router.post("", response_model=OrderOut, status_code=201)
-def create_order(payload: OrderCreate, db: Session = Depends(get_db)):
+def create_order(payload: OrderCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     """Creates a new order from the cart. See order_service.create_order for the logic."""
-    return order_service.create_order(payload, db)
+    return order_service.create_order(payload, db, background_tasks)
 
 
 @public_router.get("/{order_id}", response_model=OrderOut)
