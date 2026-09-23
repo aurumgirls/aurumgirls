@@ -96,6 +96,23 @@ export function createOrder(input: CreateOrderInput): Promise<Order> {
   });
 }
 
+// Browser-side checkout: goes through this app's /api/orders route, which creates
+// the order on the backend and emails the customer a confirmation via Gmail.
+export async function placeOrder(input: CreateOrderInput): Promise<Order> {
+  const res = await fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new ApiError(res.status, body?.message || `Request failed with status ${res.status}`);
+  }
+
+  return res.json();
+}
+
 export function logLanguageChange(locale: string): Promise<{ message: string; locale: string; receivedAt: string }> {
   return apiFetch('/api/analytics/language-change', {
     method: 'POST',

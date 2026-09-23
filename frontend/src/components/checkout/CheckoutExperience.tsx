@@ -8,7 +8,7 @@ import { CheckoutSummary } from './CheckoutSummary';
 import { DeliveryOptions } from './DeliveryOptions';
 import { PaymentMethods, type PaymentMethod, type CardDetails, type CardFieldErrors } from './PaymentMethods';
 import { useCartStore } from '@/store/cart-store';
-import { createOrder, ApiError } from '@/lib/api';
+import { placeOrder, ApiError } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import {
   isValidName,
@@ -20,7 +20,6 @@ import {
   isValidCardExpiry,
   isValidCvv,
 } from '@/lib/validation';
-import { sendOrderConfirmationEmail } from '@/lib/email';
 
 type FormState = {
   firstName: string;
@@ -130,7 +129,7 @@ export function CheckoutExperience() {
 
     setIsSubmitting(true);
     try {
-      const order = await createOrder({
+      await placeOrder({
         customerName: `${form.firstName} ${form.lastName}`.trim(),
         customerPhone: form.phone,
         customerEmail: form.email,
@@ -138,13 +137,6 @@ export function CheckoutExperience() {
         city: form.city,
         zipCode: form.zip || undefined,
         items: items.map((item) => ({ productId: item.id, quantity: item.quantity })),
-      });
-      sendOrderConfirmationEmail({
-        toEmail: form.email,
-        toName: `${form.firstName} ${form.lastName}`.trim(),
-        orderId: order.id,
-        totalPrice: order.totalPrice,
-        items: items.map((item) => ({ name: item.name, quantity: item.quantity, price: item.price })),
       });
       clearCart();
       setIsPlaced(true);
