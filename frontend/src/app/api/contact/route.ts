@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 import { isValidName, isValidEmail, isValidPhone } from '@/lib/validation';
+import { createGmailTransport, escapeHtml, stripControlChars, GMAIL_USER as gmailUser } from '@/lib/mailer';
 
 const ALLOWED_TOPICS = new Set(['general', 'wholesale', 'press', 'quality', 'where-to-buy']);
 const MAX_MESSAGE_LENGTH = 5000;
@@ -24,19 +24,6 @@ function isRateLimited(ip: string): boolean {
   recent.push(now);
   requestLog.set(ip, recent);
   return false;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function stripControlChars(value: string): string {
-  return value.replace(/[\r\n]+/g, ' ').trim();
 }
 
 export async function POST(request: Request) {
@@ -85,24 +72,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const gmailUser = process.env.GMAIL_USER || 'xelilovafidan61@gmail.com';
-    const gmailPass = process.env.GMAIL_APP_PASSWORD;
-
-    if (!gmailPass) {
+    const transporter = createGmailTransport();
+    if (!transporter) {
       console.warn('GMAIL_APP_PASSWORD environment variable is not configured.');
       return NextResponse.json(
         { message: 'Gmail App Password is not configured on the server. Please set GMAIL_APP_PASSWORD in .env.local.' },
         { status: 500 }
       );
     }
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: gmailUser,
-        pass: gmailPass,
-      },
-    });
 
     const safeName = stripControlChars(name);
     const safeTopic = stripControlChars(topic);
@@ -113,7 +90,7 @@ export async function POST(request: Request) {
 
     const mailOptions = {
       from: { name: `${safeName} (By Aurum Girls Contact)`, address: gmailUser },
-      to: 'xelilovafidan61@gmail.com',
+      to: gmailUser,
       replyTo: email,
       subject: `[Contact Form] ${safeTopic} — ${safeName}`,
       text: `Name: ${name}\nEmail: ${email}\n${phoneStr}Topic: ${topic}\n\nMessage:\n${message}`,
