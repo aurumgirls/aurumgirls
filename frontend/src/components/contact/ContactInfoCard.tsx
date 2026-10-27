@@ -61,7 +61,7 @@ export default function ContactInfoCard() {
       <div className="mt-10 pt-8 border-t border-sand">
         <p className="font-medium text-forest mb-4">{t('info.followLabel')}</p>
         <div className="flex gap-4">
-          <a href="https://instagram.com/aurum_girls" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-linen flex items-center justify-center text-forest hover:bg-terracotta hover:text-cream transition-colors">
+          <a href="https://www.instagram.com/by_aurum_girls?psln=bXgxejNnYm5yMDMxs" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-linen flex items-center justify-center text-forest hover:bg-terracotta hover:text-cream transition-colors">
             <InstagramIcon className="w-5 h-5" />
           </a>
         </div>

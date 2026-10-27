@@ -28,7 +28,7 @@ export default function Footer() {
             {t('footer.brandDescription')}
           </p>
           <div className="flex space-x-4 pt-2">
-            <a href="https://instagram.com/aurum_girls" target="_blank" rel="noopener noreferrer" className="hover:text-terracotta transition-colors"><InstagramIcon className="w-5 h-5" /></a>
+            <a href="https://www.instagram.com/by_aurum_girls?psln=bXgxejNnYm5yMDMxs" target="_blank" rel="noopener noreferrer" className="hover:text-terracotta transition-colors"><InstagramIcon className="w-5 h-5" /></a>
           </div>
         </div>
 
